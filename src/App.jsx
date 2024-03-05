@@ -5,7 +5,7 @@ import {
 
 import "./App.css";
 import Root from "./routes/root";
-import { Home } from "./components/Home";
+import { Home } from "./components/Home/Home";
 import { Login } from "./components/Login";
 import { Signup } from "./components/Signup";
 
