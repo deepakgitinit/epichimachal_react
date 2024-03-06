@@ -1,12 +1,25 @@
 import React, { useState } from 'react'
+import { motion } from 'framer-motion';
 
 const navbar = () => {
   const[menu, setMenu] = useState(false);
 
   const open = () =>{
     setMenu(!menu);
+    removeMenu();
   }
-
+  
+  const removeMenu = () =>{
+    const menuBar = document.getElementById('menubar');
+    if (menu) {
+      setTimeout(() => {
+        menuBar.classList.add('hidden');
+      }, 100);
+    }else{
+      menuBar.classList.remove('hidden');
+    }
+  }
+ 
   return (
     <>
       <div className='flex justify-between items-center text-sm mx-8 my-4'>
@@ -27,8 +40,7 @@ const navbar = () => {
         </div>
         <img className="lg:hidden invert w-8" src={`src/assets/menu${menu?"_open":""}.svg`} alt="" onClick={open}/>
 
-        <div className={`lg:hidden absolute right-8 top-16 bg-white text-black p-4 rounded-lg text-base 
-        transition-opacity duration-500 ${menu?"":"opacity-0 pointer-events-none"}`}>
+        <motion.div id="menubar" animate={{x: menu?0:200}} className={`hidden lg:hidden absolute right-8 top-16 bg-white text-black p-4 rounded-lg text-base`}>
           <ul className='items-center *:mx-2 *:my-3 hover:*:text-gray-400 hover:*:transition-colors'>
             <li><a href="#">Home</a></li>
             <li><a href="#">Packages</a></li>
@@ -38,7 +50,7 @@ const navbar = () => {
             <a href="#">Log In</a>
             <button className='text-white bg-black rounded-full px-4 py-2 transition-colors'>Sign Up</button>
           </ul>
-        </div>
+        </motion.div>
 
       </div>
     </>
