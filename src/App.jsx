@@ -5,9 +5,10 @@ import {
 
 import "./App.css";
 import Root from "./routes/root";
-import { Home } from "./components/Home/Home";
+import { Home } from "./components/Home";
 import { Login } from "./components/Login";
 import { Signup } from "./components/Signup";
+import { Auth } from './contexts/Auth'
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,9 @@ const router = createBrowserRouter([
 export default function App (){
   return (
     <>
+      <Auth>
         <RouterProvider router={router} />
+      </Auth>
     </>
   );
 };
