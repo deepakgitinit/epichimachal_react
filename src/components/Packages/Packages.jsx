@@ -8,7 +8,6 @@ const Packages = () =>{
         const getPackages = async () =>{
             const packages = await axios.get("http://localhost:5000/api/v1/packages");
             setItems(packages.data.allPackages);
-            console.log(items);
         }
         getPackages();
 
@@ -31,7 +30,7 @@ const Packages = () =>{
                                 <p className="text-lg">Rs.{item.price}</p>
                                 <p>Destinations: {item.destinations.length}</p>
                                 <p>Time: {item.time}</p>
-                                <button className="text-sm py-2 px-3 my-3 rounded-md bg-slate-900 text-slate-100">Read More</button>
+                                <button className="text-sm py-2 px-3 my-3 rounded-md bg-slate-900 hover:bg-slate-800 text-slate-100">Read More</button>
                             </div>
                         </div>
                     })}

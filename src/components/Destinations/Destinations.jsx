@@ -44,7 +44,7 @@ const Destinations = () =>{
             })}
             </div>
 
-        <div className="text-slate-100 *:bg-slate-900 *:rounded-full *:px-4 *:py-2 *:mx-2 my-4">
+        <div className="text-slate-100 *:bg-slate-900 hover:*:bg-slate-800 *:rounded-full *:px-4 *:py-2 *:mx-2 my-4">
             <button className="prev" onClick={() => scrollSlider(-1)}>&#10094;</button>
             <button className="next" onClick={() => scrollSlider(1)}>&#10095;</button>
         </div>

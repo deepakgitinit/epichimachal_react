@@ -59,7 +59,7 @@ const Home = () => {
               <option value="Taxi">Taxi</option>
             </select>
 
-            <button className="text-slate-100 bg-slate-900 rounded-md lg:col-start-6 lg:col-span-1 col-span-2">Book Now!</button>
+            <button className="text-slate-100 bg-slate-900 hover:bg-slate-800 rounded-md lg:col-start-6 lg:col-span-1 col-span-2">Book Now!</button>
           </form>
         
         </div>

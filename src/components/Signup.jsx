@@ -1,12 +1,13 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
-import { Alert } from "../utils/Alert";
 import { useAuth } from "../contexts/Auth";
+import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
 
 function Signup() {
-  const { signup, isAuthenticated } = useAuth();
+  const { signup, isAuthenticated, handleReload } = useAuth();
 
+  const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alert, setAlert] = useState({
@@ -14,10 +15,10 @@ function Signup() {
     message: "",
   });
 
-  const username = useRef();
   const email = useRef();
   const password = useRef();
   const confirmPassword = useRef();
+  const checkbox = useRef();
 
   const displayMessage = (type, message) => {
     setAlert({ type: type, message: message });
@@ -27,56 +28,71 @@ function Signup() {
     }, 2000);
   };
 
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
   const handleSignup = async (event) => {
     try {
       setLoading(true);
       event.preventDefault();
 
-      const myusername = username.current.value;
       const myemail = email.current.value;
       const mypassword = password.current.value;
       const myconfirmPassword = confirmPassword.current.value;
+      const mychecked = checkbox.current.checked;
 
       if (mypassword.length < 5) {
-        displayMessage("danger", "Password shouldn't be less than 5 character.");
-      }
-      else if (mypassword != myconfirmPassword) {
+        displayMessage(
+          "danger",
+          "Password shouldn't be less than 5 character."
+        );
+      } else if (mypassword != myconfirmPassword) {
         displayMessage("danger", "Password doesn't Match.");
-      }
-      else{
-        const myresponse = await signup(myusername, myemail, mypassword);
-
-        if (myresponse.data.status == 200 || myresponse.data.status == 201 || myresponse.data.status == "Successful") {
+      } else {
+        const myresponse = await signup(myemail, mypassword, mychecked);
+        if (
+          myresponse.data.status == 200 ||
+          myresponse.data.status == 201 ||
+          myresponse.data.status == "Successful"
+        ) {
           displayMessage("success", myresponse.data.message);
-        }else{
-          displayMessage("danger", myresponse.data.message)
+        } else {
+          displayMessage("danger", myresponse.data.message);
+          setLoading(false);
+          return;
         }
-
       }
       setLoading(false);
-
+      setTimeout(() => {
+        handleReload();
+      }, 2000);
     } catch (error) {
-      console.log("Internal Error: ", error)
-      displayMessage("danger", "Internal Error Occured2");
+      console.log("Internal Error: ", error);
+      displayMessage("danger", "Internal Error Occured");
+      setLoading(false);
     }
   };
 
   if (isAuthenticated()) {
-    {window.location.replace("http://localhost:5173/")}
+    {
+      window.location.replace("http://localhost:5173/");
+    }
   } else {
     if (loading) {
-      return <Spinner />
+      return <Spinner />;
     } else {
       return (
         <>
           {showAlert && <Alert alert={alert} />}
           <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-              {/* <img
-              className="mx-auto h-10 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt="Your Company"
-            /> */}
+              <img
+                className="mx-auto h-10 w-auto invert"
+                src="src/assets/Logo.png"
+                alt="Your Company"
+              />
               <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
                 Sign up to your account
               </h2>
@@ -84,26 +100,6 @@ function Signup() {
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
               <form className="space-y-6" onSubmit={handleSignup}>
-                <div>
-                  <label
-                    htmlFor="username"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Username
-                  </label>
-                  <div className="mt-2">
-                    <input
-                      id="username"
-                      name="username"
-                      type="text"
-                      autoComplete="username"
-                      ref={username}
-                      required
-                      className="block w-full rounded-md border-0 p-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                  </div>
-                </div>
-
                 <div>
                   <label
                     htmlFor="email"
@@ -118,6 +114,8 @@ function Signup() {
                       type="email"
                       autoComplete="email"
                       ref={email}
+                      value={formData.email || ""}
+                      onChange={handleChange}
                       required
                       className="block w-full rounded-md border-0 p-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
@@ -140,6 +138,8 @@ function Signup() {
                       type="password"
                       autoComplete="current-password"
                       ref={password}
+                      value={formData.password || ""}
+                      onChange={handleChange}
                       required
                       className="block w-full rounded-md border-0 p-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
@@ -165,6 +165,29 @@ function Signup() {
                       required
                       className="block w-full rounded-md border-0 p-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-start">
+                    <div className="">
+                      <input
+                        id="subscription"
+                        name="subscription"
+                        type="checkbox"
+                        ref={checkbox}
+                        value={formData.password || ""}
+                        onChange={handleChange}
+                        defaultChecked
+                        className="mx-2"
+                      />
+                    </div>
+                    <label
+                      htmlFor="subscription"
+                      className="block text-sm font-medium leading-6 text-gray-900"
+                    >
+                      Subscribe to our Newsletter
+                    </label>
                   </div>
                 </div>
 

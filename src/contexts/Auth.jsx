@@ -9,55 +9,52 @@ export const useAuth = () => {
 
 export const Auth = ({ children }) => {
   const [token, setToken] = useState(localStorage.token);
-  const [username, setUsername] = useState(localStorage.username);
 
-  const login = async (myUsername, myPassword) => {
+  const login = async (myEmail, myPassword) => {
     const url = "http://localhost:5000/api/v1/users/login";
     try {
       const response = await axios.post(url, {
-        username: myUsername,
-        password: myPassword,
-      });
-      const { token, username } = response.data;
-      
-      localStorage.setItem("token", token);
-      localStorage.setItem("username", username);
-      setToken(token);
-      setUsername(username);
-      return null;
-
-    } catch (error) {
-      // console.log(error)
-      return error;
-    }
-  };
-
-  const signup = async (myUsername, myEmail, myPassword) => {
-    const url = "http://localhost:5000/api/v1/users/signup";
-    try {
-      const response = await axios.post(url, {
-        username: myUsername,
         email: myEmail,
         password: myPassword,
       });
-      // console.log(response)
+
+      const receivedToken = response.data.message;
+
+      localStorage.setItem("token", receivedToken);
+      setToken(receivedToken);
+
       return response;
 
     } catch (error) {
-      // console.log(error.response.data)
+      return error.response;
+    }
+  };
+
+  const signup = async (myEmail, myPassword, mychecked) => {
+    const url = "http://localhost:5000/api/v1/users/signup";
+    try {
+      const response = await axios.post(url, {
+        email: myEmail,
+        password: myPassword,
+        subscription: mychecked
+      });
+      return response;
+
+    } catch (error) {
       return error.response;
     }
   };
 
   const logout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("username");
     setToken(null);
-    setUsername(null);
   };
 
   const isAuthenticated = () => {
-    return token!=null;
+    if(token!=null && token!=undefined){
+      return true;
+    }
+    return false;
   };
 
   const handleReload = () => {
@@ -66,7 +63,6 @@ export const Auth = ({ children }) => {
 
   const auth = useMemo(() => ({
     token,
-    username,
     login,
     signup,
     logout,
