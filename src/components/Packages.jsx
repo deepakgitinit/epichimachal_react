@@ -1,11 +1,12 @@
-const Packages = () =>{
+import { Packages } from "./Packages/Packages"
+
+const PackagesPage = () =>{
     return(
         <>
-            <div>
-                <p>Packages</p>
-            </div>
+            <Packages/>
+
         </>
     )
 }
 
-export { Packages }
+export { PackagesPage }

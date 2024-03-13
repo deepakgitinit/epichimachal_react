@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 const Footer = () =>{
     return (
         <>
-            <div className="flex flex-col justify-center items-center bg-slate-900 text-slate-100 mt-36">
+            <div className="flex flex-col justify-center items-center bg-slate-900 text-slate-100 mt-16">
                 <img className="w-36 my-4" src="src/assets/Logo.png" alt="" />
                 <div className="grid lg:grid-cols-3 grid-cols-1 my-4">
                     <div>

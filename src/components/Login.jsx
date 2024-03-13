@@ -19,8 +19,8 @@ function Login() {
   const password = useRef();
 
   const displayMessage = (type, message) => {
-    setAlert({ type: type, message: message });
     setShowAlert(true);
+    setAlert({ type: type, message: message });
     setTimeout(() => {
       setShowAlert(false);
     }, 2000);
@@ -29,7 +29,7 @@ function Login() {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
-};
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -48,7 +48,7 @@ function Login() {
         displayMessage("success", "Login Successful");
       } else {
         displayMessage("danger", myresponse.data.message);
-        setLoading(false)
+        setLoading(false);
         return;
       }
 
@@ -56,7 +56,7 @@ function Login() {
       setTimeout(() => {
         handleReload();
       }, 2000);
-
+      
     } catch (error) {
       console.log("Internal Error: ", error);
       displayMessage("danger", "Internal Error Occured");
@@ -66,7 +66,7 @@ function Login() {
 
   if (isAuthenticated()) {
     {
-        window.location.replace("http://localhost:5173/");
+      window.location.replace("http://localhost:5173/");
     }
   } else {
     if (loading) {
@@ -88,9 +88,7 @@ function Login() {
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-              <form className="space-y-6" 
-                    onSubmit={handleLogin}
-                    >
+              <form className="space-y-6" onSubmit={handleLogin}>
                 <div>
                   <label
                     htmlFor="email"
@@ -105,7 +103,7 @@ function Login() {
                       type="email"
                       autoComplete="email"
                       ref={email}
-                      value={formData.email || ''} 
+                      value={formData.email || ""}
                       onChange={handleChange}
                       required
                       className="block w-full rounded-md border-0 p-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -137,7 +135,7 @@ function Login() {
                       type="password"
                       autoComplete="current-password"
                       ref={password}
-                      value={formData.password || ''} 
+                      value={formData.password || ""}
                       onChange={handleChange}
                       required
                       className="block w-full rounded-md border-0 p-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

@@ -1,11 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
 
 function Signup() {
-  const { signup, isAuthenticated, handleReload } = useAuth();
+  const { signup, isAuthenticated } = useAuth();
 
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -21,22 +21,26 @@ function Signup() {
   const checkbox = useRef();
 
   const displayMessage = (type, message) => {
-    setAlert({ type: type, message: message });
     setShowAlert(true);
+    setAlert({ type: type, message: message });
     setTimeout(() => {
       setShowAlert(false);
     }, 2000);
   };
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
 
   const handleSignup = async (event) => {
+    event.preventDefault();
     try {
       setLoading(true);
-      event.preventDefault();
 
       const myemail = email.current.value;
       const mypassword = password.current.value;
@@ -52,22 +56,24 @@ function Signup() {
         displayMessage("danger", "Password doesn't Match.");
       } else {
         const myresponse = await signup(myemail, mypassword, mychecked);
+        console.log(myresponse);
+
         if (
           myresponse.data.status == 200 ||
           myresponse.data.status == 201 ||
           myresponse.data.status == "Successful"
         ) {
           displayMessage("success", myresponse.data.message);
+          setTimeout(() => {
+            window.location.replace("http://localhost:5173/dashboard");
+          }, 2000);
         } else {
           displayMessage("danger", myresponse.data.message);
-          setLoading(false);
-          return;
         }
       }
+
       setLoading(false);
-      setTimeout(() => {
-        handleReload();
-      }, 2000);
+
     } catch (error) {
       console.log("Internal Error: ", error);
       displayMessage("danger", "Internal Error Occured");
@@ -86,7 +92,9 @@ function Signup() {
       return (
         <>
           {showAlert && <Alert alert={alert} />}
-          <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+          <div
+            className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8"
+          >
             <div className="sm:mx-auto sm:w-full sm:max-w-sm">
               <img
                 className="mx-auto h-10 w-auto invert"
@@ -136,7 +144,6 @@ function Signup() {
                       id="password"
                       name="password"
                       type="password"
-                      autoComplete="current-password"
                       ref={password}
                       value={formData.password || ""}
                       onChange={handleChange}
@@ -149,7 +156,7 @@ function Signup() {
                 <div>
                   <div className="flex items-center justify-between">
                     <label
-                      htmlFor="confirmpassword"
+                      htmlFor="confirmPassword"
                       className="block text-sm font-medium leading-6 text-gray-900"
                     >
                       Confirm Password
@@ -157,11 +164,12 @@ function Signup() {
                   </div>
                   <div className="mt-2">
                     <input
-                      id="confirmpassword"
-                      name="confirmpassword"
+                      id="confirmPassword"
+                      name="confirmPassword"
                       type="password"
-                      autoComplete="current-password"
                       ref={confirmPassword}
+                      value={formData.confirmPassword || ""}
+                      onChange={handleChange}
                       required
                       className="block w-full rounded-md border-0 p-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
@@ -176,9 +184,8 @@ function Signup() {
                         name="subscription"
                         type="checkbox"
                         ref={checkbox}
-                        value={formData.password || ""}
                         onChange={handleChange}
-                        defaultChecked
+                        defaultChecked={formData.subscription}
                         className="mx-2"
                       />
                     </div>

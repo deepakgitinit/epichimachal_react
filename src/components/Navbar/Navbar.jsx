@@ -65,10 +65,10 @@ const Navbar = () => {
           </div>
 
          <div className={`${profile?"":"hidden"} bg-slate-900 text-slate-100 text-base right-8 top-20 rounded-md absolute z-50 py-4 px-2`}>
-          <ul className="*:m-2 *:cursor-pointer">
-            <li><Link to={"/"}>Dashboard</Link></li>
-            <li><Link to={"/"}>Profile</Link></li>
-            <li><Link to={"/"}>Settings</Link></li>
+          <ul className="*:m-2 *:cursor-pointer" onClick={openMenu}>
+            <li><Link to={"/dashboard"} >Dashboard</Link></li>
+            <li><Link to={"/profile"}>Profile</Link></li>
+            <li><Link to={"/settings"}>Settings</Link></li>
             <li onClick={logout}>Logout</li>
           </ul>
          </div>
@@ -77,7 +77,7 @@ const Navbar = () => {
             id="menubar"
             className={`${menu?"":"hidden"} lg:hidden absolute left-8 top-20 bg-slate-900 text-slate-100 p-4 rounded-md text-base z-50`}
           >
-            <ul className=" *:mx-2 *:my-3 hover:*:text-gray-400 hover:*:transition-colors">
+            <ul className=" *:mx-2 *:my-3 hover:*:text-gray-400 hover:*:transition-colors" onClick={openMenu}>
               <li>
                 <Link to="/">Home</Link>
               </li>

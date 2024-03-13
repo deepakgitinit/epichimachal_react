@@ -20,7 +20,7 @@ export const Auth = ({ children }) => {
 
       const receivedToken = response.data.message;
 
-      localStorage.setItem("token", receivedToken);
+      localStorage.setItem("token", receivedToken );
       setToken(receivedToken);
 
       return response;
@@ -45,6 +45,25 @@ export const Auth = ({ children }) => {
     }
   };
 
+  const updateProfile = async (myUserDetails) =>{
+    const url = "http://localhost:5000/api/v1/users/update"
+    const token = "Bearer " + localStorage.getItem('token');
+
+    try {
+      const response = await axios.post(url, myUserDetails, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          "Authorization": token
+        }
+      })
+
+      return response;
+
+    } catch (error) {
+      return error.response
+    }
+  }
+
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
@@ -65,6 +84,7 @@ export const Auth = ({ children }) => {
     token,
     login,
     signup,
+    updateProfile,
     logout,
     isAuthenticated,
     handleReload

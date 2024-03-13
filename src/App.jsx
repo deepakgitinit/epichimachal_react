@@ -10,9 +10,11 @@ import { Login } from "./components/Login";
 import { Signup } from "./components/Signup";
 import { Auth } from './contexts/Auth'
 import { About } from "./components/About";
-import { Destinations } from "./components/Destinations";
-import ErrorPage from "./components/Error-page";
-import { Packages } from "./components/Packages";
+import { DestinationsPage } from "./components/Destinations";
+import ErrorPage from "./utils/Error-page";
+import { PackagesPage } from "./components/Packages";
+import { Profile } from "./components/Users/Profile";
+import { Dashboard } from "./components/Users/Dashboard";
 
 const router = createBrowserRouter([
   {
@@ -26,11 +28,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/destinations",
-        element: <Destinations />
+        element: <DestinationsPage />
       },
       {
         path: "/packages",
-        element: <Packages />
+        element: <PackagesPage />
+      },
+      {
+        path: "/profile",
+        element: <Profile />
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />
       },
       {
         path: "/login",
