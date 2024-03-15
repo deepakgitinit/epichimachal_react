@@ -1,61 +1,63 @@
 import React, { useState } from 'react';
 import { useAuth } from "../../contexts/Auth";
-import BookingList from "./Bookings";
+import AdminBookingList from './AdminBookings';
+import {AddDestination} from './AdminDestinations';
+import PackageForm from './AdminPackages';
 
-const Dashboard = () => {
+const Admin = () => {
   const [activeTab, setActiveTab] = useState('tab1');
-  const { isAuthenticated } = useAuth();
+  const { role, isAuthenticated } = useAuth();
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
 
-  if (isAuthenticated()) {
+  if (isAuthenticated() && role=="ADMIN") {
     return (
       <div className="container mx-auto py-8">
-      <div className="flex justify-center">
+      <div className="flex justify-center flex-col md:flex-row *:md:my-0 *:my-1">
         <button
-          className={`px-4 py-2 mr-2 focus:outline-none rounded-md ${activeTab === 'tab1' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-800'}`}
+          className={`px-4 py-2 md:mr-2 focus:outline-none rounded-md ${activeTab === 'tab1' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-800'}`}
           onClick={() => handleTabClick('tab1')}
           >
           Bookings
         </button>
-        {/* <button
+        <button
           className={`px-4 py-2 focus:outline-none rounded-md ${activeTab === 'tab2' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-800'}`}
           onClick={() => handleTabClick('tab2')}
           >
           Destinations
         </button>
         <button
-          className={`px-4 py-2 ml-2 focus:outline-none rounded-md ${activeTab === 'tab3' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-800'}`}
+          className={`px-4 py-2 md:ml-2 focus:outline-none rounded-md ${activeTab === 'tab3' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-800'}`}
           onClick={() => handleTabClick('tab3')}
           >
           Packages
-        </button> */}
+        </button>
       </div>
 
       <div className="mt-8">
         {activeTab === 'tab1' && (
           <div className="bg-gray-200 p-4 rounded-md">
-            <BookingList/>
+            <AdminBookingList/>
           </div>
         )}
-        {/* {activeTab === 'tab2' && (
+        {activeTab === 'tab2' && (
           <div className="bg-gray-200 p-4 rounded-md">
-            Content of Tab 2
+            <AddDestination/>
           </div>
         )}
         {activeTab === 'tab3' && (
           <div className="bg-gray-200 p-4 rounded-md">
-            Content of Tab 3
+            <PackageForm/>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );
 }else{
-  window.location.replace("/login")
+  window.location.replace("/")
 }
 };
 
-export { Dashboard }
+export { Admin }

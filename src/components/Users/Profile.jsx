@@ -5,7 +5,7 @@ import { Alert } from "../../utils/Alert";
 import { Spinner } from "../../utils/Spinner";
 
 const Profile = () => {
-  const { isAuthenticated, updateProfile } = useAuth();
+  const {token, isAuthenticated, updateProfile } = useAuth();
 
   const [userDetails, setUserDetails] = useState({});
   const [profileImage, setProfileImage] = useState(null);
@@ -30,11 +30,12 @@ const Profile = () => {
     try {
       setLoading(true);
       const userUrl = import.meta.env.VITE_USER_PROFILE;
-      const token = "Bearer " + localStorage.getItem("token");
+      const mytoken = "Bearer " + token;
 
       const response = await axios.get(userUrl, {
         headers: {
-          Authorization: token,
+          "Authorization": mytoken,
+          "Content-Type": "multipart/form-data"
         },
       });
 
@@ -43,9 +44,8 @@ const Profile = () => {
         response.data.status == 201 ||
         response.data.status == "Successful"
       ) {
-          console.log(response.data);
         setUserDetails(response.data.message);
-        displayMessage("success", "Profile Loaded Succesful.");
+        // displayMessage("success", "Profile Loaded Succesful.");
       } else {
         displayMessage("danger", response.data.message);
         setLoading(false);
@@ -54,7 +54,7 @@ const Profile = () => {
 
       setLoading(false);
     } catch (error) {
-      displayMessage("danger", "Internal Error Occured.")
+      displayMessage("danger", "Error Occured.")
       setLoading(false);
     }
   };
@@ -65,7 +65,6 @@ const Profile = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-
     setUserDetails({
       ...userDetails,
       [name]: type === "checkbox" ? checked : value,
@@ -84,7 +83,6 @@ const Profile = () => {
     event.preventDefault();
     try {
         setLoading(true)
-        
         const response = await updateProfile(userDetails);
 
         if (
@@ -138,6 +136,21 @@ const Profile = () => {
                 <p>{userDetails.verified?"Verified":""}</p>
             </div>
             <form onSubmit={handleSubmit}>
+
+            <div className="mb-4">
+                <label htmlFor="name" className="block text-gray-700">
+                  Name:
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={userDetails.name || ""}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2 border rounded-md mt-2 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+
               <div className="mb-4">
                 <label htmlFor="username" className="block text-gray-700">
                   Username:
@@ -181,7 +194,7 @@ const Profile = () => {
               </div>
 
               <div className="mb-4 text-sm">
-              <label htmlFor="profile" className="block text-gray-700">
+              <label htmlFor="profile" className="block text-gray-700 mb-2">
                   Profile Picture:
                 </label>
                 <input

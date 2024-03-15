@@ -1,14 +1,13 @@
-import { Destinations } from "./Destinations/Destinations"
+import { Destinations } from "./Destinations/Destinations";
 
-const DestinationsPage = () =>{
-    return(
-        <>
-        <div className="mx-4 lg:mx-16">
+const DestinationsPage = () => {
+  return (
+    <>
+      <div className="mx-4 lg:mx-16">
+        <Destinations />
+      </div>
+    </>
+  );
+};
 
-            <Destinations/>
-        </div>
-        </>
-    )
-}
-
-export { DestinationsPage }
+export { DestinationsPage };

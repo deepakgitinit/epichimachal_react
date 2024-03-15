@@ -15,6 +15,7 @@ import ErrorPage from "./utils/Error-page";
 import { PackagesPage } from "./components/Packages";
 import { Profile } from "./components/Users/Profile";
 import { Dashboard } from "./components/Users/Dashboard";
+import { Admin } from "./components/Users/Admin";
 
 const router = createBrowserRouter([
   {
@@ -40,7 +41,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <Dashboard />
+        element: <Dashboard />,
+      },
+      {
+        path: "/admin",
+        element: <Admin/>
       },
       {
         path: "/login",

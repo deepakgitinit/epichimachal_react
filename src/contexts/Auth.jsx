@@ -9,6 +9,8 @@ export const useAuth = () => {
 
 export const Auth = ({ children }) => {
   const [token, setToken] = useState(localStorage.token);
+  const [profileImg, setProfileImg] = useState(localStorage.profile);
+  const [role, setRole] = useState(localStorage.role);
 
   const login = async (myEmail, myPassword) => {
     const url = "http://localhost:5000/api/v1/users/login";
@@ -19,9 +21,16 @@ export const Auth = ({ children }) => {
       });
 
       const receivedToken = response.data.message;
+      const profile = "http://localhost:5000/" + response.data.profile;
+      const role = response.data.role;
 
       localStorage.setItem("token", receivedToken );
+      localStorage.setItem("profile", profile)
+      localStorage.setItem("role", role)
+      
       setToken(receivedToken);
+      setProfileImg(profile)
+      setRole(role)
 
       return response;
 
@@ -66,6 +75,7 @@ export const Auth = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("profile")
     setToken(null);
   };
 
@@ -82,6 +92,8 @@ export const Auth = ({ children }) => {
 
   const auth = useMemo(() => ({
     token,
+    profileImg,
+    role,
     login,
     signup,
     updateProfile,

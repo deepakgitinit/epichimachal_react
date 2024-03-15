@@ -5,7 +5,7 @@ import { useAuth } from "../../contexts/Auth";
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
   const [profile, setProfile] = useState(false);
-  const { isAuthenticated, logout } = useAuth();
+  const {role, profileImg, isAuthenticated, logout } = useAuth();
 
   const open = () => {
     setMenu(!menu);
@@ -57,8 +57,8 @@ const Navbar = () => {
             />
             <div onClick={openMenu}>
               <img
-                className="h-10 w-auto rounded-full cursor-pointer"
-                src="https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png"
+                className="size-10 rounded-full cursor-pointer object-cover"
+                src={profileImg}
                 alt=""
               />
             </div>
@@ -66,6 +66,7 @@ const Navbar = () => {
 
          <div className={`${profile?"":"hidden"} bg-slate-900 text-slate-100 text-base right-8 top-20 rounded-md absolute z-50 py-4 px-2`}>
           <ul className="*:m-2 *:cursor-pointer" onClick={openMenu}>
+            {role=="ADMIN"?<li><Link to={"/admin"} >Admin</Link></li>:""}
             <li><Link to={"/dashboard"} >Dashboard</Link></li>
             <li><Link to={"/profile"}>Profile</Link></li>
             <li><Link to={"/settings"}>Settings</Link></li>
@@ -77,7 +78,7 @@ const Navbar = () => {
             id="menubar"
             className={`${menu?"":"hidden"} lg:hidden absolute left-8 top-20 bg-slate-900 text-slate-100 p-4 rounded-md text-base z-50`}
           >
-            <ul className=" *:mx-2 *:my-3 hover:*:text-gray-400 hover:*:transition-colors" onClick={openMenu}>
+            <ul className=" *:mx-2 *:my-3 hover:*:text-gray-400 hover:*:transition-colors">
               <li>
                 <Link to="/">Home</Link>
               </li>

@@ -4,6 +4,7 @@ import { HomeForm } from "./HomeComponents/HomeForm";
 import { WhyChooseUs } from "./HomeComponents/WhyChooseUs";
 import { Link } from "react-router-dom";
 import { Testimonials } from "./HomeComponents/Testimonials";
+import Cars from "./HomeComponents/Cars";
 
 const Home = () => {
   return (
@@ -14,6 +15,8 @@ const Home = () => {
         <WhyChooseUs />
 
         <Destinations />
+
+        <Cars/>
 
         <div className="flex flex-col justify-center items-center">
           <Packages />
