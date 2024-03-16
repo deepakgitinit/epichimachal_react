@@ -28,7 +28,6 @@ const CarSlider = ({ cars }) => {
         <button className="absolute top-1/2 right-2 lg:right-0 bg-opacity-40 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-1 rounded-full z-10" onClick={nextCar}>
         &#10095;
         </button>
-      {/* </div> */}
     </div>
   );
 };

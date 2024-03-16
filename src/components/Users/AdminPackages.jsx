@@ -3,17 +3,19 @@ import axios from "axios";
 import { useAuth } from "../../contexts/Auth";
 import { Alert } from "../../utils/Alert";
 import { Spinner } from "../../utils/Spinner";
+import { PackagesGrid } from "../Packages/PackagesGrid";
 
 const PackageForm = () => {
   const [items, setItems] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     price: "",
-    category: "",
-    tags: "",
+    category: [],
+    tags: [],
     destinations: [],
     time: "",
     thumbnail: null,
+    description: ""
   });
 
   const { token } = useAuth();
@@ -36,12 +38,19 @@ const PackageForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // If it's a multi-select, handle multiple selections
-    if (name === "destinations") {
+    if (name === "category" || name === "tags") {
+      const valueArray = value.split(',');
+      setFormData((prevState) => ({
+        ...prevState,
+        [name]: valueArray,
+      }));
+
+    } else if (name === "destinations") {
       const selectedOptions = Array.from(
         e.target.selectedOptions,
         (option) => option.value
       );
+
       setFormData((prevState) => ({
         ...prevState,
         [name]: selectedOptions,
@@ -54,14 +63,18 @@ const PackageForm = () => {
       }));
     }
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       setLoading(true);
       const url = "http://localhost:5000/api/v1/packages";
       const mytoken = "Bearer " + token;
 
+      console.log(formData);
+      
       const response = await axios.post(url, formData, {
         headers: {
           Authorization: mytoken,
@@ -75,19 +88,20 @@ const PackageForm = () => {
         response.data.status == "Successful"
       ) {
         displayMessage("success", response.data.message);
+
       } else {
         displayMessage("danger", response.data.message);
       }
 
-      // Reset form after submission
       setFormData({
         title: "",
         price: "",
-        category: "",
-        tags: "",
+        category: [],
+        tags: [],
         destinations: [],
         time: "",
         thumbnail: null,
+        description: ""
       });
 
     } catch (error) {
@@ -115,13 +129,16 @@ const PackageForm = () => {
     getDestinations();
   }, []);
 
+
   if (loading) {
     return <Spinner />;
   } else {
     return (
       <>
         {showAlert && <Alert alert={alert} />}
-        <h1 className="flex text-2xl font-semibold mb-2 justify-center items-center">
+        <PackagesGrid />
+
+        <h1 className="flex text-2xl font-semibold mb-2 mt-8 justify-center items-center">
           Add New Package:
         </h1>
         <div className="max-w-lg mx-auto mt-8">
@@ -130,7 +147,6 @@ const PackageForm = () => {
               className="object-cover w-full rounded-md mb-4"
               src={URL.createObjectURL(formData.thumbnail)}
               alt="Selected Profile Image"
-              // style={{ maxWidth: "100px", maxHeight: "100px" }}
             />
           )}
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -142,6 +158,7 @@ const PackageForm = () => {
                 type="text"
                 id="title"
                 name="title"
+                required
                 value={formData.title}
                 onChange={handleChange}
                 className="w-full border rounded-md py-2 px-3"
@@ -152,9 +169,10 @@ const PackageForm = () => {
                 Price
               </label>
               <input
-                type="text"
+                type="number"
                 id="price"
                 name="price"
+                required
                 value={formData.price}
                 onChange={handleChange}
                 className="w-full border rounded-md py-2 px-3"
@@ -168,6 +186,7 @@ const PackageForm = () => {
                 type="text"
                 id="category"
                 name="category"
+                required
                 value={formData.category}
                 onChange={handleChange}
                 className="w-full border rounded-md py-2 px-3"
@@ -187,11 +206,25 @@ const PackageForm = () => {
               />
             </div>
             <div>
+              <label htmlFor="description" className="block">
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                required
+                value={formData.description}
+                onChange={handleChange}
+                className="w-full border rounded-md py-2 px-3"
+              />
+            </div>
+            <div>
               <label htmlFor="destinations" className="block">
                 Destinations
               </label>
               <select
                 id="destinations"
+                required
                 name="destinations"
                 value={formData.destinations}
                 multiple
@@ -200,7 +233,7 @@ const PackageForm = () => {
               >
                 {items.map((item) => {
                   return (
-                    <option key={item._id} value={"ID: " + (item._id.slice(15)) +" - Title: "+ item.title}>
+                    <option key={item._id} value={item._id}>
                       {item.title}
                     </option>
                   );
@@ -215,6 +248,7 @@ const PackageForm = () => {
                 </ul>
               </div>
             </div>
+
             <div>
               <label htmlFor="time" className="block">
                 Time
@@ -223,11 +257,13 @@ const PackageForm = () => {
                 type="text"
                 id="time"
                 name="time"
+                required
                 value={formData.time}
                 onChange={handleChange}
                 className="w-full border rounded-md py-2 px-3"
               />
             </div>
+
             <div>
               <label htmlFor="thumbnail" className="block">
                 Thumbnail
@@ -236,6 +272,7 @@ const PackageForm = () => {
                 type="file"
                 id="thumbnail"
                 name="thumbnail"
+                required
                 onChange={handleFileChange}
                 className="w-full border rounded-md py-2 px-3"
               />

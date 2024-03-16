@@ -36,7 +36,8 @@ const AdminBookingList = () => {
           Authorization: token,
         },
       });
-      setBookings(response.data.message);
+      const bookingRevers = response.data.message.reverse();
+      setBookings(bookingRevers);
     } catch (error) {
       console.log(error);
     } finally {
@@ -66,7 +67,6 @@ const AdminBookingList = () => {
         }
       );
 
-      console.log(response);
       if (
         response.data.status == 200 ||
         response.data.status == 201 ||

@@ -14,8 +14,8 @@ const BookingList = () => {
           Authorization: token,
         },
       });
-
-      setBookings(response.data.message);
+      const bookingRevers = response.data.message.reverse();
+      setBookings(bookingRevers);
     } catch (error) {
       console.log(error);
     }
@@ -28,13 +28,12 @@ const BookingList = () => {
   return (
     <div className="container mx-auto py-8">
       <h1 className="text-3xl font-bold mb-4">Travel Booking List</h1>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-fit">
         {bookings.map((booking) => (
           <div key={booking._id} className="bg-white rounded-md shadow-md p-4">
-            <h2 className="text-xl font-semibold mb-2">
+            <h2 className="text-xl font-semibold mb-2" >
               {booking.destination}
             </h2>
-
             <div className="text-sm">
             <p className="text-gray-600 mb-2">Pickup Location: <i> {booking.pickup}</i></p>
             {booking.fromdate && <p className="text-gray-600 mb-2">From Date: <i> {booking.fromdate.slice(0, 10)}</i></p>}

@@ -10,7 +10,7 @@ const AddDestination = () => {
     title: "",
     description: "",
     images: [],
-    tags: "",
+    tags: [],
   });
 
   const { token } = useAuth();
@@ -32,10 +32,20 @@ const AddDestination = () => {
 
   const handleDataChange = (e) => {
     const { id, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [id]: value,
-    }));
+
+    if (id === "tags") {
+      const valueArray = value.split(','); // Split the string into an array
+      setFormData((prevState) => ({
+        ...prevState,
+        [id]: valueArray,
+      }));
+      
+    } else {
+      setFormData((prevState) => ({
+        ...prevState,
+        [id]: value,
+      }));
+    }
   };
 
   const handleImageChange = (e) => {
@@ -77,8 +87,9 @@ const AddDestination = () => {
         title: "",
         description: "",
         images: [],
-        tags: "",
+        tags: [],
       });
+
     } catch (error) {
       displayMessage("danger", "Internal Error Occured2.");
     } finally {
@@ -86,28 +97,15 @@ const AddDestination = () => {
     }
   };
 
-  function ImagePreviewList({ images }) {
-    return (
-      <div className="grid gap-2 lg:grid-cols-3 md:grid-cols-2">
-        {images.map((image, index) => (
-          <img
-            key={index}
-            className="object-cover rounded-md"
-            src={URL.createObjectURL(image)}
-            alt="Selected Image"
-          />
-        ))}
-      </div>
-    );
-  }
-
   if (loading) {
     return <Spinner />;
+
   } else {
     return (
       <>
         {showAlert && <Alert alert={alert} />}
         <DestinationGrid />
+
         <h1 className="flex text-2xl font-semibold mb-2 justify-center items-center">
           Add New Destination:
         </h1>
@@ -147,16 +145,25 @@ const AddDestination = () => {
             ></textarea>
           </div>
           <div className="mb-4">
-            <ImagePreviewList images={formData.images} />
+            <div className="grid gap-2 lg:grid-cols-3 md:grid-cols-2">
+              {formData.images.map((image, index) => (
+                <img
+                  key={index}
+                  className="object-cover rounded-md"
+                  src={URL.createObjectURL(image)}
+                  alt="Selected Image"
+                />
+              ))}
+            </div>
             <label
-              htmlFor="images[]"
+              htmlFor="images"
               className="block text-sm font-medium text-gray-700"
             >
               Images
             </label>
             <input
               type="file"
-              id="images[]"
+              id="images"
               name="images[]"
               onChange={handleImageChange}
               multiple

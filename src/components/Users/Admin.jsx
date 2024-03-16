@@ -5,11 +5,12 @@ import {AddDestination} from './AdminDestinations';
 import PackageForm from './AdminPackages';
 
 const Admin = () => {
-  const [activeTab, setActiveTab] = useState('tab1');
+  const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTab') || 'tab1');
   const { role, isAuthenticated } = useAuth();
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
+    localStorage.setItem('activeTab', tab);
   };
 
   if (isAuthenticated() && role=="ADMIN") {

@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState, useMemo } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Packages = () =>{
     const [items, setItems] = useState([]);
+    const navigate = useNavigate();
 
     useMemo(()=>{
         const getPackages = async () =>{
@@ -12,8 +14,8 @@ const Packages = () =>{
         getPackages();
     }, [])
 
-    const openPackage = (id) =>{
-        console.log(id)
+    const openPackage = (packageID) =>{
+        navigate(`/packages/${packageID}`);
     }
 
     return (
@@ -33,7 +35,6 @@ const Packages = () =>{
                                 <p className="text-lg">Rs.{item.price}</p>
                                 {item.destinations.length!=0?<p>Destinations: {item.destinations.length}</p>:""}
                                 <p>Time: {item.time}</p>
-                                {/* <button className="text-sm py-2 px-3 my-3 rounded-md bg-slate-900 hover:bg-slate-800 text-slate-100">Read More</button> */}
                             </div>
                         </div>
                     })}
