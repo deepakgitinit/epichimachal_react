@@ -1,12 +1,14 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Alert } from "../../utils/Alert";
 import { Spinner } from "../../utils/Spinner";
 import { useAuth } from "../../contexts/Auth";
+import { useNavigate } from "react-router-dom";
 
 const DestinationGrid = () => {
   const [items, setItems] = useState([]);
   const sliderRef = useRef(null);
+  const navigate = useNavigate();
 
   const { token, handleReload } = useAuth();
 
@@ -22,7 +24,7 @@ const DestinationGrid = () => {
     setAlert({ type: type, message: message });
     setTimeout(() => {
       setShowAlert(false);
-    }, 2000);
+    }, 1500);
   };
 
   const scrollSlider = (direction) => {
@@ -31,7 +33,7 @@ const DestinationGrid = () => {
     slider.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
   };
 
-  useMemo(() => {
+  useEffect(() => {
     const getDestinations = async () => {
       const destinations = await axios.get(
         "http://localhost:5000/api/v1/destinations"
@@ -59,17 +61,15 @@ const DestinationGrid = () => {
         });
 
         if (
-          response.data.status == 200 ||
-          response.data.status == 201 ||
           response.data.status == "Successful"
         ) {
           displayMessage("success", response.data.message);
           setTimeout(() => {
             handleReload();
-          }, 1000);
+          }, 1500);
         }
       } else {
-        displayMessage("danger", response.data.message);
+        displayMessage("danger", "Cancelled by User");
         return;
       }
     } catch (error) {
@@ -78,6 +78,10 @@ const DestinationGrid = () => {
       setLoading(false);
     }
   };
+
+  const gotoDestination = (id) =>{
+    navigate(`/destinations/${id}`)
+  }
 
 
   if (loading) {
@@ -101,22 +105,32 @@ const DestinationGrid = () => {
           >
             {items.map((item) => {
               return (
-                <div key={item._id}>
+                <div key={item._id} >
                   <div className="flex relative justify-center size-64 mr-4">
-                    <p
+                    <span
                       className="flex absolute right-2 top-2 bg-opacity-70 hover:bg-opacity-100 transition-opacity text-slate-100 bg-slate-600 cursor-pointer size-8 rounded-full text-center justify-center items-center"
                       onClick={(event) => {
                         handleDelete(event, item._id);
                       }}
                     >
                       &#10005;
-                    </p>
+                    </span>
+
+                    <button
+                    className="absolute top-0 left-2 text-xs py-1 px-2 my-2 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-100"
+                    onClick={() => {
+                      gotoDestination(item._id);
+                    }}
+                  >
+                    Open
+                  </button>
+
                     <img
                       className="object-cover rounded-md"
                       src={"http://localhost:5000/" + item.images[0]}
                       alt=""
                     />
-                    <div className="absolute bottom-0 rounded-b-md cursor-pointer text-slate-100 bg-slate-900 bg-opacity-60 p-4 w-full">
+                    <div className="absolute bottom-0 rounded-b-md text-slate-100 bg-slate-900 bg-opacity-60 p-4 w-full">
                       <h1 className="text-lg">
                         <b>{item.title}</b>
                       </h1>

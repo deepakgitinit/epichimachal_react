@@ -46,24 +46,22 @@ const Destination = () => {
 
   if (loading) {
     return <Spinner />;
-  } else if (!mydestination) {
-    return <div>Loading destination...</div>; // Optionally: Show a more descriptive loading message
   } else {
     return (
-      <div className="max-w-xl mx-auto bg-white shadow-md rounded-md p-6">
+      <div className="max-w-6xl mx-auto bg-white shadow-md rounded-md p-6">
         <h2 className="text-2xl font-bold mb-4">{mydestination.title}</h2>
         <div className="relative overflow-hidden">
           <button
-            className="absolute inset-y-0 left-0 top-1/3 z-10 flex items-center justify-center w-12 h-12 text-white bg-slate-100 rounded-full bg-opacity-50 hover:bg-opacity-75"
+            className="absolute inset-y-0 left-0 top-1/2 z-10 flex items-center justify-center w-12 h-12 text-white bg-slate-100 rounded-full bg-opacity-50 hover:bg-opacity-75"
             onClick={prevSlide}
           >
-            &lt;
+            &#10094;
           </button>
           <button
-            className="absolute inset-y-0 right-0 top-1/3 z-10 flex items-center justify-center w-12 h-12 text-white bg-slate-100 rounded-full bg-opacity-50 hover:bg-opacity-75"
+            className="absolute inset-y-0 right-0 top-1/2 z-10 flex items-center justify-center w-12 h-12 text-white bg-slate-100 rounded-full bg-opacity-50 hover:bg-opacity-75"
             onClick={nextSlide}
           >
-            &gt;
+            &#10095;
           </button>
           <div className="flex relative transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentImageIndex * 100}%)`}}>
             {mydestination.images &&
@@ -79,7 +77,7 @@ const Destination = () => {
         </div>
         <p className="text-gray-700 text-base mt-4">{mydestination.description}</p>
         <div className="flex items-center mt-4">
-          {mydestination.tags && mydestination.tags.map((tag, index) => (
+          {mydestination.tags && mydestination.tags != 0 && mydestination.tags.map((tag, index) => (
             <span key={index} className="inline-block bg-gray-200 text-gray-700 px-3 py-1 text-sm font-semibold rounded-full mr-2">
               {tag}
             </span>

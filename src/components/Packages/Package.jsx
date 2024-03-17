@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "../../utils/Spinner";
 
 const Package = () => {
@@ -9,6 +9,8 @@ const Package = () => {
   const [mypackage, setMyPackage] = useState({});
   const [mydestinations, setDestinations] = useState([]);
   const sliderRef = useRef(null);
+
+  const navigate = useNavigate();
 
   const fetchDestinations = async (id) => {
     const destinationUrl = `http://localhost:5000/api/v1/destinations/${id}`;
@@ -45,6 +47,10 @@ const Package = () => {
     }
   };
 
+  const gotoDestination = (id) =>{
+    navigate(`/destinations/${id}`);
+  }
+
   useEffect(() => {
     fetchPackage();
   }, [id]);
@@ -52,9 +58,7 @@ const Package = () => {
 
 if (loading) {
   return <Spinner/>
-} else if (mypackage === null) {
-  return null;
-}   return (
+} return (
     <div className="lg:mx-4 mx-2 rounded overflow-hidden shadow-lg">
       <div className="flex relative">
         <img
@@ -70,12 +74,25 @@ if (loading) {
       </div>
 
       <div className="relative bg-white p-6 *:mb-4">
+
+      <div className="flex flex-wrap items-center">
+          <p><b>Category: </b></p> {mypackage.category && mypackage.category != 0 && mypackage.category.map((category, index) => (
+            <span key={index} className="inline-block bg-gray-200 text-gray-700 px-3 py-1 text-sm font-semibold rounded-full mx-2 my-2">
+              {category}
+            </span>
+          ))}
+        </div>
+
         <div className="font-bold text-2xl mb-2 relative z-10">
           {mypackage.title}
         </div>
 
         <p className="text-gray-700 text-lg mb-2">
           <b>Price:</b> &#x20B9; {mypackage.price}
+        </p>
+        
+        <p className="text-gray-700 text-lg mb-2">
+          <b>Passengers:</b> {mypackage.passengers}
         </p>
 
         <p className="text-gray-700 text-lg mb-2"><b>Description:</b> {mypackage.description}</p>
@@ -89,14 +106,14 @@ if (loading) {
         >
           {mydestinations.map((item, index) => {
             return (
-              <div key={index}>
-                <div className="flex relative justify-center size-64 mr-4">
+              <div key={index} className="cursor-pointer" onClick={()=>{gotoDestination(item._id)}}>
+                <div className="flex relative justify-center w-80 mr-4 ">
                   <img
                     className="object-cover rounded-md"
                     src={"http://localhost:5000/" + item.images[0]}
                     alt=""
                   />
-                  <div className="absolute bottom-0 rounded-b-md cursor-pointer text-slate-100 bg-gradient-to-t from-slate-900 bg-opacity-60 p-4 w-full">
+                  <div className="absolute bottom-0 rounded-b-md  text-slate-100 bg-gradient-to-t from-slate-900 bg-opacity-60 p-4 w-full">
                     <h1 className="text-lg">
                       <b>{item.title}</b>
                     </h1>
@@ -108,15 +125,11 @@ if (loading) {
           })}
         </div>
 
-        <p className="text-gray-700 text-lg mb-2">
-          <b>Category:</b> {mypackage.category}
-        </p>
         <p className="text-gray-700 text-lg mb-2"><b>Time:</b> {mypackage.time}</p>
-        <p className="text-gray-700 text-lg mb-2"><b>Tags:</b> {mypackage.tags}</p>
-    
+        <p className="text-gray-700 text-lg mb-2"><b>Taxi:</b> {mypackage.taxi}</p>
       </div>
     </div>
   );
 };
 
-export default Package;
+  export {Package};

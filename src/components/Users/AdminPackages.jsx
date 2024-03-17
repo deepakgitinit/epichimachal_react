@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/Auth";
 import { Alert } from "../../utils/Alert";
@@ -6,12 +6,14 @@ import { Spinner } from "../../utils/Spinner";
 import { PackagesGrid } from "../Packages/PackagesGrid";
 
 const PackageForm = () => {
-  const [items, setItems] = useState([]);
+  const [destinations, setDestinations] = useState([]);
+  const [taxi, setTaxi] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     price: "",
     category: [],
-    tags: [],
+    passengers: "",
+    taxi: "",
     destinations: [],
     time: "",
     thumbnail: null,
@@ -32,7 +34,7 @@ const PackageForm = () => {
     setAlert({ type: type, message: message });
     setTimeout(() => {
       setShowAlert(false);
-    }, 2000);
+    }, 1500);
   };
 
   const handleChange = (e) => {
@@ -72,8 +74,6 @@ const PackageForm = () => {
       setLoading(true);
       const url = "http://localhost:5000/api/v1/packages";
       const mytoken = "Bearer " + token;
-
-      console.log(formData);
       
       const response = await axios.post(url, formData, {
         headers: {
@@ -83,26 +83,23 @@ const PackageForm = () => {
       });
 
       if (
-        response.data.status == 200 ||
-        response.data.status == 201 ||
         response.data.status == "Successful"
       ) {
         displayMessage("success", response.data.message);
-
+        setFormData({
+          title: "",
+          price: "",
+          category: [],
+          passengers: "",
+          taxi: "",
+          destinations: [],
+          time: "",
+          thumbnail: null,
+          description: ""
+        });
       } else {
         displayMessage("danger", response.data.message);
       }
-
-      setFormData({
-        title: "",
-        price: "",
-        category: [],
-        tags: [],
-        destinations: [],
-        time: "",
-        thumbnail: null,
-        description: ""
-      });
 
     } catch (error) {
       displayMessage("danger", "Error Occured");
@@ -119,14 +116,23 @@ const PackageForm = () => {
     }));
   };
 
-  useMemo(() => {
+  useEffect(() => {
     const getDestinations = async () => {
       const destinations = await axios.get(
         "http://localhost:5000/api/v1/destinations"
       );
-      setItems(destinations.data.allDestinations);
+      setDestinations(destinations.data.allDestinations);
     };
     getDestinations();
+
+    const getTaxi = async () => {
+      const taxi = await axios.get(
+        "http://localhost:5000/api/v1/taxi"
+      );
+      setTaxi(taxi.data.message);
+    };
+    getTaxi();
+
   }, []);
 
 
@@ -192,19 +198,21 @@ const PackageForm = () => {
                 className="w-full border rounded-md py-2 px-3"
               />
             </div>
+
             <div>
-              <label htmlFor="tags" className="block">
-                Tags
+              <label htmlFor="passengers" className="block">
+                Passengers
               </label>
               <input
-                type="text"
-                id="tags"
-                name="tags"
-                value={formData.tags}
+                type="number"
+                id="passengers"
+                name="passengers"
+                value={formData.passengers}
                 onChange={handleChange}
                 className="w-full border rounded-md py-2 px-3"
               />
             </div>
+
             <div>
               <label htmlFor="description" className="block">
                 Description
@@ -218,6 +226,7 @@ const PackageForm = () => {
                 className="w-full border rounded-md py-2 px-3"
               />
             </div>
+
             <div>
               <label htmlFor="destinations" className="block">
                 Destinations
@@ -231,7 +240,7 @@ const PackageForm = () => {
                 onChange={handleChange}
                 className="w-full border rounded-md py-2 px-3"
               >
-                {items.map((item) => {
+                {destinations.map((item) => {
                   return (
                     <option key={item._id} value={item._id}>
                       {item.title}
@@ -247,6 +256,28 @@ const PackageForm = () => {
                   ))}
                 </ul>
               </div>
+            </div>
+
+            <div>
+              <label htmlFor="taxi" className="block">
+                Taxi
+              </label>
+              <select
+                id="taxi"
+                required
+                name="taxi"
+                value={formData.taxi}
+                onChange={handleChange}
+                className="w-full border rounded-md py-2 px-3"
+              >
+                {taxi.map((item) => {
+                  return (
+                    <option key={item._id} value={item.name +" - "+ item.type}>
+                      {item.name}-{item.type}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
 
             <div>

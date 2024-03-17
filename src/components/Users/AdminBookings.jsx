@@ -22,7 +22,7 @@ const AdminBookingList = () => {
     setAlert({ type: type, message: message });
     setTimeout(() => {
       setShowAlert(false);
-    }, 2000);
+    }, 1500);
   };
 
   const getBookings = async () => {
@@ -68,22 +68,19 @@ const AdminBookingList = () => {
       );
 
       if (
-        response.data.status == 200 ||
-        response.data.status == 201 ||
         response.data.status == "Successful"
       ) {
         displayMessage("success", response.data.message);
         setTimeout(() => {
             handleReload()
-        }, 1000);
+        }, 1500);
       } else {
         displayMessage("danger", response.data.message);
-        setTimeout(() => {
-            handleReload()
-        }, 1000);
       }
+
     } catch (error) {
       console.log(error);
+      
     } finally {
       setLoading(false);
     }
@@ -111,13 +108,13 @@ const AdminBookingList = () => {
                 <h2 className="text-xl font-semibold mb-2">User Details:</h2>
 
                 <div className="text-sm">
-                  <p className="text-gray-600 mb-2">
+                  {booking.name && <p className="text-gray-600 mb-2">
                     Name: <i> {booking.name}</i>
-                  </p>
+                  </p>}
                   <p className="text-gray-600 mb-2">
-                    Name: <i> {booking.email}</i>
+                    Email: <i> {booking.email}</i>
                   </p>
-                  <p className="text-gray-600 mb-2">
+                 <p className="text-gray-600 mb-2">
                     Phone Number: <i> {booking.phone}</i>
                   </p>
                 </div>
@@ -127,9 +124,11 @@ const AdminBookingList = () => {
                 </h2>
 
                 <div className="text-sm">
-                  <p className="text-gray-600 mb-2">
+                  {booking.package?<p className="text-gray-600 mb-2">
+                      Package: <i>{booking.package}</i>
+                    </p>:<p className="text-gray-600 mb-2">
                     Destination: <i> {booking.destination}</i>
-                  </p>
+                  </p>}
                   <p className="text-gray-600 mb-2">
                     Pickup Location: <i> {booking.pickup}</i>
                   </p>
@@ -147,13 +146,6 @@ const AdminBookingList = () => {
                       <i>{booking.status}</i>
                     </b>
                   </p>
-                  {booking.package ? (
-                    <p className="text-gray-600 mb-2">
-                      Package: <i>{booking.package}</i>
-                    </p>
-                  ) : (
-                    ""
-                  )}
                 </div>
 
                 <form

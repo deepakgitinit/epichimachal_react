@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useAuth } from "../../contexts/Auth";
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert } from "../../utils/Alert";
 import { Spinner } from "../../utils/Spinner";
 
 const Profile = () => {
-  const {token, isAuthenticated, updateProfile } = useAuth();
+  const {token, isAuthenticated, updateProfile, profileImg, handleReload } = useAuth();
 
   const [userDetails, setUserDetails] = useState({});
   const [profileImage, setProfileImage] = useState(null);
@@ -23,7 +23,7 @@ const Profile = () => {
     setAlert({ type: type, message: message });
     setTimeout(() => {
       setShowAlert(false);
-    }, 2000);
+    }, 1500);
   };
 
   const getProfile = async () => {
@@ -40,8 +40,6 @@ const Profile = () => {
       });
 
       if (
-        response.data.status == 200 ||
-        response.data.status == 201 ||
         response.data.status == "Successful"
       ) {
         setUserDetails(response.data.message);
@@ -59,7 +57,7 @@ const Profile = () => {
     }
   };
 
-  useMemo(() => {
+  useEffect(() => {
     getProfile();
   }, []);
 
@@ -86,11 +84,13 @@ const Profile = () => {
         const response = await updateProfile(userDetails);
 
         if (
-            response.data.status == 200 ||
-            response.data.status == 201 ||
             response.data.status == "Successful"
           ) {
             displayMessage("success", response.data.message);
+            localStorage.setItem("profile", "http://localhost:5000/" + response.data.profile)
+            setTimeout(() => {
+              handleReload()
+            }, 1500);
           } else {
             displayMessage("danger", response.data.message);
           }
@@ -115,10 +115,7 @@ const Profile = () => {
             <div className="*:size-16 *:rounded-full">
             {profileImage?"":<img
               className="object-cover"
-              src={
-                `http://localhost:5000/${userDetails.profile}` ||
-                "https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png"
-              }
+              src={profileImg}
               alt=""
             />}
             {profileImage && (
@@ -152,14 +149,14 @@ const Profile = () => {
               </div>
 
               <div className="mb-4">
-                <label htmlFor="username" className="block text-gray-700">
-                  Username:
+                <label htmlFor="address" className="block text-gray-700">
+                  Address:
                 </label>
                 <input
                   type="text"
-                  id="username"
-                  name="username"
-                  value={userDetails.username || ""}
+                  id="address"
+                  name="address"
+                  value={userDetails.address || ""}
                   onChange={handleChange}
                   className="w-full px-4 py-2 border rounded-md mt-2 focus:outline-none focus:border-blue-500"
                 />

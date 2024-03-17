@@ -1,6 +1,6 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate, Link } from 'react-router-dom';
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
 
 const Destinations = () => {
   const [items, setItems] = useState([]);
@@ -17,24 +17,31 @@ const Destinations = () => {
     navigate(`/destinations/${destinationID}`);
   }
 
-  useMemo(() => {
+  useEffect(() => {
     const getDestinations = async () => {
-      const destinations = await axios.get(
-        "http://localhost:5000/api/v1/destinations"
+      const url = "http://localhost:5000/api/v1/destinations";
+      const queryParams = {
+        limit: 8
+      }
+
+      const destinations = await axios.get(url, {
+          params: queryParams
+        }
       );
       const reversedDestinations = destinations.data.allDestinations.reverse();
       setItems(reversedDestinations);
     };
     getDestinations();
+
   }, []);
 
   return (
     <>
       <div className="mx-4 lg:mx-8">
         <div className="flex flex-col mx-2 text-center justify-center items-center mt-16">
-          <h1 className="text-3xl mb-2">
+          <Link to="/destinations"><h1 className="text-3xl mb-2">
             <b>Destinations</b>
-          </h1>
+          </h1></Link>
           <hr className="mb-8 w-1/3" />
         </div>
 

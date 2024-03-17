@@ -1,11 +1,13 @@
 import axios from "axios";
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { Alert } from "../../utils/Alert";
 import { Spinner } from "../../utils/Spinner";
+import { useNavigate } from "react-router-dom";
 
 const PackagesGrid = () => {
   const [items, setItems] = useState([]);
+  const navigate = useNavigate();
 
   const { token, handleReload } = useAuth();
 
@@ -24,7 +26,7 @@ const PackagesGrid = () => {
     }, 2000);
   };
 
-  useMemo(() => {
+  useEffect(() => {
     const getPackages = async () => {
       const packages = await axios.get("http://localhost:5000/api/v1/packages");
       const reversePackages = packages.data.allPackages.reverse();
@@ -32,10 +34,6 @@ const PackagesGrid = () => {
     };
     getPackages();
   }, []);
-
-  const openPackage = (id) => {
-    console.log(id);
-  };
 
   const deletePackage = async (e, id) => {
     e.preventDefault();
@@ -53,21 +51,17 @@ const PackagesGrid = () => {
           },
         });
 
-        console.log(response);
-
         if (
-          response.data.status == 200 ||
-          response.data.status == 201 ||
           response.data.status == "Successful"
         ) {
           displayMessage("success", response.data.message);
           setTimeout(() => {
             handleReload();
-          }, 1000);
+          }, 1500);
         }
+
       } else {
-        displayMessage("danger", response.data.message);
-        return;
+        displayMessage("danger", "Cancelled by User");
       }
     } catch (error) {
       displayMessage("danger", "Internal Error Occured.");
@@ -75,6 +69,10 @@ const PackagesGrid = () => {
       setLoading(false);
     }
   };
+
+  const gotoPackage = (id) =>{
+    navigate(`/packages/${id}`)
+  }
 
 
   if (loading) {
@@ -94,11 +92,8 @@ const PackagesGrid = () => {
           {items.map((item) => {
             return (
               <div
-                className="relative mx-2 my-4 bg-slate-100 rounded-md w-64 hover:shadow-xl transition-shadow cursor-pointer"
+                className="relative mx-2 my-4 bg-slate-100 rounded-md w-64 hover:shadow-xl transition-shadow"
                 key={item._id}
-                onClick={() => {
-                  openPackage(item._id);
-                }}
               >
                 <p className="absolute text-xs bg-slate-900 text-slate-100 px-2 py-1 m-2 right-0 rounded-md">
                   {item.category.length != 0 ? item.category : "Category"}
@@ -108,7 +103,7 @@ const PackagesGrid = () => {
                   src={"http://localhost:5000/" + item.thumbnail}
                   alt=""
                 />
-                <div className="discription py-2 px-4">
+                <div className="discription py-2 px-4" >
                   <h1 className="text-base">
                     <b>{item.title}</b>
                   </h1>
@@ -119,8 +114,18 @@ const PackagesGrid = () => {
                     ""
                   )}
                   <p>Time: {item.time}</p>
+                  
                   <button
-                    className="absolute top-0 text-xs py-1 px-2 my-2 rounded-md bg-red-800 hover:bg-red-700 text-slate-100"
+                    className="text-xs py-1 px-2 my-2 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-100"
+                    onClick={() => {
+                      gotoPackage(item._id);
+                    }}
+                  >
+                    Open
+                  </button>
+
+                  <button
+                    className="absolute top-0 left-2 text-xs py-1 px-2 my-2 rounded-md bg-red-800 hover:bg-red-700 text-slate-100"
                     onClick={(e) => {
                       deletePackage(e, item._id);
                     }}

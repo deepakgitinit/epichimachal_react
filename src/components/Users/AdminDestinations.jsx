@@ -27,7 +27,7 @@ const AddDestination = () => {
     setAlert({ type: type, message: message });
     setTimeout(() => {
       setShowAlert(false);
-    }, 2000);
+    }, 1500);
   };
 
   const handleDataChange = (e) => {
@@ -73,22 +73,20 @@ const AddDestination = () => {
       });
 
       if (
-        response.data.status == 200 ||
-        response.data.status == 201 ||
         response.data.status == "Successful"
       ) {
         displayMessage("success", response.data.message);
+        setFormData({
+          title: "",
+          description: "",
+          images: [],
+          tags: [],
+        });
       } else {
         displayMessage("danger", response.data.message);
         return;
       }
-
-      setFormData({
-        title: "",
-        description: "",
-        images: [],
-        tags: [],
-      });
+      
 
     } catch (error) {
       displayMessage("danger", "Internal Error Occured2.");

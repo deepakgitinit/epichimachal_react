@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
@@ -25,7 +25,7 @@ function Signup() {
     setAlert({ type: type, message: message });
     setTimeout(() => {
       setShowAlert(false);
-    }, 2000);
+    }, 1500);
   };
 
   const handleChange = (event) => {
@@ -47,26 +47,24 @@ function Signup() {
       const myconfirmPassword = confirmPassword.current.value;
       const mychecked = checkbox.current.checked;
 
-      if (mypassword.length < 5) {
+      if (mypassword != myconfirmPassword) {
+        displayMessage("danger", "Password doesn't Match.");
+      
+      } else if (mypassword.length < 5) {
         displayMessage(
           "danger",
           "Password shouldn't be less than 5 character."
         );
-      } else if (mypassword != myconfirmPassword) {
-        displayMessage("danger", "Password doesn't Match.");
       } else {
         const myresponse = await signup(myemail, mypassword, mychecked);
-        console.log(myresponse);
 
         if (
-          myresponse.data.status == 200 ||
-          myresponse.data.status == 201 ||
           myresponse.data.status == "Successful"
         ) {
           displayMessage("success", myresponse.data.message);
           setTimeout(() => {
-            window.location.replace("http://localhost:5173/dashboard");
-          }, 2000);
+            window.location.replace("http://localhost:5173/login");
+          }, 1500);
         } else {
           displayMessage("danger", myresponse.data.message);
         }
@@ -108,6 +106,7 @@ function Signup() {
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
               <form className="space-y-6" onSubmit={handleSignup}>
+                
                 <div>
                   <label
                     htmlFor="email"

@@ -21,16 +21,22 @@ export const Auth = ({ children }) => {
       });
 
       const receivedToken = response.data.message;
-      const profile = "http://localhost:5000/" + response.data.profile;
+      const profile = response.data.profile;
       const role = response.data.role;
 
       localStorage.setItem("token", receivedToken );
-      localStorage.setItem("profile", profile)
       localStorage.setItem("role", role)
       
       setToken(receivedToken);
-      setProfileImg(profile)
       setRole(role)
+
+      if (profile == "") {
+        localStorage.setItem("profile", "src/assets/default-avatar-icon.jpg")
+        setProfileImg("src/assets/default-avatar-icon.jpg")
+      }else{
+        localStorage.setItem("profile", "http://localhost:5000/" + profile)
+        setProfileImg(profile) 
+      }
 
       return response;
 

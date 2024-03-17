@@ -1,17 +1,35 @@
-import React from 'react';
-import CarSlider from './CarComponent/CarSlider';
-
-const cars = [
-  { name: 'Car 1', image: 'https://imgd.aeplcdn.com/370x208/n/cw/ec/130591/fronx-exterior-right-front-three-quarter-109.jpeg' },
-  { name: 'Car 2', image: 'https://imgd.aeplcdn.com/370x208/n/cw/ec/141867/nexon-exterior-right-front-three-quarter-71.jpeg?isig=0&q=80' },
-  { name: 'Car 3', image: 'https://imgd.aeplcdn.com/370x208/n/cw/ec/40432/scorpio-n-exterior-right-front-three-quarter-75.jpeg' },
-  { name: 'Car 4', image: 'https://imgd.aeplcdn.com/642x336/cw/ec/42611/Tata-Nexon-Exterior-172215.jpg?wm=0&q=80' },
-  { name: 'Car 5', image: 'https://imgd.aeplcdn.com/370x208/n/cw/ec/40432/scorpio-n-exterior-right-front-three-quarter-75.jpeg' },
-
-];
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Cars = () => {
+  const [mycars, setCars] = useState({})
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextCar = () => {
+    if (mycars?.length>3) {
+      setCurrentIndex(prevIndex => (prevIndex === (mycars?.length - 3) ? 0 : prevIndex + 1));
+    }
+  };
+  
+  const prevCar = () => {
+    if (mycars?.length>3) {
+    setCurrentIndex(prevIndex => (prevIndex === 0 ? (mycars?.length - 3) : prevIndex - 1));
+    }
+  };
+  
+
+  useEffect(()=>{
+    const getTaxies = async ()=>{
+      const url = "http://localhost:5000/api/v1/taxi"
+      const response = await axios.get(url)
+      setCars(response.data.message);
+    }
+    getTaxies();
+
+  }, [])
+
   return (
+    <>
     <div className="container lg:mx-16 my-8">
       <div className="flex flex-col mx-2 text-center justify-center items-center mt-8">
           <h1 className="text-3xl mb-2">
@@ -19,8 +37,27 @@ const Cars = () => {
           </h1>
           <hr className="mb-8 w-1/3" />
         </div>
-      <CarSlider cars={cars}/>
     </div>
+
+    <div className="relative w-full overflow-hidden">
+      <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentIndex * 33.33}%)` }}>
+        {mycars && mycars.length>0 && mycars.map((car, index) => (
+          <div key={index} className={`flex flex-col justify-center items-center w-1/3 flex-shrink-0 ${index === currentIndex ? 'center-image' : ''}`}>
+            <img src={"http://localhost:5000/" + car.image} alt={car.name} className={`w-full md:h-auto h-32 object-cover ${index === currentIndex ? 'center-image-size' : 'smaller-image-size'}`} />
+            <p className='lg:text-sm text-xs shadow-2xl'>{car.name}</p>
+          </div>
+        ))}
+      </div>
+        <button className="absolute top-1/2 left-2 lg:left-0 bg-opacity-40 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-1 rounded-full z-10" onClick={prevCar}>
+        &#10094;
+        </button>
+        <button className="absolute top-1/2 right-2 lg:right-0 bg-opacity-40 transform -translate-y-1/2 bg-gray-800 text-white px-3 py-1 rounded-full z-10" onClick={nextCar}>
+        &#10095;
+        </button>
+    </div>
+
+
+    </>
   );
 };
 

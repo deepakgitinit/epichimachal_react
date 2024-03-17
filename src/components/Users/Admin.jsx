@@ -3,6 +3,8 @@ import { useAuth } from "../../contexts/Auth";
 import AdminBookingList from './AdminBookings';
 import {AddDestination} from './AdminDestinations';
 import PackageForm from './AdminPackages';
+import { AdminTaxi } from './AdminTaxi';
+import { AdminPickups } from './AdminPickup';
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTab') || 'tab1');
@@ -35,6 +37,18 @@ const Admin = () => {
           >
           Packages
         </button>
+        <button
+          className={`px-4 py-2 md:ml-2 focus:outline-none rounded-md ${activeTab === 'tab4' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-800'}`}
+          onClick={() => handleTabClick('tab4')}
+          >
+          Taxies
+        </button>
+        <button
+          className={`px-4 py-2 md:ml-2 focus:outline-none rounded-md ${activeTab === 'tab5' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-800'}`}
+          onClick={() => handleTabClick('tab5')}
+          >
+          Pickup Locations
+        </button>
       </div>
 
       <div className="mt-8">
@@ -51,6 +65,16 @@ const Admin = () => {
         {activeTab === 'tab3' && (
           <div className="bg-gray-200 p-4 rounded-md">
             <PackageForm/>
+          </div>
+        )}
+        {activeTab === 'tab4' && (
+          <div className="bg-gray-200 p-4 rounded-md">
+            <AdminTaxi/>
+          </div>
+        )}
+        {activeTab === 'tab5' && (
+          <div className="bg-gray-200 p-4 rounded-md">
+            <AdminPickups/>
           </div>
         )}
       </div>

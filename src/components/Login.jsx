@@ -23,7 +23,7 @@ function Login() {
     setAlert({ type: type, message: message });
     setTimeout(() => {
       setShowAlert(false);
-    }, 2000);
+    }, 1500);
   };
 
   const handleChange = (event) => {
@@ -41,8 +41,6 @@ function Login() {
 
       const myresponse = await login(myemail, mypassword);
       if (
-        myresponse.data.status == 200 ||
-        myresponse.data.status == 201 ||
         myresponse.data.status == "Successful"
       ) {
         displayMessage("success", "Login Successful");
@@ -55,7 +53,7 @@ function Login() {
       setLoading(false);
       setTimeout(() => {
         handleReload();
-      }, 2000);
+      }, 1500);
       
     } catch (error) {
       console.log("Internal Error: ", error);
@@ -121,7 +119,7 @@ function Login() {
                     </label>
                     <div className="text-sm">
                       <Link
-                        to="#"
+                        to="/forgotpassword"
                         className="font-semibold text-indigo-600 hover:text-indigo-500"
                       >
                         Forgot password?

@@ -16,8 +16,10 @@ import { PackagesPage } from "./components/Packages";
 import { Profile } from "./components/Users/Profile";
 import { Dashboard } from "./components/Users/Dashboard";
 import { Admin } from "./components/Users/Admin";
-import Package from "./components/Packages/Package";
+import {Package } from "./components/Packages/Package";
 import { Destination } from "./components/Destinations/Destination";
+import { Activation } from "./utils/Activation";
+import { ForgotPassword } from "./utils/ForgotPassword";
 
 const router = createBrowserRouter([
   {
@@ -68,6 +70,14 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />
+      },
+      {
+        path: "/activation/:id",
+        element: <Activation />
+      },
+      {
+        path: "/forgotpassword",
+        element: <ForgotPassword />
       },
       
     ]
