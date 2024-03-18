@@ -79,6 +79,7 @@ const BookingList = () => {
 
   useEffect(() => {
     getBookings();
+    console.log(bookings.length);
   }, []);
 
 
@@ -92,7 +93,7 @@ const BookingList = () => {
           <h1 className="text-3xl font-bold mb-4">Travel Booking History</h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-fit">
-            {bookings.map((booking) => (
+            {bookings.length>1 ? bookings.map((booking) => (
               <div
                 key={booking._id}
                 className="bg-white rounded-md shadow-md p-4"
@@ -145,7 +146,7 @@ const BookingList = () => {
                   Delete Booking
                 </button>
               </div>
-            ))}
+            )):"There is no travel history yet."}
           </div>
         </div>
       </>

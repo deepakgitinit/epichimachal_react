@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/Auth";
 
 const Navbar = () => {
   const [menu, setMenu] = useState(false);
   const [profile, setProfile] = useState(false);
+
   const {role, profileImg, isAuthenticated, logout } = useAuth();
 
   const open = () => {
@@ -22,7 +23,7 @@ const Navbar = () => {
           <div className="flex">
             <img
               className="lg:hidden w-8 mr-2"
-              src={`src/assets/menu${menu ? "_open" : ""}.svg`}
+              src={`/src/assets/menu${menu ? "_open" : ""}.svg`}
               alt="Menu"
               onClick={open}
             />
@@ -50,22 +51,22 @@ const Navbar = () => {
             </li>
           </ul>
           <div className="flex items-center *:mx-2 ">
-            <img
+            {/* <img
               className="hover:contrast-50 cursor-pointer lg:block hidden"
-              src="src\assets\search.svg"
+              src="/src/assets/search.svg"
               alt=""
-            />
-            <div onClick={openMenu}>
+            /> */}
+            <div onClick={openMenu} >
               <img
                 className="size-10 rounded-full cursor-pointer object-cover"
                 src={profileImg}
-                alt=""
+                alt="profile"
               />
             </div>
           </div>
 
          <div className={`${profile?"":"hidden"} bg-slate-900 text-slate-100 text-base right-8 top-20 rounded-md absolute z-50 py-4 px-2`}>
-          <ul className="*:m-2 *:cursor-pointer" onClick={openMenu}>
+          <ul className="*:m-2 *:cursor-pointer" onClick={openMenu} >
             {role=="ADMIN"?<li><Link to={"/admin"} >Admin</Link></li>:""}
             <li><Link to={"/dashboard"} >Dashboard</Link></li>
             <li><Link to={"/profile"}>Profile</Link></li>
@@ -78,7 +79,7 @@ const Navbar = () => {
             id="menubar"
             className={`${menu?"":"hidden"} lg:hidden absolute left-8 top-20 bg-slate-900 text-slate-100 p-4 rounded-md text-base z-50`}
           >
-            <ul className=" *:mx-2 *:my-3 hover:*:text-gray-400 hover:*:transition-colors">
+            <ul className=" *:mx-2 *:my-3 hover:*:text-gray-400 hover:*:transition-colors" onClick={open}>
               <li>
                 <Link to="/">Home</Link>
               </li>
@@ -108,7 +109,7 @@ const Navbar = () => {
           <div className="flex">
             <img
               className="invert w-36 h-auto mx-4"
-              src="src\assets\Logo.png"
+              src="/src/assets/Logo.png"
               alt=""
             />
           </div>
@@ -131,11 +132,11 @@ const Navbar = () => {
             </li>
           </ul>
           <div className="lg:flex items-center *:mx-2 hidden">
-            <img
+            {/* <img
               className="hover:contrast-50 cursor-pointer"
               src="src\assets\search.svg"
               alt=""
-            />
+            /> */}
             <Link
               className="hover:text-gray-400 hover:transition-colors"
               to="/login"
@@ -163,7 +164,7 @@ const Navbar = () => {
             id="menubar"
             className={`${menu?"":"hidden"} lg:hidden absolute right-8 top-20 bg-slate-900 text-slate-100 p-4 rounded-md text-base z-50`}
           >
-            <ul className=" *:mx-2 *:my-3 hover:*:text-gray-400 hover:*:transition-colors">
+            <ul className=" *:mx-2 *:my-3 hover:*:text-gray-400 hover:*:transition-colors" onClick={open}>
               <li>
                 <Link to="/">Home</Link>
               </li>

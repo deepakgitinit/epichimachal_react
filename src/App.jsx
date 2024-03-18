@@ -18,8 +18,12 @@ import { Dashboard } from "./components/Users/Dashboard";
 import { Admin } from "./components/Users/Admin";
 import {Package } from "./components/Packages/Package";
 import { Destination } from "./components/Destinations/Destination";
-import { Activation } from "./utils/Activation";
 import { ForgotPassword } from "./utils/ForgotPassword";
+import { ForgotPassVerification } from "./utils/ForgotPassVerification";
+import { EmailVerification } from "./utils/VerficationEmail";
+import { ResendVerification } from "./utils/ResendVerification";
+import { Settings } from "./components/Users/Settings";
+import { Blog } from "./components/Blog";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +34,14 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />
+      },
+      {
+        path: "/about",
+        element: <About />
+      },
+      {
+        path: "/blog",
+        element: <Blog />
       },
       {
         path: "/destinations",
@@ -68,17 +80,25 @@ const router = createBrowserRouter([
         element: <Signup/>
       },
       {
-        path: "/about",
-        element: <About />
+        path: "/settings",
+        element: <Settings />,
       },
       {
-        path: "/activation/:id",
-        element: <Activation />
+        path: "/verification/:id",
+        element: <EmailVerification />,
+      },
+      {
+        path: "/resend/",
+        element: <ResendVerification />,
       },
       {
         path: "/forgotpassword",
-        element: <ForgotPassword />
+        element: <ForgotPassword />,
       },
+      {
+        path: "/resetpassword/:id",
+        element: <ForgotPassVerification />,
+      }
       
     ]
   },

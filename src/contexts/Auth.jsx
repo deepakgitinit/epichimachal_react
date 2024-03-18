@@ -30,12 +30,12 @@ export const Auth = ({ children }) => {
       setToken(receivedToken);
       setRole(role)
 
-      if (profile == "") {
-        localStorage.setItem("profile", "src/assets/default-avatar-icon.jpg")
+      if (profile == "" || profile == undefined) {
+        localStorage.setItem("profile", "http://localhost:5173/src/assets/default-avatar-icon.jpg")
         setProfileImg("src/assets/default-avatar-icon.jpg")
       }else{
-        localStorage.setItem("profile", "http://localhost:5000/" + profile)
-        setProfileImg(profile) 
+        localStorage.setItem("profile", "http://localhost:5173/" + profile)
+        setProfileImg(profile)
       }
 
       return response;

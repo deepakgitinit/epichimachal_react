@@ -35,15 +35,21 @@ const Profile = () => {
       const response = await axios.get(userUrl, {
         headers: {
           "Authorization": mytoken,
-          "Content-Type": "multipart/form-data"
         },
       });
+
+      if(response.data.profile == "" || response.data.profile == undefined){
+        localStorage.setItem("profile", "http://localhost:5173/src/assets/default-avatar-icon.jpg")
+      } else{
+        localStorage.setItem("profile", "http://localhost:5173/" + response.data.profile)
+      }
 
       if (
         response.data.status == "Successful"
       ) {
         setUserDetails(response.data.message);
         // displayMessage("success", "Profile Loaded Succesful.");
+
       } else {
         displayMessage("danger", response.data.message);
         setLoading(false);
@@ -51,16 +57,14 @@ const Profile = () => {
       }
 
       setLoading(false);
+
     } catch (error) {
       displayMessage("danger", "Error Occured.")
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    getProfile();
-  }, []);
-
+  
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setUserDetails({
@@ -81,27 +85,45 @@ const Profile = () => {
     event.preventDefault();
     try {
         setLoading(true)
+
+        if (userDetails.phone.length <10) {
+          setLoading(false)
+          displayMessage("danger", "Enter Valid Phone number.")
+          return
+        }
+
         const response = await updateProfile(userDetails);
 
+        if(response.data.profile == "" || response.data.profile == undefined){
+          localStorage.setItem("profile", "http://localhost:5173/src/assets/default-avatar-icon.jpg")
+        } else{
+          localStorage.setItem("profile", "http://localhost:5173/" + response.data.profile)
+        }
+        
         if (
-            response.data.status == "Successful"
+          response.data.status == "Successful"
           ) {
             displayMessage("success", response.data.message);
-            localStorage.setItem("profile", "http://localhost:5000/" + response.data.profile)
             setTimeout(() => {
               handleReload()
             }, 1500);
+
           } else {
             displayMessage("danger", response.data.message);
           }
 
         setLoading(false);
 
-    } catch (error) {
+      } catch (error) {
         displayMessage("danger", "Internal Error Occured.")
         setLoading(false);
-    }
+      }
   };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
 
   if (isAuthenticated()) {
     if (loading) {
@@ -117,7 +139,7 @@ const Profile = () => {
               className="object-cover"
               src={profileImg}
               alt=""
-            />}
+              />}
             {profileImage && (
                 <img
                 className="object-cover"

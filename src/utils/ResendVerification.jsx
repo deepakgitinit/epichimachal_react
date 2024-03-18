@@ -4,7 +4,7 @@ import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
 import axios from "axios";
 
-function ForgotPassword() {
+function ResendVerification() {
   const { handleReload } = useAuth();
 
   const [formData, setFormData] = useState({});
@@ -30,16 +30,16 @@ function ForgotPassword() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleForgotPassword = async (event) => {
+  const handleResendVerification = async (event) => {
     event.preventDefault();
     try {
       setLoading(true);
-      const url = "http://localhost:5000/api/v1/users/forgotpassword/";
+      const url = "http://localhost:5000/api/v1/users/resend/";
       const myemail = email.current.value;
 
       const myresponse = await axios.post(url, {
         email: myemail,
-    });
+        });
 
       if (myresponse.data.message.status == "Successful") {
         displayMessage("success", myresponse.data.message);
@@ -76,12 +76,12 @@ function ForgotPassword() {
                 alt="Your Company"
               />
               <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                Forgot Password
+                Resend Verification
               </h2>
             </div>
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-              <form className="space-y-6" onSubmit={handleForgotPassword}>
+              <form className="space-y-6" onSubmit={handleResendVerification}>
                 <div>
                   <label
                     htmlFor="email"
@@ -120,4 +120,4 @@ function ForgotPassword() {
     }
   }
 
-export { ForgotPassword };
+export { ResendVerification };
