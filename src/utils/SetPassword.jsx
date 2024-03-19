@@ -36,7 +36,7 @@ function SetPassword() {
     try {
       setLoading(true);
       const mytoken = "Bearer " + token;
-      const url = `http://localhost:5000/api/v1/users/setpassword`;
+      const url = `${import.meta.env.VITE_USER_SETPASSWORD}`;
       const mypassword = password.current.value;
 
       if (mypassword.length<5) {

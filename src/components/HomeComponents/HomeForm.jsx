@@ -61,7 +61,8 @@ const HomeForm = () => {
 
         const mytoken = "Bearer " + token;
 
-        const url = "http://localhost:5000/api/v1/bookings";
+        const url = `${import.meta.env.VITE_BOOKINGS}`;
+        
         const response = await axios.post(url, booking, {
           headers: {
             Authorization: mytoken,
@@ -110,12 +111,12 @@ const HomeForm = () => {
           passengers: passengers,
           fromdate: fromDate,
           todate: toDate,
-          car: selectedCar,
+          taxi: selectedCar,
         };
 
         const mytoken = "Bearer " + token;
 
-        const url = "http://localhost:5000/api/v1/bookings";
+        const url = `${import.meta.env.VITE_BOOKINGS}`;
         const response = await axios.post(url, booking, {
           headers: {
             Authorization: mytoken,
@@ -157,7 +158,7 @@ const HomeForm = () => {
 
   useEffect(() => {
     const getDestinations = async () => {
-      const url = "http://localhost:5000/api/v1/destinations";
+      const url = `${import.meta.env.VITE_DESTINATIONS}`;
       const destinations = await axios.get(url);
       const reversedDestinations = destinations.data.allDestinations.reverse();
       setDestination(reversedDestinations);
@@ -165,7 +166,7 @@ const HomeForm = () => {
     getDestinations();
 
     const getPackages = async () => {
-      const url = "http://localhost:5000/api/v1/packages";
+      const url = `${import.meta.env.VITE_PACKAGES}`;
       const packages = await axios.get(url);
       const reversePackages = packages.data.allPackages;
       setPackages(reversePackages);
@@ -174,7 +175,7 @@ const HomeForm = () => {
 
     const getPickups = async () => {
       const pickup = await axios.get(
-        "http://localhost:5000/api/v1/pickup"
+        `${import.meta.env.VITE_PICKUPS}`
       );
       const pickupLoacations = pickup.data.message;
       setPickups(pickupLoacations);
@@ -183,7 +184,7 @@ const HomeForm = () => {
 
     const getTaxi = async () => {
       const taxi = await axios.get(
-        "http://localhost:5000/api/v1/taxi"
+        `${import.meta.env.VITE_TAXI}`
       );
       setTaxi(taxi.data.message);
     };
@@ -202,19 +203,19 @@ const HomeForm = () => {
             <div className="flex relative mx-2 mb-8 h-96 w-auto shadow-2xl rounded-md">
               <img
                 className="-z-50 rounded-md object-cover"
-                src="https://images.pexels.com/photos/7846563/pexels-photo-7846563.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                src="https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb"
                 alt="Himachal-pradesh-explore"
                 />
               <div className="absolute flex flex-col rounded-l-md text-slate-100 bg-gradient-to-r from-slate-900 lg:w-1/2 md:w-2/3 w-4/5 h-full *:lg:ml-10 *:lg:mt-6 *:ml-6 *:mt-4">
                 <h1 className="lg:text-8xl md:text-7xl text-5xl">
                   <b>
-                    Incredible
+                    Epic
                     <br />
                     Himachal
                   </b>
                 </h1>
                 <p className="text-lg">
-                  Welcome to EpicHimachal. Explore Incredible Himachal.
+                  Welcome to EpicHimachal. Explore Incredible Himachal with us.
                 </p>
               </div>
             </div>

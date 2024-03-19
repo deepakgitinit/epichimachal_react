@@ -25,7 +25,7 @@ const BookingList = () => {
 
   const getBookings = async () => {
     try {
-      const url = "http://localhost:5000/api/v1/bookings";
+      const url = `${import.meta.env.VITE_BOOKINGS}`;
       const token = "Bearer " + localStorage.getItem("token");
 
       const response = await axios.get(url, {
@@ -47,7 +47,7 @@ const BookingList = () => {
 
       if (value) {
         setLoading(true);
-        const url = `http://localhost:5000/api/v1/bookings/${id}`;
+        const url = `${import.meta.env.VITE_BOOKINGS}/${id}`;
 
         const mytoken = "Bearer " + token;
 
@@ -79,7 +79,6 @@ const BookingList = () => {
 
   useEffect(() => {
     getBookings();
-    console.log(bookings.length);
   }, []);
 
 
@@ -93,7 +92,7 @@ const BookingList = () => {
           <h1 className="text-3xl font-bold mb-4">Travel Booking History</h1>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-fit">
-            {bookings.length>1 ? bookings.map((booking) => (
+            {bookings.length>0 ? bookings.map((booking) => (
               <div
                 key={booking._id}
                 className="bg-white rounded-md shadow-md p-4"
@@ -137,14 +136,14 @@ const BookingList = () => {
                   </p>
                 </div>
 
-                <button
+                {booking.status=="Pending" && <button
                   className="bg-red-800 hover:bg-red-700 rounded-md text-xs text-white py-1 px-2"
                   onClick={(e) => {
                     deleteBooking(e, booking._id);
                   }}
                 >
                   Delete Booking
-                </button>
+                </button>}
               </div>
             )):"There is no travel history yet."}
           </div>

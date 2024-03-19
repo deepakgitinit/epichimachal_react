@@ -8,7 +8,7 @@ const PackagesPage = () => {
 
   useEffect(() => {
     const getPackages = async () => {
-      const url = "http://localhost:5000/api/v1/packages";
+      const url = `${import.meta.env.VITE_PACKAGES}`;
       const packages = await axios.get(url);
 
       const reversePackages = packages.data.allPackages;
@@ -52,7 +52,8 @@ const PackagesPage = () => {
                   <h1 className="text-base">
                     <b>{item.title}</b>
                   </h1>
-                  <p className="text-lg">Rs.{item.price}</p>
+                  <p className="text-base">Rs.{item.price}</p>
+                  <p className="">Passengers.{item.passengers}</p>
                   {item.destinations.length != 0 ? (
                     <p>Destinations: {item.destinations.length}</p>
                   ) : (

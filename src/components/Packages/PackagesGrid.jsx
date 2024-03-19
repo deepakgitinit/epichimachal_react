@@ -28,7 +28,7 @@ const PackagesGrid = () => {
 
   useEffect(() => {
     const getPackages = async () => {
-      const packages = await axios.get("http://localhost:5000/api/v1/packages");
+      const packages = await axios.get(`${import.meta.env.VITE_PACKAGES}`);
       const reversePackages = packages.data.allPackages.reverse();
       setItems(reversePackages);
     };
@@ -42,7 +42,7 @@ const PackagesGrid = () => {
 
       if (value) {
         setLoading(true);
-        const url = `http://localhost:5000/api/v1/packages/${id}`;
+        const url = `${import.meta.env.VITE_PACKAGES}/${id}`;
         const mytoken = "Bearer " + token;
 
         const response = await axios.delete(url, {
@@ -72,6 +72,9 @@ const PackagesGrid = () => {
 
   const gotoPackage = (id) =>{
     navigate(`/packages/${id}`)
+  }
+  const gotoPackageUpdate = (id) =>{
+    navigate(`/packages/update/${id}`)
   }
 
 
@@ -107,7 +110,8 @@ const PackagesGrid = () => {
                   <h1 className="text-base">
                     <b>{item.title}</b>
                   </h1>
-                  <p className="text-lg">Rs.{item.price}</p>
+                  <p className="text-base">Rs.{item.price}</p>
+                  <p className="">Passengers.{item.passengers}</p>
                   {item.destinations.length != 0 ? (
                     <p>Destinations: {item.destinations.length}</p>
                   ) : (
@@ -122,6 +126,16 @@ const PackagesGrid = () => {
                     }}
                   >
                     Open
+                  </button>
+
+
+                  <button
+                    className="text-xs mx-2 py-1 px-2 my-2 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-100"
+                    onClick={() => {
+                      gotoPackageUpdate(item._id);
+                    }}
+                  >
+                    Update
                   </button>
 
                   <button

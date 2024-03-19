@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import axios from "axios";
 
@@ -10,9 +10,9 @@ const DestinationsPage = () => {
     navigate(`/destinations/${destinationID}`);
   }
 
-  useMemo(() => {
+  useEffect(() => {
     const getDestinations = async () => {
-      const url = "http://localhost:5000/api/v1/destinations";
+      const url = `${import.meta.env.VITE_DESTINATIONS}`;
 
       const destinations = await axios.get(url);
 
@@ -49,7 +49,7 @@ const DestinationsPage = () => {
                     <h1 className="text-lg">
                       <b>{item.title}</b>
                     </h1>
-                    <p className="text-xs">{item.description}</p>
+                    <p className="text-xs line-clamp-2">{item.description}</p>
                   </div>
                 </div>
               </div>

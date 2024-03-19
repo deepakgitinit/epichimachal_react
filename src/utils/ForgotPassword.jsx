@@ -34,7 +34,7 @@ function ForgotPassword() {
     event.preventDefault();
     try {
       setLoading(true);
-      const url = "http://localhost:5000/api/v1/users/forgotpassword/";
+      const url = `${import.meta.env.VITE_USER_FORGOTPASSWORD}`;
       const myemail = email.current.value;
 
       const myresponse = await axios.post(url, {

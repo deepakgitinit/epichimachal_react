@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { Alert } from "../../utils/Alert";
 import { Spinner } from "../../utils/Spinner";
@@ -28,7 +28,7 @@ const AdminBookingList = () => {
   const getBookings = async () => {
     setLoading(true);
     try {
-      const url = "http://localhost:5000/api/v1/bookings";
+      const url = `${import.meta.env.VITE_BOOKINGS}`;
       const token = "Bearer " + localStorage.getItem("token");
 
       const response = await axios.get(url, {
@@ -49,12 +49,12 @@ const AdminBookingList = () => {
     setLoading(true);
     event.preventDefault();
     try {
-      const url = "http://localhost:5000/api/v1/bookings/update";
+      const url = `${import.meta.env.VITE_BOOKINGS}/${id}`;
       const mytoken = "Bearer " + token;
       const status = bookingStatusRefs.current[id].value;
       const bookingid = id;
 
-      const response = await axios.post(
+      const response = await axios.patch(
         url,
         {
           bookingid: bookingid,
@@ -86,7 +86,7 @@ const AdminBookingList = () => {
     }
   };
 
-  useMemo(() => {
+  useEffect(() => {
     getBookings();
   }, []);
 
@@ -99,8 +99,9 @@ const AdminBookingList = () => {
         <div className="container mx-auto py-8">
           <h1 className="text-3xl font-bold mb-4">Travel Booking List</h1>
           {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-4"> */}
+
           <div className="flex flex-wrap">
-            {bookings.map((booking) => (
+            {bookings && bookings.map((booking) => (
               <div
                 key={booking._id}
                 className="bg-white rounded-md shadow-md p-4 w-full my-2"
@@ -138,7 +139,7 @@ const AdminBookingList = () => {
                     Passengers: {booking.passengers}
                   </p>
                   <p className="text-gray-600 mb-2">
-                    Car Type: <i>{booking.car}</i>
+                    Car Type: <i>{booking.taxi}</i>
                   </p>
                   <p className="text-gray-600 mb-2">
                     Status:{" "}

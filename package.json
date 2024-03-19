@@ -1,5 +1,5 @@
 {
-  "name": "travelmorehimachal",
+  "name": "epichimachal",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -14,6 +14,7 @@
     "clsx": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^6.22.2",
     "tailwind-merge": "^2.2.1",
     "uninstall": "^0.0.0"

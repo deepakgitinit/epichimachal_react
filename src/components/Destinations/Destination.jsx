@@ -12,12 +12,13 @@ const Destination = () => {
   const getDestination = async () => {
     setLoading(true);
     try {
-      const url = `http://localhost:5000/api/v1/destinations/${id}`;
+      const url = `${import.meta.env.VITE_DESTINATIONS}/${id}`;
       const response = await axios.get(url);
       setDestination(response.data.message);
+
     } catch (error) {
       console.log("Error fetching destination:", error);
-      // Optionally: set an error state or display an error message to the user
+
     } finally {
       setLoading(false);
     }
@@ -40,7 +41,7 @@ const Destination = () => {
   }, [id]);
 
   useEffect(() => {
-    const interval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+    const interval = setInterval(nextSlide, 5000);
     return () => clearInterval(interval);
   }, [mydestination?.images]);
 
@@ -48,7 +49,7 @@ const Destination = () => {
     return <Spinner />;
   } else {
     return (
-      <div className="max-w-6xl mx-auto bg-white shadow-md rounded-md p-6">
+      <div className="max-w-6xl mx-auto bg-white shadow-md rounded-md p-6" style={{maxWidth: "720px"}}>
         <h2 className="text-2xl font-bold mb-4">{mydestination.title}</h2>
         <div className="relative overflow-hidden">
           <button
@@ -70,7 +71,7 @@ const Destination = () => {
                   key={index}
                   src={`http://localhost:5000/${image}`}
                   alt={`Slide ${index}`}
-                  className="top-0 left-0 w-full h-full rounded-md"
+                  className="top-0 left-0 w-full h-full rounded-md object-cover"
                 />
               ))}
           </div>

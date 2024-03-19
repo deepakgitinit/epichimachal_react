@@ -5,7 +5,7 @@ import { Alert } from "../../utils/Alert";
 import { Spinner } from "../../utils/Spinner";
 
 const Profile = () => {
-  const {token, isAuthenticated, updateProfile, profileImg, handleReload } = useAuth();
+  const {token, isAuthenticated, updateProfile, profileImg, setProfileImg, handleReload } = useAuth();
 
   const [userDetails, setUserDetails] = useState({});
   const [profileImage, setProfileImage] = useState(null);
@@ -29,7 +29,7 @@ const Profile = () => {
   const getProfile = async () => {
     try {
       setLoading(true);
-      const userUrl = import.meta.env.VITE_USER_PROFILE;
+      const userUrl = `${import.meta.env.VITE_USER_PROFILE}`;
       const mytoken = "Bearer " + token;
 
       const response = await axios.get(userUrl, {
@@ -37,11 +37,15 @@ const Profile = () => {
           "Authorization": mytoken,
         },
       });
+      
+      const profile = response.data.message.profile;
 
-      if(response.data.profile == "" || response.data.profile == undefined){
+      if(profile == "" || profile == undefined){
         localStorage.setItem("profile", "http://localhost:5173/src/assets/default-avatar-icon.jpg")
+        setProfileImg("http://localhost:5173/src/assets/default-avatar-icon.jpg")
       } else{
-        localStorage.setItem("profile", "http://localhost:5173/" + response.data.profile)
+        localStorage.setItem("profile", "http://localhost:5000/" + profile)
+        setProfileImg("http://localhost:5000/" + profile)
       }
 
       if (
@@ -92,12 +96,14 @@ const Profile = () => {
           return
         }
 
+        console.log(userDetails);
+
         const response = await updateProfile(userDetails);
 
         if(response.data.profile == "" || response.data.profile == undefined){
           localStorage.setItem("profile", "http://localhost:5173/src/assets/default-avatar-icon.jpg")
         } else{
-          localStorage.setItem("profile", "http://localhost:5173/" + response.data.profile)
+          localStorage.setItem("profile", "http://localhost:5000/" + response.data.profile)
         }
         
         if (
@@ -214,13 +220,13 @@ const Profile = () => {
 
               <div className="mb-4 text-sm">
               <label htmlFor="profile" className="block text-gray-700 mb-2">
-                  Profile Picture:
+                  Profile Picture: <span className="text-xs text-red-700">(less than 1mb)</span>
                 </label>
                 <input
                   type="file"
                   id="profile"
                   name="profile"
-                  accept="image/*"
+                  accept="image/jpeg, image/jpg, image/png, image/webp"
                   onChange={handleImageChange}
                 />
               </div>

@@ -34,7 +34,7 @@ function ResendVerification() {
     event.preventDefault();
     try {
       setLoading(true);
-      const url = "http://localhost:5000/api/v1/users/resend/";
+      const url = `${import.meta.env.VITE_USER_RESEND}`;
       const myemail = email.current.value;
 
       const myresponse = await axios.post(url, {

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { useAuth } from "../../contexts/Auth";
 import { Alert } from "../../utils/Alert";
 import { Spinner } from "../../utils/Spinner";
-import { PackagesGrid } from "../Packages/PackagesGrid";
+import axios from "axios";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useParams } from "react-router-dom";
 
-const PackageForm = () => {
+const PackageFormUpdate = () => {
   const [destinations, setDestinations] = useState([]);
   const [taxi, setTaxi] = useState([]);
   const [mydescription, setDescription] = useState("");
@@ -24,6 +24,7 @@ const PackageForm = () => {
   });
 
   const { token } = useAuth();
+  const {id} = useParams();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -75,17 +76,20 @@ const PackageForm = () => {
 
     try {
       setLoading(true);
-      const url = `${import.meta.env.VITE_PACKAGES}`;
+      const url = `${import.meta.env.VITE_PACKAGES}/${id}`;
       const mytoken = "Bearer " + token;
-
       formData.description = mydescription;
+
+      console.log(formData);
       
-      const response = await axios.post(url, formData, {
+      const response = await axios.patch(url, formData, {
         headers: {
           Authorization: mytoken,
-          "Content-Type": "multipart/form-data",
+        //   "Content-Type": "multipart/form-data",
         },
       });
+
+      console.log(response);
 
       if (
         response.data.status == "Successful"
@@ -96,13 +100,14 @@ const PackageForm = () => {
           price: "",
           category: [],
           passengers: "",
+          description: "",
           taxi: "",
           destinations: [],
           time: "",
           thumbnail: null,
-          description: ""
         });
         setDescription("")
+
       } else {
         displayMessage("danger", response.data.message);
       }
@@ -114,13 +119,13 @@ const PackageForm = () => {
     }
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setFormData((prevState) => ({
-      ...prevState,
-      thumbnail: file,
-    }));
-  };
+//   const handleFileChange = (e) => {
+//     const file = e.target.files[0];
+//     setFormData((prevState) => ({
+//       ...prevState,
+//       thumbnail: file,
+//     }));
+//   };
 
   useEffect(() => {
     const getDestinations = async () => {
@@ -139,6 +144,29 @@ const PackageForm = () => {
     };
     getTaxi();
 
+    const getPackage = async () =>{
+        const mypackage = await axios.get(
+            `${import.meta.env.VITE_PACKAGES}/${id}`
+        )
+        console.log(mypackage);
+
+        const formObj = {
+        title: mypackage.data.message.title,
+        price: mypackage.data.message.price,
+        category: mypackage.data.message.category,
+        passengers: mypackage.data.message.passengers,
+        description: "",
+        destinations: mypackage.data.message.destinations,
+        taxi: mypackage.data.message.taxi,
+        time: mypackage.data.message.time,
+        thumbnail: mypackage.data.message.thumbnail,
+        }
+        setDescription(mypackage.data.message.description)
+        setFormData(formObj)
+
+    }
+    getPackage()
+
   }, []);
 
 
@@ -148,19 +176,24 @@ const PackageForm = () => {
     return (
       <>
         {showAlert && <Alert alert={alert} />}
-        <PackagesGrid />
 
         <h1 className="flex text-2xl font-semibold mb-2 mt-8 justify-center items-center">
-          Add New Package:
+         Update Package:
         </h1>
+
         <div className="max-w-lg mx-auto mt-8">
-          {formData.thumbnail && (
-            <img
+            {formData.thumbnail && <img
               className="object-cover w-full rounded-md mb-4"
-              src={URL.createObjectURL(formData.thumbnail)}
+              src={"http://localhost:5000/" + formData.thumbnail}
               alt="Selected Profile Image"
-            />
-          )}
+            />}
+            {/* {formData.thumbnail && (
+                <img
+                className="object-cover w-full rounded-md mb-4"
+                src={URL.createObjectURL(formData.thumbnail)}
+                alt="Selected Profile Image"
+                />             
+            )} */}
           <form onSubmit={handleSubmit} className="space-y-4">
 
             <div>
@@ -178,7 +211,7 @@ const PackageForm = () => {
               />
             </div>
 
-          <div>
+          {/* <div>
               <label htmlFor="thumbnail" className="block">
                 Thumbnail <span className="text-xs text-red-700">(less than 1mb)</span>
               </label>
@@ -187,11 +220,10 @@ const PackageForm = () => {
                 id="thumbnail"
                 name="thumbnail"
                 accept="image/jpeg, image/jpg, image/png, image/webp"
-                required
                 onChange={handleFileChange}
                 className="w-full border rounded-md py-2 px-3"
               />
-            </div>
+            </div> */}
 
             <div>
               <label htmlFor="price" className="block">
@@ -335,4 +367,4 @@ const PackageForm = () => {
   }
 };
 
-export default PackageForm;
+export {PackageFormUpdate};

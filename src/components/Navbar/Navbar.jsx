@@ -29,11 +29,11 @@ const Navbar = () => {
             />
             <img
               className="invert w-36 h-auto mr-4"
-              src="src\assets\Logo.png"
-              alt=""
+              src="/src/assets/Logo.png"
+              alt="Logo"
             />
           </div>
-          <ul className="lg:flex items-center *:mx-2 hover:*:text-gray-400 hover:*:transition-colors hidden">
+          <ul className="lg:flex items-center *:mx-2 hover:*:text-gray-400 hover:*:transition-colors *:transition-colors hidden">
             <li>
               <Link to="/">Home</Link>
             </li>
@@ -65,8 +65,8 @@ const Navbar = () => {
             </div>
           </div>
 
-         <div className={`${profile?"":"hidden"} bg-slate-900 text-slate-100 text-base right-8 top-20 rounded-md absolute z-50 py-4 px-2`}>
-          <ul className="*:m-2 *:cursor-pointer" onClick={openMenu} >
+         <div className={`${profile?"":"hidden"} bg-slate-900 text-slate-100 text-base right-8 top-20 rounded-md absolute z-50 py-4 px-2 min-w-28`}>
+          <ul className="*:m-2 *:cursor-pointer text-sm md:hover:*:text-base md:*:transition-all" onClick={openMenu} >
             {role=="ADMIN"?<li><Link to={"/admin"} >Admin</Link></li>:""}
             <li><Link to={"/dashboard"} >Dashboard</Link></li>
             <li><Link to={"/profile"}>Profile</Link></li>
@@ -79,7 +79,7 @@ const Navbar = () => {
             id="menubar"
             className={`${menu?"":"hidden"} lg:hidden absolute left-8 top-20 bg-slate-900 text-slate-100 p-4 rounded-md text-base z-50`}
           >
-            <ul className=" *:mx-2 *:my-3 hover:*:text-gray-400 hover:*:transition-colors" onClick={open}>
+            <ul className="text-sm *:mx-2 *:my-3 hover:*:text-gray-400 hover:*:transition-colors" onClick={open}>
               <li>
                 <Link to="/">Home</Link>
               </li>

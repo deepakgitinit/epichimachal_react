@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { useAuth } from "../../contexts/Auth";
-import BookingList from "./Bookings";
-import { ForgotPassVerification } from '../../utils/ForgotPassVerification';
 import { SetPassword } from '../../utils/SetPassword';
 
 const Settings = () => {

@@ -62,7 +62,7 @@ const AddDestination = () => {
     try {
       setLoading(true);
 
-      const url = "http://localhost:5000/api/v1/destinations";
+      const url = `${import.meta.env.VITE_DESTINATIONS}`;
       const mytoken = "Bearer " + token;
 
       const response = await axios.post(url, formData, {
@@ -157,7 +157,7 @@ const AddDestination = () => {
               htmlFor="images"
               className="block text-sm font-medium text-gray-700"
             >
-              Images
+              Images <span className="text-xs text-red-700">(less than 1mb)</span>
             </label>
             <input
               type="file"
@@ -165,7 +165,7 @@ const AddDestination = () => {
               name="images[]"
               onChange={handleImageChange}
               multiple
-              accept="image/*"
+              accept="image/jpeg, image/jpg, image/png, image/webp"
               className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
               required
             />

@@ -16,7 +16,7 @@ import { PackagesPage } from "./components/Packages";
 import { Profile } from "./components/Users/Profile";
 import { Dashboard } from "./components/Users/Dashboard";
 import { Admin } from "./components/Users/Admin";
-import {Package } from "./components/Packages/Package";
+import { Package } from "./components/Packages/Package";
 import { Destination } from "./components/Destinations/Destination";
 import { ForgotPassword } from "./utils/ForgotPassword";
 import { ForgotPassVerification } from "./utils/ForgotPassVerification";
@@ -24,6 +24,9 @@ import { EmailVerification } from "./utils/VerficationEmail";
 import { ResendVerification } from "./utils/ResendVerification";
 import { Settings } from "./components/Users/Settings";
 import { Blog } from "./components/Blog";
+import { ContactPage } from "./components/ContactPage";
+import { PrivacyPolicy } from "./components/PrivacyPolicy";
+import { PackageFormUpdate } from "./components/Users/AdminPackageUpdate";
 
 const router = createBrowserRouter([
   {
@@ -40,8 +43,16 @@ const router = createBrowserRouter([
         element: <About />
       },
       {
+        path: "/contact",
+        element: <ContactPage />
+      },
+      {
         path: "/blog",
         element: <Blog />
+      },
+      {
+        path: "/privacy",
+        element: <PrivacyPolicy />
       },
       {
         path: "/destinations",
@@ -54,6 +65,10 @@ const router = createBrowserRouter([
       {
         path: "/packages/:id",
         element: <Package />
+      },
+      {
+        path: "/packages/update/:id",
+        element: <PackageFormUpdate />
       },
       {
         path: "/destinations/:id",

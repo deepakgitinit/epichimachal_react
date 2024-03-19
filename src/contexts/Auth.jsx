@@ -13,7 +13,7 @@ export const Auth = ({ children }) => {
   const [role, setRole] = useState(localStorage.role);
 
   const login = async (myEmail, myPassword) => {
-    const url = "http://localhost:5000/api/v1/users/login";
+    const url = `${import.meta.env.VITE_LOGIN}`;
     try {
       const response = await axios.post(url, {
         email: myEmail,
@@ -34,8 +34,8 @@ export const Auth = ({ children }) => {
         localStorage.setItem("profile", "http://localhost:5173/src/assets/default-avatar-icon.jpg")
         setProfileImg("src/assets/default-avatar-icon.jpg")
       }else{
-        localStorage.setItem("profile", "http://localhost:5173/" + profile)
-        setProfileImg(profile)
+        localStorage.setItem("profile", "http://localhost:5000/" + profile)
+        setProfileImg("http://localhost:5000/" + profile)
       }
 
       return response;
@@ -46,7 +46,7 @@ export const Auth = ({ children }) => {
   };
 
   const signup = async (myEmail, myPassword, mychecked) => {
-    const url = "http://localhost:5000/api/v1/users/signup";
+    const url = `${import.meta.env.VITE_SIGNUP}`;
     try {
       const response = await axios.post(url, {
         email: myEmail,
@@ -61,7 +61,7 @@ export const Auth = ({ children }) => {
   };
 
   const updateProfile = async (myUserDetails) =>{
-    const url = "http://localhost:5000/api/v1/users/update"
+    const url = `${import.meta.env.VITE_UPDATE}`
     const token = "Bearer " + localStorage.getItem('token');
 
     try {
@@ -100,6 +100,7 @@ export const Auth = ({ children }) => {
     token,
     profileImg,
     role,
+    setProfileImg,
     login,
     signup,
     updateProfile,

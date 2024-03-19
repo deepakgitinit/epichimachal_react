@@ -44,7 +44,7 @@ const AdminTaxi = () => {
 
     try {
       setLoading(true);
-      const url = "http://localhost:5000/api/v1/taxi";
+      const url = `${import.meta.env.VITE_TAXI}`;
       const mytoken = "Bearer " + token;
       
       const response = await axios.post(url, formData, {
@@ -89,7 +89,7 @@ const AdminTaxi = () => {
 
   const deleteTaxi = async (id) =>{
     try{
-        const url = `http://localhost:5000/api/v1/taxi/${id}`
+        const url = `${import.meta.env.VITE_TAXI}/${id}`
         const mytoken = "Bearer " + token;
 
         const value = confirm("You sure want to delete Taxi.")
@@ -121,7 +121,7 @@ const AdminTaxi = () => {
   useEffect(() => {
     const getTaxi = async () => {
       const taxi = await axios.get(
-        "http://localhost:5000/api/v1/taxi"
+        `${import.meta.env.VITE_TAXI}`
       );
       setItems(taxi.data.message);
     };

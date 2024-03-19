@@ -38,7 +38,7 @@ function ForgotPassVerification() {
 
     try {
       setLoading(true);
-      const url = `http://localhost:5000/api/v1/users/setpassword/${id}`;
+      const url = `${import.meta.env.VITE_USER_SETPASSWORD}/${id}`;
       const mypassword = password.current.value;
 
       if (mypassword.length<5) {

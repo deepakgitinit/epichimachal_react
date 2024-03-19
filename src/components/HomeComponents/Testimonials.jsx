@@ -4,24 +4,27 @@ const Testimonials = () => {
   const testimonialsData = [
     {
       id: 1,
-      name: 'John Doe',
+      name: 'Akshay Sharma',
       role: 'Adventurer',
       feedback:
         'The travel packages offered by this company are exceptional. I had an unforgettable experience exploring the Himalayas!',
+      image: "https://t3.ftcdn.net/jpg/03/02/88/46/360_F_302884605_actpipOdPOQHDTnFtp4zg4RtlWzhOASp.jpg"
     },
     {
       id: 2,
-      name: 'Alice Smith',
+      name: 'Arayan Kumar',
       role: 'Foodie',
       feedback:
         'The food recommendations were spot-on! From street vendors to fine dining, I savored every bite.',
+      image: "https://img.freepik.com/free-photo/handsome-hispanic-man-with-beard-wearing-casual-clothes-with-happy-cool-smile-face-lucky-person_839833-31901.jpg?size=626&ext=jpg&ga=GA1.1.735520172.1710460800&semt=ais"
     },
     {
       id: 3,
-      name: 'Elena Rodriguez',
+      name: 'Amrita Singh',
       role: 'Explorer',
       feedback:
         'The stays provided were cozy and comfortable. I felt right at home in every location.',
+      image: "https://img.freepik.com/premium-photo/portrait-young-indian-woman-happy-with-internship-human-resources-opportunity-mission-vision-company-values-goals-face-headshot-gen-z-person-with-hr-job-about-us-faq_590464-134290.jpg"
     },
   ];
 
@@ -41,9 +44,9 @@ const Testimonials = () => {
               <div className="flex items-center">
                 <div className="mr-4">
                   <img
-                    src="/avatar-placeholder.png" // Replace with actual avatar image
+                    src={testimonial.image}
                     alt={`${testimonial.name}'s Avatar`}
-                    className="w-10 h-10 rounded-full"
+                    className="w-10 h-10 rounded-full object-cover"
                   />
                 </div>
                 <div>

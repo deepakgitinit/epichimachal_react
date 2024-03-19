@@ -7,7 +7,7 @@ const WhyChooseUs = () => {
         <h2 className="text-3xl font-semibold text-center mb-8">
           Why Choose Us
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 hover:*:shadow-2xl *:transition-shadow">
           {/* Best Car Services */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold mb-4">Best Car Services</h3>
@@ -26,6 +26,15 @@ const WhyChooseUs = () => {
             </p>
           </div>
 
+          {/* Best Stays */}
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-4">Best Stays</h3>
+            <p className="text-gray-600">
+              From cozy boutique hotels to luxurious resorts, we offer
+              accommodations that suit every traveler's preferences.
+            </p>
+          </div>
+          
           {/* Best Food */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold mb-4">Best Food</h3>
@@ -35,14 +44,6 @@ const WhyChooseUs = () => {
             </p>
           </div>
 
-          {/* Best Stays */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4">Best Stays</h3>
-            <p className="text-gray-600">
-              From cozy boutique hotels to luxurious resorts, we offer
-              accommodations that suit every traveler's preferences.
-            </p>
-          </div>
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ const Cars = () => {
 
   useEffect(()=>{
     const getTaxies = async ()=>{
-      const url = "http://localhost:5000/api/v1/taxi"
+      const url = `${import.meta.env.VITE_TAXI}`
       const response = await axios.get(url)
       setCars(response.data.message);
     }
@@ -30,7 +30,7 @@ const Cars = () => {
 
   return (
     <>
-    <div className="container lg:mx-16 my-8">
+    <div className="my-8">
       <div className="flex flex-col mx-2 text-center justify-center items-center mt-8">
           <h1 className="text-3xl mb-2">
             <b>Rental Cars</b>
@@ -43,7 +43,7 @@ const Cars = () => {
       <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentIndex * 33.33}%)` }}>
         {mycars && mycars.length>0 && mycars.map((car, index) => (
           <div key={index} className={`flex flex-col justify-center items-center w-1/3 flex-shrink-0 ${index === currentIndex ? 'center-image' : ''}`}>
-            <img src={"http://localhost:5000/" + car.image} alt={car.name} className={`w-full md:h-auto h-32 object-cover ${index === currentIndex ? 'center-image-size' : 'smaller-image-size'}`} />
+            <img src={"http://localhost:5000/" + car.image} alt={car.name} className={`w-auto md:h-auto h-32 object-cover ${index === currentIndex ? 'center-image-size' : 'smaller-image-size'}`} />
             <p className='lg:text-sm text-xs shadow-2xl'>{car.name}</p>
           </div>
         ))}

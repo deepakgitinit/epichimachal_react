@@ -41,7 +41,7 @@ const AdminPickups = () => {
 
     try {
       setLoading(true);
-      const url = "http://localhost:5000/api/v1/pickup";
+      const url = `${import.meta.env.VITE_PICKUPS}`;
       const mytoken = "Bearer " + token;
       
       const response = await axios.post(url, formData, {
@@ -75,7 +75,7 @@ const AdminPickups = () => {
 
   const deletePickup = async (id) =>{
     try{
-        const url = `http://localhost:5000/api/v1/pickup/${id}`
+        const url = `${import.meta.env.VITE_PICKUPS}/${id}`
         const mytoken = "Bearer " + token;
 
         const value = confirm("You sure want to delete Pickup Location.")
@@ -108,7 +108,7 @@ const AdminPickups = () => {
   useEffect(() => {
     const getPickups = async () => {
       const pickup = await axios.get(
-        "http://localhost:5000/api/v1/pickup"
+        `${import.meta.env.VITE_PICKUPS}`
       );
       setItems(pickup.data.message);
     };

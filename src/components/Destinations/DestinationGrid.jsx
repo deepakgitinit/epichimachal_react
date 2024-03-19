@@ -36,7 +36,7 @@ const DestinationGrid = () => {
   useEffect(() => {
     const getDestinations = async () => {
       const destinations = await axios.get(
-        "http://localhost:5000/api/v1/destinations"
+        `${import.meta.env.VITE_DESTINATIONS}`
       );
       const reversedDestinations = destinations.data.allDestinations.reverse();
       setItems(reversedDestinations);
@@ -51,7 +51,7 @@ const DestinationGrid = () => {
 
       if (value) {
         setLoading(true);
-        const url = `http://localhost:5000/api/v1/destinations/${id}`;
+        const url = `${import.meta.env.VITE_DESTINATIONS}/${id}`;
         const mytoken = "Bearer " + token;
 
         const response = await axios.delete(url, {
@@ -134,7 +134,7 @@ const DestinationGrid = () => {
                       <h1 className="text-lg">
                         <b>{item.title}</b>
                       </h1>
-                      <p className="text-xs">{item.description}</p>
+                      <p className="text-xs line-clamp-2">{item.description}</p>
                       <ul className="text-xs flex flex-row mt-2">
                         {item.tags.map((item, index) => {
                           return (
