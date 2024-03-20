@@ -4,6 +4,7 @@ import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function ForgotPassVerification() {
   const { handleReload } = useAuth();

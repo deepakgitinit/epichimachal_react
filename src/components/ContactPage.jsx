@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const ContactPage = () => {
 const [contactForm, setContactForm] = useState({

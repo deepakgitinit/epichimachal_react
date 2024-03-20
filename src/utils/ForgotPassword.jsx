@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 function ForgotPassword() {
   const { handleReload } = useAuth();

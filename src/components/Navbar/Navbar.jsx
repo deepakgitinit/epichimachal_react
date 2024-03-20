@@ -28,7 +28,7 @@ const Navbar = () => {
               onClick={open}
             />
             <Link to={"/"}><img
-              className="invert w-36 h-auto mr-4"
+              className="invert w-36 h-auto mr-4 "
               src="/Logo.png"
               alt="Logo"
             /></Link>
