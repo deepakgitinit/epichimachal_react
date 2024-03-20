@@ -203,7 +203,7 @@ const HomeForm = () => {
             <div className="flex relative mx-2 mb-8 h-96 w-auto shadow-2xl rounded-md">
               <img
                 className="-z-50 rounded-md object-cover"
-                src="https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb"
+                src="/Hero-Image.jpg"
                 alt="Himachal-pradesh-explore"
                 />
               <div className="absolute flex flex-col rounded-l-md text-slate-100 bg-gradient-to-r from-slate-900 lg:w-1/2 md:w-2/3 w-4/5 h-full *:lg:ml-10 *:lg:mt-6 *:ml-6 *:mt-4">
