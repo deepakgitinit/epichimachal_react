@@ -31,11 +31,11 @@ export const Auth = ({ children }) => {
       setRole(role)
 
       if (profile == "" || profile == undefined) {
-        localStorage.setItem("profile", "http://localhost:5173/src/assets/default-avatar-icon.jpg")
+        localStorage.setItem("profile", "/src/assets/default-avatar-icon.jpg")
         setProfileImg("src/assets/default-avatar-icon.jpg")
       }else{
-        localStorage.setItem("profile", "http://localhost:5000/" + profile)
-        setProfileImg("http://localhost:5000/" + profile)
+        localStorage.setItem("profile", `${import.meta.env.VITE_LOCALHOST}/` + profile)
+        setProfileImg(`${import.meta.env.VITE_LOCALHOST}/` + profile)
       }
 
       return response;

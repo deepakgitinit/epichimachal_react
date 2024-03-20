@@ -28,7 +28,7 @@ function EmailVerification() {
   const handleVerification = async () => {
     try {
       setLoading(true);
-      const url = `http://localhost:5000/api/v1/users/${id}`;
+      const url = `${import.meta.env.VITE_USERS}/${id}`;
       const myresponse = await axios.get(url);
 
       setResult(myresponse.data.message);

@@ -140,7 +140,7 @@ const AdminTaxi = () => {
         {items && items.length>0 && items.map((car, index) => (
           <div key={index} className={`flex flex-col relative justify-center items-center w-64 my-2 mx-2 `}>
             <div className="flex cursor-pointer bg-opacity-50 hover:bg-opacity-100 absolute size-8 text-center justify-center items-center top-1 right-1 bg-slate-900 text-white rounded-full" onClick={()=>{deleteTaxi(car._id)}}>&#x2715;</div>
-            <img src={"http://localhost:5000/" + car.image} alt={car.name} className={`w-full h-auto`} />
+            <img src={`${import.meta.env.VITE_LOCALHOST}/` + car.image} alt={car.name} className={`w-full h-auto`} />
             <p className='lg:text-sm text-xs shadow-2xl'>{car.name}</p>
           </div>
         ))}

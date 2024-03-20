@@ -1,11 +1,12 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
 
 function Login() {
   const { login, isAuthenticated, handleReload } = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -64,7 +65,7 @@ function Login() {
 
   if (isAuthenticated()) {
     {
-      window.location.replace("http://localhost:5173/");
+      navigate("/");
     }
   } else {
     if (loading) {

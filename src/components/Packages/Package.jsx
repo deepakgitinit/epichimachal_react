@@ -67,7 +67,7 @@ const Package = () => {
           <div className="flex relative">
             <img
               className="w-full h-96 rounded-t-md z-0 object-cover"
-              src={"http://localhost:5000/" + mypackage.thumbnail}
+              src={`${import.meta.env.VITE_LOCALHOST}/` + mypackage.thumbnail}
               alt={mypackage.title}
             />
             <div className="absolute bottom-0 text-center rounded-b-md cursor-pointer text-slate-100 bg-gradient-to-t from-slate-900 bg-opacity-60 p-4 w-full">
@@ -135,7 +135,7 @@ const Package = () => {
                       <div className="flex relative justify-center w-80 mr-4 ">
                         <img
                           className="object-cover rounded-md"
-                          src={"http://localhost:5000/" + item.images[0]}
+                          src={`${import.meta.env.VITE_LOCALHOST}/` + item.images[0]}
                           alt=""
                         />
                         <div className="absolute bottom-0 rounded-b-md  text-slate-100 bg-gradient-to-t from-slate-900 bg-opacity-60 p-4 w-full">

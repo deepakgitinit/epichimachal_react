@@ -184,7 +184,7 @@ const PackageFormUpdate = () => {
         <div className="max-w-lg mx-auto mt-8">
             {formData.thumbnail && <img
               className="object-cover w-full rounded-md mb-4"
-              src={"http://localhost:5000/" + formData.thumbnail}
+              src={`${import.meta.env.VITE_LOCALHOST}/` + formData.thumbnail}
               alt="Selected Profile Image"
             />}
             {/* {formData.thumbnail && (

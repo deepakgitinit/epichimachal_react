@@ -37,7 +37,7 @@ const [contactForm, setContactForm] = useState({
     e.preventDefault();
     setLoading(true)
     try {
-        const url = "http://localhost:5000/api/v1/contact/"
+        const url = `${import.meta.env.VITE_CONTACT}`
         const response = await axios.post(url, contactForm)
         console.log(response);
         

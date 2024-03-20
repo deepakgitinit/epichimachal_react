@@ -5,10 +5,12 @@ import {AddDestination} from './AdminDestinations';
 import PackageForm from './AdminPackages';
 import { AdminTaxi } from './AdminTaxi';
 import { AdminPickups } from './AdminPickup';
+import { useNavigate } from 'react-router-dom';
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTab') || 'tab1');
   const { role, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -81,7 +83,7 @@ const Admin = () => {
     </div>
   );
 }else{
-  window.location.replace("/")
+  navigate("/")
 }
 };
 

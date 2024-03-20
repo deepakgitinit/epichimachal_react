@@ -127,7 +127,7 @@ const DestinationGrid = () => {
 
                     <img
                       className="object-cover rounded-md"
-                      src={"http://localhost:5000/" + item.images[0]}
+                      src={`${import.meta.env.VITE_LOCALHOST}/` + item.images[0]}
                       alt=""
                     />
                     <div className="absolute bottom-0 rounded-b-md text-slate-100 bg-slate-900 bg-opacity-60 p-4 w-full">

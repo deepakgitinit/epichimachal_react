@@ -1,11 +1,12 @@
 import { useState, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
 
 function Signup() {
   const { signup, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -63,7 +64,7 @@ function Signup() {
         ) {
           displayMessage("success", myresponse.data.message);
           setTimeout(() => {
-            window.location.replace("http://localhost:5173/login");
+            navigate("/login");
           }, 1500);
         } else {
           displayMessage("danger", myresponse.data.message);
@@ -81,7 +82,7 @@ function Signup() {
 
   if (isAuthenticated()) {
     {
-      window.location.replace("http://localhost:5173/");
+      navigate("/");
     }
   } else {
     if (loading) {

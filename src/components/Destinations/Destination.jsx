@@ -69,7 +69,7 @@ const Destination = () => {
               mydestination.images.map((image, index) => (
                 <img
                   key={index}
-                  src={`http://localhost:5000/${image}`}
+                  src={`${import.meta.env.VITE_LOCALHOST}/${image}`}
                   alt={`Slide ${index}`}
                   className="top-0 left-0 w-full h-full rounded-md object-cover"
                 />

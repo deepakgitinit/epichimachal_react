@@ -43,7 +43,7 @@ const Cars = () => {
       <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentIndex * 33.33}%)` }}>
         {mycars && mycars.length>0 && mycars.map((car, index) => (
           <div key={index} className={`flex flex-col justify-center items-center w-1/3 flex-shrink-0 ${index === currentIndex ? 'center-image' : ''}`}>
-            <img src={"http://localhost:5000/" + car.image} alt={car.name} className={`w-auto md:h-auto h-32 object-cover ${index === currentIndex ? 'center-image-size' : 'smaller-image-size'}`} />
+            <img src={`${import.meta.env.VITE_LOCALHOST}/` + car.image} alt={car.name} className={`w-auto md:h-auto h-32 object-cover ${index === currentIndex ? 'center-image-size' : 'smaller-image-size'}`} />
             <p className='lg:text-sm text-xs shadow-2xl'>{car.name}</p>
           </div>
         ))}

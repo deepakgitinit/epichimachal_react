@@ -3,13 +3,14 @@ import { useAuth } from "../../contexts/Auth";
 import { useEffect, useState } from "react";
 import { Alert } from "../../utils/Alert";
 import { Spinner } from "../../utils/Spinner";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const {token, isAuthenticated, updateProfile, profileImg, setProfileImg, handleReload } = useAuth();
 
   const [userDetails, setUserDetails] = useState({});
   const [profileImage, setProfileImage] = useState(null);
-
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -41,11 +42,11 @@ const Profile = () => {
       const profile = response.data.message.profile;
 
       if(profile == "" || profile == undefined){
-        localStorage.setItem("profile", "http://localhost:5173/src/assets/default-avatar-icon.jpg")
-        setProfileImg("http://localhost:5173/src/assets/default-avatar-icon.jpg")
+        localStorage.setItem("profile", "/src/assets/default-avatar-icon.jpg")
+        setProfileImg("/src/assets/default-avatar-icon.jpg")
       } else{
-        localStorage.setItem("profile", "http://localhost:5000/" + profile)
-        setProfileImg("http://localhost:5000/" + profile)
+        localStorage.setItem("profile", `${import.meta.env.VITE_LOCALHOST}/` + profile)
+        setProfileImg(`${import.meta.env.VITE_LOCALHOST}/` + profile)
       }
 
       if (
@@ -101,9 +102,9 @@ const Profile = () => {
         const response = await updateProfile(userDetails);
 
         if(response.data.profile == "" || response.data.profile == undefined){
-          localStorage.setItem("profile", "http://localhost:5173/src/assets/default-avatar-icon.jpg")
+          localStorage.setItem("profile", "/src/assets/default-avatar-icon.jpg")
         } else{
-          localStorage.setItem("profile", "http://localhost:5000/" + response.data.profile)
+          localStorage.setItem("profile", `${import.meta.env.VITE_LOCALHOST}/` + response.data.profile)
         }
         
         if (
@@ -257,7 +258,7 @@ const Profile = () => {
       );
     }
   } else {
-    window.location.replace("http://localhost:5173/");
+    navigate("/");
   }
 };
 

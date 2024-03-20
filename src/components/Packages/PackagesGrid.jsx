@@ -103,7 +103,7 @@ const PackagesGrid = () => {
                 </p>
                 <img
                   className="rounded-t-md"
-                  src={"http://localhost:5000/" + item.thumbnail}
+                  src={`${import.meta.env.VITE_LOCALHOST}/` + item.thumbnail}
                   alt=""
                 />
                 <div className="discription py-2 px-4" >
