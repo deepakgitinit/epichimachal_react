@@ -12,6 +12,12 @@ const Package = () => {
 
   const navigate = useNavigate();
 
+  const scrollSlider = (direction) => {
+    const slider = sliderRef.current;
+    const scrollAmount = 270;
+    slider.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
+  };
+
   const fetchDestinations = async (id) => {
     const destinationUrl = `${import.meta.env.VITE_DESTINATIONS}/${id}`;
     const response = await axios.get(destinationUrl);
@@ -66,7 +72,7 @@ const Package = () => {
         >
           <div className="flex relative">
             <img
-              className="w-full h-96 rounded-t-md z-0 object-cover"
+              className="w-full lg:h-96 md:h-80 h-64 rounded-t-md z-0 object-cover"
               src={`${import.meta.env.VITE_LOCALHOST}/` + mypackage.thumbnail}
               alt={mypackage.title}
             />
@@ -117,11 +123,12 @@ const Package = () => {
               <b>Destinations:</b>
             </p>
 
+          <div className={`flex`} style={{width: "80vw"}}>
             <div
               className="flex overflow-y-auto transition-transform"
               ref={sliderRef}
               style={{ scrollbarWidth: "none" }}
-            >
+              >
               {mydestinations.length > 0 &&
                 mydestinations.map((item, index) => {
                   return (
@@ -151,6 +158,15 @@ const Package = () => {
                   );
                 })}
             </div>
+        </div>
+            <div className="flex text-slate-100 *:bg-opacity-40 *:bg-slate-900 hover:*:bg-slate-800 *:rounded-full *:px-4 *:py-2 *:mx-2 my-4">
+          <button className="prev" onClick={() => scrollSlider(-1)}>
+            &#10094;
+          </button>
+          <button className="next" onClick={() => scrollSlider(1)}>
+            &#10095;
+          </button>
+              </div>
 
             <div className="text-gray-700 text-base mb-2">
               <div className="text-lg mb-3">
