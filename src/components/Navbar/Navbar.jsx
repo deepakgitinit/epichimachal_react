@@ -107,11 +107,11 @@ const Navbar = () => {
       <>
         <div className="flex justify-between items-center text-sm mx-8 my-4">
           <div className="flex">
-            <img
+            <Link to={"/"}><img
               className="invert w-36 h-auto mx-4"
               src="/Logo.png"
               alt=""
-            />
+            /></Link>
           </div>
 
           <ul className="lg:flex items-center *:mx-2 hover:*:text-gray-400 hover:*:transition-colors hidden">
