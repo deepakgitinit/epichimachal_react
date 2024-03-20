@@ -23,13 +23,13 @@ const Navbar = () => {
           <div className="flex">
             <img
               className="lg:hidden w-8 mr-2"
-              src={`/src/assets/menu${menu ? "_open" : ""}.svg`}
+              src={`/menu${menu ? "_open" : ""}.svg`}
               alt="Menu"
               onClick={open}
             />
             <img
               className="invert w-36 h-auto mr-4"
-              src="/src/assets/Logo.png"
+              src="/Logo.png"
               alt="Logo"
             />
           </div>
@@ -53,7 +53,7 @@ const Navbar = () => {
           <div className="flex items-center *:mx-2 ">
             {/* <img
               className="hover:contrast-50 cursor-pointer lg:block hidden"
-              src="/src/assets/search.svg"
+              src="/search.svg"
               alt=""
             /> */}
             <div onClick={openMenu} >
@@ -109,7 +109,7 @@ const Navbar = () => {
           <div className="flex">
             <img
               className="invert w-36 h-auto mx-4"
-              src="/src/assets/Logo.png"
+              src="/Logo.png"
               alt=""
             />
           </div>
@@ -155,7 +155,7 @@ const Navbar = () => {
 
           <img
             className="lg:hidden w-8"
-            src={`src/assets/menu${menu ? "_open" : ""}.svg`}
+            src={`/menu${menu ? "_open" : ""}.svg`}
             alt="Menu"
             onClick={open}
           />

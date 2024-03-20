@@ -5,7 +5,7 @@ const Footer = () =>{
         <>
             <div className="flex flex-col justify-center items-center bg-slate-900 text-slate-100 mt-16">
                 <div className="flex flex-col justify-center items-center">
-                    <img className="w-36 my-4" src="src/assets/Logo.png" alt="" />
+                    <img className="w-36 my-4" src="/Logo.png" alt="" />
                     <p className="text-lg">Contact Details</p>
                     <div className="flex text-sm *:m-2 justify-center items-center flex-col lg:flex-row mt-4">
                         <div className="flex items-center *:mx-1">
