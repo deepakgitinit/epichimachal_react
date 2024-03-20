@@ -27,11 +27,11 @@ const Navbar = () => {
               alt="Menu"
               onClick={open}
             />
-            <img
+            <Link to={"/"}><img
               className="invert w-36 h-auto mr-4"
               src="/Logo.png"
               alt="Logo"
-            />
+            /></Link>
           </div>
           <ul className="lg:flex items-center *:mx-2 hover:*:text-gray-400 hover:*:transition-colors *:transition-colors hidden">
             <li>

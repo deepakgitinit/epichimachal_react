@@ -65,7 +65,7 @@ const [contactForm, setContactForm] = useState({
           <div className="max-w-lg w-full bg-white p-8 rounded-lg shadow-md">
             <div className="flex flex-col justify-center items-center">
 
-            <img className="w-36 my-4 invert" src="/Logo.png" alt="Logo" />
+            <Link to={"/"}><img className="w-36 my-4 invert" src="/Logo.png" alt="Logo" /></Link>
             <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
             </div>
 
