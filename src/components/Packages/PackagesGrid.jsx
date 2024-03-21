@@ -72,9 +72,11 @@ const PackagesGrid = () => {
 
   const gotoPackage = (id) =>{
     navigate(`/packages/${id}`)
+    window.scrollTo({ top: 0 });
   }
   const gotoPackageUpdate = (id) =>{
     navigate(`/packages/update/${id}`)
+    window.scrollTo({ top: 0 });
   }
 
 

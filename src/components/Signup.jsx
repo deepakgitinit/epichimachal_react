@@ -65,6 +65,7 @@ function Signup() {
           displayMessage("success", myresponse.data.message);
           setTimeout(() => {
             navigate("/login");
+            window.scrollTo({ top: 0 });
           }, 1500);
         } else {
           displayMessage("danger", myresponse.data.message);
@@ -83,6 +84,7 @@ function Signup() {
   if (isAuthenticated()) {
     {
       navigate("/");
+      window.scrollTo({ top: 0 });
     }
   } else {
     if (loading) {

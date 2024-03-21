@@ -66,6 +66,7 @@ function Login() {
   if (isAuthenticated()) {
     {
       navigate("/");
+      window.scrollTo({ top: 0 });
     }
   } else {
     if (loading) {

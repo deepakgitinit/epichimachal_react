@@ -84,6 +84,7 @@ const Admin = () => {
   );
 }else{
   navigate("/")
+  window.scrollTo({ top: 0 });
 }
 };
 

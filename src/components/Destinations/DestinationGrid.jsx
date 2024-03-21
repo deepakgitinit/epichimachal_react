@@ -81,6 +81,7 @@ const DestinationGrid = () => {
 
   const gotoDestination = (id) =>{
     navigate(`/destinations/${id}`)
+    window.scrollTo({ top: 0 });
   }
 
 

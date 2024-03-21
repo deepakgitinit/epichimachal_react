@@ -19,6 +19,7 @@ const PackagesPage = () => {
 
   const openPackage = (packageID) => {
     navigate(`/packages/${packageID}`);
+    window.scrollTo({ top: 0 });
   };
 
   return (

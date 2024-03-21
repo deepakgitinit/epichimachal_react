@@ -57,6 +57,7 @@ const Dashboard = () => {
   );
 }else{
   navigate("/login")
+  window.scrollTo({ top: 0 });
 }
 };
 

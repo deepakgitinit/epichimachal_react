@@ -54,6 +54,7 @@ const Package = () => {
 
   const gotoDestination = (id) => {
     navigate(`/destinations/${id}`);
+    window.scrollTo({ top: 0 });
   };
 
   useEffect(() => {

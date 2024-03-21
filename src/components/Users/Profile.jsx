@@ -259,6 +259,7 @@ const Profile = () => {
     }
   } else {
     navigate("/");
+    window.scrollTo({ top: 0 });
   }
 };
 

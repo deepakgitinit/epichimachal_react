@@ -57,6 +57,7 @@ const Settings = () => {
   );
 }else{
   navigate("/login")
+  window.scrollTo({ top: 0 });
 }
 };
 

@@ -15,6 +15,7 @@ const Destinations = () => {
 
   const openDestination = (destinationID) =>{
     navigate(`/destinations/${destinationID}`);
+    window.scrollTo({ top: 0 });
   }
 
   useEffect(() => {
