@@ -209,7 +209,7 @@ const HomeForm = () => {
               <div className="absolute flex flex-col rounded-l-md text-slate-100 bg-gradient-to-r from-slate-900 lg:w-1/2 md:w-2/3 w-4/5 h-full *:lg:ml-10 *:lg:mt-6 *:ml-6 *:mt-4">
                 <h1 className="lg:text-8xl md:text-7xl text-5xl">
                   <b>
-                    Epic
+                    Travel More
                     <br />
                     Himachal
                   </b>

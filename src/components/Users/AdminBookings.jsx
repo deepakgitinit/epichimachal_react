@@ -28,7 +28,7 @@ const AdminBookingList = () => {
   const getBookings = async () => {
     setLoading(true);
     try {
-      const url = `${import.meta.env.VITE_BOOKINGS}`;
+      const url = `${import.meta.env.VITE_BOOKINGS}/all`;
       const token = "Bearer " + localStorage.getItem("token");
 
       const response = await axios.get(url, {
@@ -38,6 +38,7 @@ const AdminBookingList = () => {
       });
       const bookingRevers = response.data.message.reverse();
       setBookings(bookingRevers);
+
     } catch (error) {
       console.log(error);
     } finally {

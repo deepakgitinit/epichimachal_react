@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
-import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 function EmailVerification() {
   const { handleReload } = useAuth();
@@ -33,7 +33,7 @@ function EmailVerification() {
 
       setResult(myresponse.data.message);
 
-      if (myresponse.data.message.status == "Successful") {
+      if (myresponse.data.status == "Successful") {
         displayMessage("success", myresponse.data.message);
 
         setTimeout(() => {
@@ -46,10 +46,12 @@ function EmailVerification() {
         displayMessage("danger", myresponse.data.message);
         return;
       }
+
     } catch (error) {
       let customError = error.response.data.message.message;
       console.log("Internal Error: ", error, customError);
       setResult(customError);
+
     } finally {
       setLoading(false);
     }

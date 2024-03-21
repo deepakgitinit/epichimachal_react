@@ -42,7 +42,7 @@ function ForgotPassword() {
         email: myemail,
     });
 
-      if (myresponse.data.message.status == "Successful") {
+      if (myresponse.data.status == "Successful") {
         displayMessage("success", myresponse.data.message);
       } else {
         displayMessage("danger", myresponse.data.message);

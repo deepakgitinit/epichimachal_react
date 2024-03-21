@@ -10,11 +10,11 @@ const Footer = () =>{
                     <div className="flex text-sm *:m-2 justify-center items-center flex-col lg:flex-row mt-4">
                         <div className="flex items-center *:mx-1">
                             <img className="size-4 object-cover rounded-full" src="https://images.rawpixel.com/image_social_square/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjkzMi1uaW5nLTEwNS1rbGMzZzdoYS5qcGc.jpg" />
-                            <a href="tel:9888488818"> 9888488818</a>
+                            <a href="tel:7580088818">7580088818</a>
                         </div>
                         <div className="flex items-center *:mx-1">
                             <img className="size-4 object-cover rounded-full" src="https://images.rawpixel.com/image_social_square/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdjkzMi1uaW5nLTEwNS1rbGMzZzdoYS5qcGc.jpg" />
-                            <a href="tel:9888488818"> 9888488818</a>
+                            <a href="tel:9317632618">9317632618</a>
                         </div>
                         <div className="flex items-center *:mx-1">
                             <img className="size-4 object-cover rounded-full" src="https://static-00.iconduck.com/assets.00/whatsapp-icon-1024x1024-cilsjgvb.png" />

@@ -91,7 +91,7 @@ const PackagesGrid = () => {
         <hr className="mb-8 w-1/3" />
       </div>
       <div className="lg:mx-16 md:mx-8 text-sm flex items-center justify-center">
-        <div className="flex flex-wrap place-items-center">
+        <div className="flex flex-wrap place-items-center justify-center items-center">
           {items.map((item) => {
             return (
               <div

@@ -2,8 +2,8 @@ import { useState, useRef } from "react";
 import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 function ResendVerification() {
   const { handleReload } = useAuth();
@@ -42,7 +42,7 @@ function ResendVerification() {
         email: myemail,
         });
 
-      if (myresponse.data.message.status == "Successful") {
+      if (myresponse.data.status == "Successful") {
         displayMessage("success", myresponse.data.message);
       } else {
         displayMessage("danger", myresponse.data.message);
