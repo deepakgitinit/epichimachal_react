@@ -100,7 +100,6 @@ const Navbar = () => {
         </div>
       </>
     );
-
   } else {
 
     return (
@@ -110,7 +109,7 @@ const Navbar = () => {
             <Link to={"/"}><img
               className="invert w-36 h-auto mx-4"
               src="/Logo.png"
-              alt=""
+              alt="Epichimachal"
             /></Link>
           </div>
 

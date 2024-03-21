@@ -5,7 +5,7 @@ function Alert(props) {
     return (
       <>
         {props.alert.message != "" && (
-          <div className={`flex relative justify-center items-center`}>
+          <div className={`flex relative justify-center items-center z-50`}>
             <div
               className={`fixed text-sm border-2 rounded-md px-2 bg-red-100 z-50`}
             >
@@ -21,7 +21,7 @@ function Alert(props) {
     return (
       <>
         {props.alert.message != "" && (
-          <div className={`flex relative justify-center items-center`}>
+          <div className={`flex relative justify-center items-center z-50`}>
             <div
               className={`fixed text-sm border-2 rounded-md px-2 bg-green-100 z-50`}
             >
@@ -37,7 +37,7 @@ function Alert(props) {
     return (
       <>
         {props.alert.message != "" && (
-          <div className={`flex relative justify-center items-center`}>
+          <div className={`flex relative justify-center items-center z-50`}>
             <div
               className={`fixed text-sm border-2 rounded-md px-2 bg-gray-100 z-50`}
             >

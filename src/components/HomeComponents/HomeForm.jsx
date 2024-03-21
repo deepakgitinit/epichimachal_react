@@ -223,7 +223,7 @@ const HomeForm = () => {
 
           <div className="flex flex-col justify-center items-center relative -top-32">
 
-            <div className="container mx-auto pt-8 z-50 relative top-4">
+            <div className="container mx-auto pt-8 z-40 relative top-4">
               <div className="flex justify-center flex-col md:flex-row *:md:my-0 *:my-1">
                 <button
                   className={`px-4 py-2 md:mr-2 focus:outline-none rounded-md ${activeTab === 'tab1' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-800'}`}
