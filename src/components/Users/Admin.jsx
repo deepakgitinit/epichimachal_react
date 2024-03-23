@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { useAuth } from "../../contexts/Auth";
-import AdminBookingList from './AdminBookings';
-import {AddDestination} from './AdminDestinations';
-import PackageForm from './AdminPackages';
+import { AddDestination } from './AdminDestinations';
 import { AdminTaxi } from './AdminTaxi';
 import { AdminPickups } from './AdminPickup';
-import { useNavigate } from 'react-router-dom';
+import PackageForm from './AdminPackages';
+import AdminBookingList from './AdminBookings';
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTab') || 'tab1');
   const { role, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -83,8 +81,7 @@ const Admin = () => {
     </div>
   );
 }else{
-  navigate("/")
-  window.scrollTo({ top: 0 });
+  window.location.replace("/");
 }
 };
 

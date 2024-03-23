@@ -1,38 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { Alert } from "../../utils/Alert";
-import { Spinner } from "../../utils/Spinner";
 import { useAuth } from "../../contexts/Auth";
 
 const HomeForm = () => {
-  const pickupLocationRef = useRef(null);
-  const destinationRef = useRef(null);
-  const passengersRef = useRef(null);
-  const packageRef = useRef(null);
-  const fromDateRef = useRef(null);
-  const toDateRef = useRef(null);
-  const selectedCarRef = useRef(null);
-
-  const [activeTab, setActiveTab] = useState(localStorage.getItem('activeTabHome') || 'tab1');
-
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-    localStorage.setItem('activeTabHome', tab);
-  };
-
-  const [destinations, setDestination] = useState([]);
-  const [packages, setPackages] = useState([]);
-  const [pickups, setPickups] = useState([]);
-  const [taxi, setTaxi] = useState([])
-
-  const { token, isAuthenticated } = useAuth();
-
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alert, setAlert] = useState({
     type: "",
     message: "",
   });
+
+  const { token, isAuthenticated, handleReload } = useAuth();
 
   const displayMessage = (type, message) => {
     setShowAlert(true);
@@ -41,128 +20,91 @@ const HomeForm = () => {
       setShowAlert(false);
     }, 1500);
   };
-
-
-  const handleSubmitPacakge = async (e) => {
-    e.preventDefault();
-    try {
-      if (isAuthenticated()) {
-        setLoading(true);
-        const pickupLocation = pickupLocationRef.current.value;
-        const fromDate = fromDateRef.current.value;
-        const selectedPackage = packageRef.current.value;
-
-        const booking = {
-          pickup: pickupLocation,
-          fromdate: fromDate,
-          package: selectedPackage,
-        };
-
-
-        const mytoken = "Bearer " + token;
-
-        const url = `${import.meta.env.VITE_BOOKINGS}`;
-        
-        const response = await axios.post(url, booking, {
-          headers: {
-            Authorization: mytoken,
-          },
-        });
-
-        if (
-          response.data.status == "Successful"
-        ) {
-          displayMessage("success", "Booking request Confirmed.");
-          return;
-        }
-        displayMessage("danger", response.data.message);
-        
-
-      } else {
-        displayMessage("danger", "Please Login to submit Booking request.");
-      }
-      
-    } catch (error) {
-      displayMessage("danger", "Internal Error Occured. Try Again");
-      console.log(error);
-
-    } finally {
-      setLoading(false);
-    }
-
+  
+  const [openDest, setOpenDest] = useState(false);
+  const onOpenDest = () => {
+    setOpenDest(!openDest);
+  };
+  const [activeTab, setActiveTab] = useState(
+    isAuthenticated() ? "tab2" : "tab1"
+  );
+  const setTab = (tab) => {
+    setActiveTab(tab);
   };
 
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (isAuthenticated()) {
-        setLoading(true);
-        const pickupLocation = pickupLocationRef.current.value;
-        const destination = destinationRef.current.value;
-        const passengers = passengersRef.current.value;
-        const fromDate = fromDateRef.current.value;
-        const toDate = toDateRef.current.value;
-        const selectedCar = selectedCarRef.current.value;
-
-        const booking = {
-          pickup: pickupLocation,
-          destination: destination,
-          passengers: passengers,
-          fromdate: fromDate,
-          todate: toDate,
-          taxi: selectedCar,
-        };
-
-        const mytoken = "Bearer " + token;
-
-        const url = `${import.meta.env.VITE_BOOKINGS}`;
-        const response = await axios.post(url, booking, {
-          headers: {
-            Authorization: mytoken,
-          },
-        });
-
-        if (
-          response.data.status == "Successful"
-        ) {
-          displayMessage("success", "Booking request Confirmed.");
-          return;
-        }
-        displayMessage("danger", response.data.message);
-
-      } else {
-        displayMessage("danger", "Please Login to submit Booking request.");
-      }
-
-    } catch (error) {
-      displayMessage("danger", "Internal Error Occured. Try Again");
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
+  const [selectWay, setSelectWay] = useState("Destination");
+  const setWay = (way) => {
+    setSelectWay(way);
   };
 
-  function getTodaysDate() {
-    let today = new Date();
+  const [bookingForm, setBookingForm] = useState({
+    name: localStorage.getItem("formname") || "",
+    phone: localStorage.getItem("formphone") || "",
+    pickup: "",
+    package: "",
+    destinations: [],
+    fromdate: "",
+    todate: "",
+    passengers: "",
+    taxi: "",
+  });
 
-    let day = today.getDate();
-    let month = today.getMonth() + 1;
-    let newMonth = month<10?"0"+month:month;
-    let year = today.getFullYear();
+  const [destinations, setDestinations] = useState([]);
+  const [packages, setPackages] = useState([]);
+  const [pickups, setPickups] = useState([]);
+  const [taxi, setTaxi] = useState([]);
 
-    let todaysdate =  `${year}-${newMonth}-${day}`;
-    return todaysdate;
+  const [singlePackage, setSinglePackage] = useState("");
+  useEffect(() => {
+    const setPackageID = async () => {
+      try {
+        if (bookingForm.package.length > 0) {
+          const url = `${import.meta.env.VITE_PACKAGES}/${bookingForm.package}`;
+          const response = await axios.get(url);
 
-}
+          if (response) {
+            const id = response.data.message._id;
+            setSinglePackage(id);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    setPackageID();
+  }, [bookingForm.package]);
+
+  const handleChange = (e) => {
+    const { name, value, checked } = e.target;
+
+    if (name == "destinations") {
+      if (checked) {
+        setBookingForm((prevState) => ({
+          ...prevState,
+          destinations: [...prevState.destinations, value],
+        }));
+      } else {
+        setBookingForm((prevState) => ({
+          ...prevState,
+          destinations: prevState.destinations.filter((dest) => dest !== value),
+        }));
+      }
+    } else {
+      setBookingForm((prevState) => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
+  };
 
   useEffect(() => {
     const getDestinations = async () => {
       const url = `${import.meta.env.VITE_DESTINATIONS}`;
       const destinations = await axios.get(url);
       const reversedDestinations = destinations.data.allDestinations.reverse();
-      setDestination(reversedDestinations);
+      setDestinations(reversedDestinations);
     };
+
     getDestinations();
 
     const getPackages = async () => {
@@ -174,190 +116,487 @@ const HomeForm = () => {
     getPackages();
 
     const getPickups = async () => {
-      const pickup = await axios.get(
-        `${import.meta.env.VITE_PICKUPS}`
-      );
+      const pickup = await axios.get(`${import.meta.env.VITE_PICKUPS}`);
       const pickupLoacations = pickup.data.message;
       setPickups(pickupLoacations);
     };
     getPickups();
 
     const getTaxi = async () => {
-      const taxi = await axios.get(
-        `${import.meta.env.VITE_TAXI}`
-      );
+      const taxi = await axios.get(`${import.meta.env.VITE_TAXI}`);
       setTaxi(taxi.data.message);
     };
     getTaxi();
-
   }, []);
 
-  if (loading) {
-    <Spinner />;
-    
-  } else {
+  function getTodaysDate() {
+    let today = new Date();
+
+    let day = today.getDate();
+    let month = today.getMonth() + 1;
+    let newMonth = month < 10 ? "0" + month : month;
+    let year = today.getFullYear();
+
+    let todaysdate = `${year}-${newMonth}-${day}`;
+    return todaysdate;
+  }
+
+  const handleSubmit = async (e) => {
+    setLoading(true);
+    try {
+
+      if (isAuthenticated()) {
+        const url = `${import.meta.env.VITE_BOOKINGS}`;
+        const mytoken = "Bearer " + token;
+        const response = await axios.post(url, bookingForm, {
+          headers: {
+            Authorization: mytoken,
+          },
+        });
+        
+        if (response.data.status == "Successful") {
+            displayMessage("success", "Booking request Confirmed.");
+            setTimeout(() => {
+                handleReload()
+            }, 1500);
+            return;
+        }
+        displayMessage("danger", response.data.message);
+        
+    } else {
+        const url = `${import.meta.env.VITE_BOOKINGS}/anonymus`;
+        const response = await axios.post(url, bookingForm);
+        console.log(response);
+
+        if (response.data.status == "Successful") {
+            displayMessage("success", "Booking request Confirmed.");
+            setTimeout(() => {
+                handleReload()
+            }, 1500);
+            return;
+        }
+        displayMessage("danger", response.data.message);
+      }
+
+    } catch (error) {
+      displayMessage("danger", "Internal Error Occured. Try Again");
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
     return (
       <>
         {showAlert && <Alert alert={alert} />}
-          <div className="flex flex-col relative justify-center items-center rounded-md mx-4 lg:mx-8">
-            <div className="flex relative mx-2 mb-8 h-96 w-auto shadow-2xl rounded-md">
-              <img
-                className="-z-50 rounded-md object-cover"
-                src="/Hero-Image.jpg"
-                alt="Himachal-pradesh-explore"
-                />
-              <div className="absolute flex flex-col rounded-l-md text-slate-100 bg-gradient-to-r from-slate-900 lg:w-1/2 md:w-2/3 w-4/5 h-full *:lg:ml-10 *:lg:mt-6 *:ml-6 *:mt-4">
-                <h1 className="lg:text-8xl md:text-7xl text-5xl">
-                  <b>
-                    Travel More
-                    <br />
-                    Himachal
-                  </b>
-                </h1>
-                <p className="text-lg">
-                  Welcome to EpicHimachal. Explore Incredible Himachal with us.
-                </p>
-              </div>
+        <div className="mb-64 lg:mx-16 md:mx-8 mx-4 lg:text-base text-sm ">
+          <div
+            className="flex justify-center relative bg-slate-800 rounded-2xl bg-fixed bg-cover bg-center shadow-2xl"
+            style={{
+              backgroundImage:
+                'url("https://images.pexels.com/photos/5324304/pexels-photo-5324304.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
+              height: "480px"
+            }}
+          >
+            <div className="hidden bg-gradient-to-b from-slate-900 bg-opacity-60 w-screen h-96 rounded-2xl text-center pt-2 text-slate-200 lg:text-7xl md:text-6xl text-5xl">
+              <h1 className="font-extrabold">Travel More Himachal  </h1>
+              <p className="text-base">Welcome to EpicHimachal. Explore Incredible Himachal with us.</p>
             </div>
 
+            <div className="flex flex-col justify-center items-center absolute -bottom-1/4 px-8 py-4 w-11/12 h-auto rounded-2xl backdrop-blur-xl bg-slate-200 bg-opacity-40 shadow-2xl">
+                
+              {activeTab === "tab1" && !isAuthenticated() && (
+                <div className="flex flex-col justify-center items-center">
+                  <div className="flex mb-8 *:text-slate-200 text-base">
+                    <p>Enter Personal Details</p>
+                  </div>
+                  <div className="grid lg:grid-cols-2 grid-cols-1 ">
+                    <div className="grid grid-cols-1">
+                      <p className="text-slate-100 text-xs ml-4">
+                        Enter your name:
+                      </p>
+                      <input
+                        id="name"
+                        name="name"
+                        type="text"
+                        className="text-slate-500 rounded-xl mx-2 my-2 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                        required
+                        value={bookingForm.name}
+                        onChange={handleChange}
+                        placeholder="Enter your name"
+                      />
+                    </div>
+                    <div className="grid grid-cols-1">
+                      <p className="text-slate-100 text-xs ml-4">
+                        Enter your phone:
+                      </p>
+                      <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        className="text-slate-500 rounded-xl mx-2 my-2 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                        required
+                        value={bookingForm.phone}
+                        onChange={handleChange}
+                        placeholder="Enter your phone"
+                      />
+                    </div>
+                  </div>
 
-          <div className="flex flex-col justify-center items-center relative -top-32">
+                <div className="flex justify-center items-center">
 
-            <div className="container mx-auto pt-8 z-40 relative top-4">
-              <div className="flex justify-center flex-col md:flex-row *:md:my-0 *:my-1">
-                <button
-                  className={`px-4 py-2 md:mr-2 focus:outline-none rounded-md ${activeTab === 'tab1' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-800'}`}
-                  onClick={() => handleTabClick('tab1')}
-                  >
-                  Taxi Bookings
-                </button>
-                <button
-                  className={`px-4 py-2 focus:outline-none rounded-md ${activeTab === 'tab2' ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-800'}`}
-                  onClick={() => handleTabClick('tab2')}
-                  >
-                  Package Bookings
-                </button>
-              </div>
+                  {/* <button
+                      className="flex mt-8 mx-4 px-3 py-1 justify-center items-center cursor-pointer rounded-full bg-slate-900
+                  hover:bg-slate-800 text-white text-sm"
+                      onClick={() => {
+                        // handleSubmit();
+                      }}
+                    >
+                      Book Now &#10095;
+                    </button> */}
+
+
+                  <span
+                    className="flex mt-8 mx-4 justify-center items-center cursor-pointer size-8 rounded-full bg-slate-900
+                hover:bg-slate-800 text-white"
+                    onClick={() => {
+                      if (bookingForm.name == "" || bookingForm.phone == "") {
+                        displayMessage("danger", "Please enter name and phone");
+                        return;
+                      }
+                      if (bookingForm.phone.length < 10) {
+                        displayMessage(
+                          "danger",
+                          "Please recheck your entered Phone number."
+                        );
+                        return;
+                      }
+                      localStorage.setItem("formname", bookingForm.name);
+                      localStorage.setItem("formphone", bookingForm.phone);
+                      setTab("tab2");
+                    }}
+                    >
+                    &#10095;
+                  </span>
+                </div>
+                </div>
+              )}
+
+              {activeTab === "tab2" && (
+                <div className="flex flex-col justify-center items-center">
+                  <div className="flex mb-8 mx-2 my-1 *:text-slate-200 text-base">
+                    <p>Enter Pickup Details</p>
+                  </div>
+
+                  <div className="grid lg:grid-cols-2 grid-cols-1">
+                    <div className="grid grid-cols-1">
+                      <p className="text-xs ml-4 text-slate-100">
+                        Select Pickup Location
+                      </p>
+                      <select
+                        className="text-slate-500 rounded-xl mx-2 my-2 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                        id="pickup"
+                        name="pickup"
+                        value={bookingForm.pickup}
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">Select Pickup Location</option>
+                        {pickups.map((item) => {
+                          return (
+                            <option key={item._id} value={item.name}>
+                              {item.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+
+                    <div className="grid grid-cols-1">
+                      <p className="text-xs ml-4 text-slate-100">From Date</p>
+                      <input
+                        id="fromdate"
+                        name="fromdate"
+                        type="date"
+                        value={bookingForm.fromdate}
+                        onChange={handleChange}
+                        className="text-slate-500 rounded-xl mx-2 my-2 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                        min={getTodaysDate()}
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex ">
+                    {!isAuthenticated() && (
+                      <button
+                        className="flex mt-8 mx-4 justify-center items-center cursor-pointer size-8 rounded-full bg-slate-900
+                  hover:bg-slate-800 text-white"
+                        onClick={() => {
+                          setTab("tab1");
+                        }}
+                      >
+                        &#10094;
+                      </button>
+                    )}
+                    <button
+                      className="flex mt-8 mx-4 justify-center items-center cursor-pointer size-8 rounded-full bg-slate-900
+                hover:bg-slate-800 text-white"
+                      onClick={() => {
+                        if (
+                          bookingForm.pickup == "" ||
+                          bookingForm.fromdate == ""
+                        ) {
+                          displayMessage(
+                            "danger",
+                            "Enter pickup location & From Date."
+                          );
+                          return;
+                        }
+                        setTab("tab3");
+                      }}
+                    >
+                      &#10095;
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === "tab3" && (
+                <>
+                  <div className="flex md:flex-row flex-col items-center *:text-slate-100 mx-2 mb-8 ">
+                    <button
+                      className="bg-slate-900 px-2 py-1 rounded-lg hover:bg-slate-800 text-xs"
+                      onClick={() => {
+                        setWay("Packages");
+                        bookingForm.destinations = []
+                        bookingForm.passengers = ""
+                        bookingForm.taxi = ""
+                        bookingForm.todate = ""
+                      }}
+                    >
+                      Choose Package
+                    </button>
+                    <span className="mx-4 text-xs">or</span>
+                    <button
+                      className="bg-slate-900 px-2 py-1 rounded-lg hover:bg-slate-800 text-xs"
+                      onClick={() => {
+                        setWay("Destination");
+                        bookingForm.package = ""
+                      }}
+                    >
+                      Choose Destinations
+                    </button>
+                  </div>
+
+                  {selectWay === "Packages" && (
+                    <div className="flex flex-col justify-center items-center">
+                      <div id="Packages" className="grid grid-cols-1">
+                        <div className="grid grid-cols-1">
+                          <p className="text-slate-100 text-xs ml-4">
+                            Choose Package
+                          </p>
+                          <select
+                            className="text-slate-500 rounded-xl mx-2 my-2 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-slate-500"
+                            id="package"
+                            name="package"
+                            value={bookingForm.package}
+                            onChange={handleChange}
+                            required
+                          >
+                            <option value="">Choose Package</option>
+                            {packages &&
+                              packages.map((item) => {
+                                return (
+                                  <option key={item._id} value={item._id}>
+                                    {item.title}
+                                  </option>
+                                );
+                              })}
+                          </select>
+
+                          {singlePackage && bookingForm.package != "" && (
+                            <div className="flex justify-center items-center text-slate-100 text-xs *:bg-slate-900 hover:*:bg-slate-800 *:transition-colors *:rounded-lg *:px-2 *:py-1">
+                              <button
+                                onClick={() => {
+                                  window.open(`/packages/${singlePackage}`, "_blank");
+                                }}
+                              >
+                                View Package Details &#8599;
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex *:text-xs">
+                        <button
+                          className="flex mt-8 mx-4 justify-center items-center cursor-pointer size-8 rounded-full bg-slate-900
+                  hover:bg-slate-800 text-white"
+                          onClick={() => {
+                            setTab("tab2");
+                          }}
+                        >
+                          &#10094;
+                        </button>
+                        <button
+                          className="flex mt-8 mx-4 px-3 py-1 justify-center items-center cursor-pointer rounded-full bg-slate-900
+                      hover:bg-slate-800 text-white text-sm"
+                          onClick={() => {
+                            if (!bookingForm.package) {
+                              displayMessage("danger", "Please Enter all details before submitting.")
+                              return
+                            }
+                            handleSubmit();
+                          }}
+                          disabled={loading}
+                        >
+                          {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}
+                          Book Now &#10095;
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectWay === "Destination" && (
+                    <div className="flex flex-col justify-center items-center">
+                      <div
+                        id="Destination"
+                        className="grid grid-cols-1 lg:grid-cols-2 "
+                      >
+                        <div
+                          className={`${
+                            openDest ? "" : "hidden"
+                          } absolute bg-slate-100 rounded-2xl top-44 md:top-36 p-2 ml-2`}
+                        >
+                          {destinations &&
+                            destinations.map((item) => {
+                              return (
+                                <div key={item._id}>
+                                  <label className="block cursor-pointer hover:bg-blue-600 hover:text-slate-100 *:transition-colors">
+                                    <input
+                                      name="destinations"
+                                      className="mr-2"
+                                      type="checkbox"
+                                      value={item.title}
+                                      checked={bookingForm.destinations.includes(
+                                        item.title
+                                      )}
+                                      onChange={handleChange}
+                                      required
+                                    />
+                                    {item.title}
+                                  </label>
+                                </div>
+                              );
+                            })}
+                        </div>
+
+                        <div className="grid grid-cols-1">
+                          <p className="text-slate-100 text-xs ml-4">
+                            Choose Destinations
+                          </p>
+                          <button
+                            className="bg-white text-slate-500 text-left mx-2 my-2 px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500"
+                            onClick={onOpenDest}
+                          >
+                            {openDest
+                              ? "Close Destination"
+                              : "Open Destination"}
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1">
+                          <p className="text-slate-100 text-xs ml-4">
+                            Choose Taxi
+                          </p>
+                          <select
+                            id="taxi"
+                            name="taxi"
+                            className="bg-white text-slate-500 text-left mx-2 my-2 px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500"
+                            required
+                            value={bookingForm.taxi}
+                            onChange={handleChange}
+                          >
+                            <option value="">Select Car Type</option>
+                            {taxi &&
+                              taxi.map((item) => {
+                                return (
+                                  <option key={item._id} value={item.name}>
+                                    {item.name}-{item.type}
+                                  </option>
+                                );
+                              })}
+                          </select>
+                        </div>
+
+                        <div className="grid grid-cols-1">
+                          <p className="text-slate-100 text-xs ml-4">
+                            Number of Passengers
+                          </p>
+                          <input
+                            type="number"
+                            id="passengers"
+                            name="passengers"
+                            className="bg-white text-slate-500 text-left mx-2 my-2 px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500"
+                            placeholder="Select Passengers"
+                            min="1"
+                            value={bookingForm.passengers}
+                            onChange={handleChange}
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-1">
+                          <p className="text-slate-100 text-xs ml-4">To Date</p>
+                          <input
+                            id="todate"
+                            name="todate"
+                            type="date"
+                            className="bg-white text-slate-500 text-left mx-2 my-2 px-4 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500"
+                            min={getTodaysDate()}
+                            required
+                            value={bookingForm.todate}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex *:text-xs">
+                        <button
+                          className="flex mt-8 mx-4 justify-center items-center cursor-pointer size-8 rounded-full bg-slate-900
+                  hover:bg-slate-800 text-white"
+                          onClick={() => {
+                            setTab("tab2");
+                          }}
+                        >
+                          &#10094;
+                        </button>
+                        <button
+                          className="flex mt-8 mx-4 px-3 py-1 justify-center items-center cursor-pointer rounded-full bg-slate-900
+                      hover:bg-slate-800 text-white text-sm"
+                          onClick={() => {
+                            if (bookingForm.destinations.length < 1 || !bookingForm.passengers || !bookingForm.taxi) {
+                              displayMessage("danger", "Please Enter all details before submitting.")
+                              return
+                            }
+                            handleSubmit();
+                          }}
+                          disabled={loading}
+                        >
+                          {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}
+                          Book &#10095;
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
-
-
-            {activeTab === 'tab1' && (<form
-              className="grid lg:grid-cols-6 grid-cols-2 relative text-sm w-11/12 backdrop-blur-lg bg-opacity-40 bg-slate-800 rounded-md p-4 *:p-2 *:m-2 *:rounded-lg shadow-2xl pt-8"
-              onSubmit={handleSubmit}
-            >
-              <label className="text-slate-100" htmlFor="pickup">
-                Pickup Location*
-              </label>
-              <select
-                className="*:py-2"
-                id="pickup"
-                required
-                ref={pickupLocationRef}
-              >
-                <option value="">Select Pickup Location</option>
-                {pickups.map((item)=>{
-                  return <option key={item._id} value={item.name}>{item.name}</option>
-                })}
-              </select>
-
-              <label className="text-slate-100" htmlFor="destination">
-                Destination*
-              </label>
-              <select id="destination" required ref={destinationRef}>
-                <option value="">Select Destination</option>
-                {destinations && destinations.map(item=>{
-                  return <option key={item._id} value={item.title}>{item.title}</option>
-                })
-
-                }
-              </select>
-
-              <label className="text-slate-100" htmlFor="passengers">
-                Passengers
-              </label>
-              <input
-                type="number"
-                id="passengers"
-                ref={passengersRef}
-                min="1"
-                defaultValue={1}
-              />
-
-              <label className="text-slate-100" htmlFor="fromdate">
-                From Date*
-              </label>
-              <input id="fromdate" type="date" min={getTodaysDate()} required ref={fromDateRef} />
-
-              <label className="text-slate-100" htmlFor="todate">
-                To Date
-              </label>
-              <input id="todate" type="date" min={getTodaysDate()} ref={toDateRef} />
-
-              <label className="text-slate-100" htmlFor="selectcar">
-                Select Car*
-              </label>
-              <select id="selectcar" required ref={selectedCarRef}>
-                <option value="">Select Car Type</option>
-                {taxi && taxi.map((item)=>{
-                  return <option key={item._id} value={item.name}>{item.name}-{item.type}</option>
-                })}
-              </select>
-
-              <button className="text-slate-100 bg-slate-900 hover:bg-slate-800 rounded-md lg:col-start-6 lg:col-span-1 col-span-2">
-                Book Now!
-              </button>
-            </form>)}
-
-
-            {activeTab === 'tab2' && (<form
-              className="grid lg:grid-cols-6 grid-cols-2 relative text-sm max-w-11/12 backdrop-blur-lg bg-opacity-40 bg-slate-800 rounded-md p-4 *:p-2 *:m-2 *:rounded-lg shadow-2xl pt-8"
-              onSubmit={handleSubmitPacakge}
-            >
-              <label className="text-slate-100" htmlFor="pickup">
-                Pickup Location*
-              </label>
-              <select
-                className="*:py-2"
-                id="pickup"
-                required
-                ref={pickupLocationRef}
-              >
-                <option value="">Select Pickup Location</option>
-                {pickups.map((item)=>{
-                  return <option key={item._id} value={item.name}>{item.name}</option>
-                })}
-              </select>
-
-              <label className="text-slate-100" htmlFor="package">
-                Choose Pacakges*
-              </label>
-              <select
-                className="*:py-2"
-                id="package"
-                required
-                ref={packageRef}
-              >
-                <option value="">Choose Package</option>
-                {packages && packages.map((item)=>{
-                  return <option key={item._id} value={item.title}>{item.title}</option>
-                })}
-              </select>
-
-              <label className="text-slate-100" htmlFor="fromdate">
-                From Date*
-              </label>
-              <input id="fromdate" type="date" min={getTodaysDate()} required ref={fromDateRef} />              
-
-              <button className="text-slate-100 bg-slate-900 hover:bg-slate-800 rounded-md lg:col-start-6 lg:col-span-1 col-span-2">
-                Book Now!
-              </button>
-            </form>)}
-
           </div>
-          </div>
+        </div>
       </>
     );
-  }
 };
 
 export { HomeForm };

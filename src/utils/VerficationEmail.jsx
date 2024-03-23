@@ -1,9 +1,9 @@
+import axios from "axios";
 import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
 import { Link, useParams } from "react-router-dom";
-import axios from "axios";
 
 function EmailVerification() {
   const { handleReload } = useAuth();

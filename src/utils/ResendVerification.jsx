@@ -1,9 +1,8 @@
+import axios from "axios";
 import { useState, useRef } from "react";
 import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
-import { Spinner } from "../utils/Spinner";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 function ResendVerification() {
   const { handleReload } = useAuth();
@@ -63,9 +62,7 @@ function ResendVerification() {
     }
   };
 
-    if (loading) {
-      return <Spinner />;
-    } else {
+
       return (
         <>
           {showAlert && <Alert alert={alert} />}
@@ -109,7 +106,9 @@ function ResendVerification() {
                   <button
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-slate-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    disabled={loading}
                   >
+                    {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}
                     Submit
                   </button>
                 </div>
@@ -119,6 +118,5 @@ function ResendVerification() {
         </>
       );
     }
-  }
 
 export { ResendVerification };

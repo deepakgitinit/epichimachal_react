@@ -2,11 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { Alert } from "../../utils/Alert";
-import { Spinner } from "../../utils/Spinner";
 
 const BookingList = () => {
   const [bookings, setBookings] = useState([]);
-  const { token, handleReload} = useAuth();
+  const { token, handleReload } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -33,6 +32,9 @@ const BookingList = () => {
           Authorization: token,
         },
       });
+
+      console.log(response);
+
       const bookingRevers = response.data.message.reverse();
       setBookings(bookingRevers);
     } catch (error) {
@@ -60,7 +62,7 @@ const BookingList = () => {
         if (response.data.status == "Successful") {
           displayMessage("success", "Booking request Deleted.");
           setTimeout(() => {
-            handleReload()
+            handleReload();
           }, 1500);
           return;
         }
@@ -71,7 +73,6 @@ const BookingList = () => {
     } catch (error) {
       console.log(error);
       displayMessage("danger", "Internal Error");
-
     } finally {
       setLoading(false);
     }
@@ -81,76 +82,82 @@ const BookingList = () => {
     getBookings();
   }, []);
 
+  return (
+    <>
+      {showAlert && <Alert alert={alert} />}
+      <div className="container mx-auto py-8">
+        <h1 className="text-3xl font-bold mb-4">Travel Booking History</h1>
 
-  if (loading) {
-    <Spinner />;
-  } else {
-    return (
-      <>
-        {showAlert && <Alert alert={alert} />}
-        <div className="container mx-auto py-8">
-          <h1 className="text-3xl font-bold mb-4">Travel Booking History</h1>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-fit">
-            {bookings.length>0 ? bookings.map((booking) => (
-              <div
-                key={booking._id}
-                className="bg-white rounded-md shadow-md p-4"
-              >
-                {booking.package ? (
-                  <h2 className="text-xl font-semibold mb-2">
-                    <span className="text-base">Package: </span>{" "}
-                    {booking.package}
-                  </h2>
-                ) : (
-                  <h1 className="text-xl font-semibold mb-2">
-                    <span className="text-base">Destination: </span>{" "}
-                    {booking.destination}
-                  </h1>
-                )}
-                <div className="text-sm">
-                  <p className="text-gray-600 mb-2">
-                    Pickup Location: <i> {booking.pickup}</i>
-                  </p>
-                  {booking.fromdate && (
-                    <p className="text-gray-600 mb-2">
-                      From Date: <i> {booking.fromdate.slice(0, 10)}</i>
-                    </p>
-                  )}
-                  {booking.todate && (
-                    <p className="text-gray-600 mb-2">
-                      To Date: <i> {booking.todate.slice(0, 10)}</i>
-                    </p>
-                  )}
-                  <p className="text-gray-600 mb-2">
-                    Passengers: {booking.passengers}
-                  </p>
-                  <p className="text-gray-600 mb-2">
-                    Taxi Type: <i>{booking.taxi}</i>
-                  </p>
-                  <p className="text-gray-600 mb-2">
-                    Status:{" "}
-                    <b>
-                      <i>{booking.status}</i>
-                    </b>
-                  </p>
-                </div>
-
-                {booking.status=="Pending" && <button
-                  className="bg-red-800 hover:bg-red-700 rounded-md text-xs text-white py-1 px-2"
-                  onClick={(e) => {
-                    deleteBooking(e, booking._id);
-                  }}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-fit">
+          {bookings.length > 0
+            ? bookings.map((booking) => (
+                <div
+                  key={booking._id}
+                  className="bg-white rounded-md shadow-md p-4"
                 >
-                  Delete Booking
-                </button>}
-              </div>
-            )):"There is no travel history yet."}
-          </div>
+                  {booking.package ? (
+                    <h2 className="text-xl font-semibold mb-2">
+                      <span className="text-base">Package: </span>
+                      {booking.package}
+                    </h2>
+                  ) : (
+                    <h1 className="text-sm font-semibold mb-2">
+                      <span className="text-base">Destinations: </span>
+                      [{[booking.destinations.map(item => item).join(", ")]}]
+                    </h1>
+                  )}
+                  <div className="text-sm">
+                    <p className="text-gray-600 mb-2">
+                      Pickup Location: <i> {booking.pickup}</i>
+                    </p>
+                    {booking.fromdate && (
+                      <p className="text-gray-600 mb-2">
+                        From Date: <i> {booking.fromdate.slice(0, 10)}</i>
+                      </p>
+                    )}
+                    {booking.todate && (
+                      <p className="text-gray-600 mb-2">
+                        To Date: <i> {booking.todate.slice(0, 10)}</i>
+                      </p>
+                    )}
+                    <p className="text-gray-600 mb-2">
+                      Passengers: {booking.passengers}
+                    </p>
+                    <p className="text-gray-600 mb-2">
+                      Taxi Type: <i>{booking.taxi}</i>
+                    </p>
+                    <p className="text-gray-600 mb-2">
+                      Status:{" "}
+                      <b>
+                        <i>{booking.status}</i>
+                      </b>
+                    </p>
+                  </div>
+
+                  {booking.status == "Pending" && (
+                    <button
+                      className="bg-red-800 hover:bg-red-700 rounded-md text-xs text-white py-1 px-2"
+                      onClick={(e) => {
+                        deleteBooking(e, booking._id);
+                      }}
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <img
+                          className="animate-spin mr-2 invert"
+                          src="/rotate_right.svg"
+                        />
+                      ) : null}
+                      Delete Booking
+                    </button>
+                  )}
+                </div>
+              ))
+            : "There is no travel history yet."}
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 };
 
 export default BookingList;

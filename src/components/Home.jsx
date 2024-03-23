@@ -1,9 +1,9 @@
+import Cars from "./HomeComponents/Cars";
 import { Destinations } from "./Destinations/Destinations";
 import { Packages } from "./Packages/Packages";
-import { HomeForm } from "./HomeComponents/HomeForm";
 import { WhyChooseUs } from "./HomeComponents/WhyChooseUs";
 import { Testimonials } from "./HomeComponents/Testimonials";
-import Cars from "./HomeComponents/Cars";
+import { HomeForm } from "./HomeComponents/HomeForm";
 
 const Home = () => {
   return (

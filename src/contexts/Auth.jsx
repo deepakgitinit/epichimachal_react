@@ -26,6 +26,8 @@ export const Auth = ({ children }) => {
 
       localStorage.setItem("token", receivedToken );
       localStorage.setItem("role", role)
+      localStorage.removeItem("formname")
+      localStorage.removeItem("formphone")
       
       setToken(receivedToken);
       setRole(role)
@@ -45,11 +47,13 @@ export const Auth = ({ children }) => {
     }
   };
 
-  const signup = async (myEmail, myPassword, mychecked) => {
+  const signup = async (myname, myEmail, myphone, myPassword, mychecked) => {
     const url = `${import.meta.env.VITE_SIGNUP}`;
     try {
       const response = await axios.post(url, {
+        name: myname,
         email: myEmail,
+        phone: myphone,
         password: myPassword,
         subscription: mychecked
       });

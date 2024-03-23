@@ -1,11 +1,10 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { Alert } from "../../utils/Alert";
-import { Spinner } from "../../utils/Spinner";
-import axios from "axios";
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import { useParams } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const PackageFormUpdate = () => {
   const [destinations, setDestinations] = useState([]);
@@ -24,7 +23,7 @@ const PackageFormUpdate = () => {
   });
 
   const { token } = useAuth();
-  const {id} = useParams();
+  const { id } = useParams();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -45,12 +44,11 @@ const PackageFormUpdate = () => {
     const { name, value } = e.target;
 
     if (name === "category" || name === "tags") {
-      const valueArray = value.split(',');
+      const valueArray = value.split(",");
       setFormData((prevState) => ({
         ...prevState,
         [name]: valueArray,
       }));
-
     } else if (name === "destinations") {
       const selectedOptions = Array.from(
         e.target.selectedOptions,
@@ -61,7 +59,6 @@ const PackageFormUpdate = () => {
         ...prevState,
         [name]: selectedOptions,
       }));
-
     } else {
       setFormData((prevState) => ({
         ...prevState,
@@ -69,7 +66,6 @@ const PackageFormUpdate = () => {
       }));
     }
   };
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,19 +77,17 @@ const PackageFormUpdate = () => {
       formData.description = mydescription;
 
       console.log(formData);
-      
+
       const response = await axios.patch(url, formData, {
         headers: {
           Authorization: mytoken,
-        //   "Content-Type": "multipart/form-data",
+          //   "Content-Type": "multipart/form-data",
         },
       });
 
       console.log(response);
 
-      if (
-        response.data.status == "Successful"
-      ) {
+      if (response.data.status == "Successful") {
         displayMessage("success", response.data.message);
         setFormData({
           title: "",
@@ -106,12 +100,10 @@ const PackageFormUpdate = () => {
           time: "",
           thumbnail: null,
         });
-        setDescription("")
-
+        setDescription("");
       } else {
         displayMessage("danger", response.data.message);
       }
-
     } catch (error) {
       displayMessage("danger", "Error Occured");
     } finally {
@@ -119,13 +111,13 @@ const PackageFormUpdate = () => {
     }
   };
 
-//   const handleFileChange = (e) => {
-//     const file = e.target.files[0];
-//     setFormData((prevState) => ({
-//       ...prevState,
-//       thumbnail: file,
-//     }));
-//   };
+  //   const handleFileChange = (e) => {
+  //     const file = e.target.files[0];
+  //     setFormData((prevState) => ({
+  //       ...prevState,
+  //       thumbnail: file,
+  //     }));
+  //   };
 
   useEffect(() => {
     const getDestinations = async () => {
@@ -137,20 +129,18 @@ const PackageFormUpdate = () => {
     getDestinations();
 
     const getTaxi = async () => {
-      const taxi = await axios.get(
-        `${import.meta.env.VITE_TAXI}`
-      );
+      const taxi = await axios.get(`${import.meta.env.VITE_TAXI}`);
       setTaxi(taxi.data.message);
     };
     getTaxi();
 
-    const getPackage = async () =>{
-        const mypackage = await axios.get(
-            `${import.meta.env.VITE_PACKAGES}/${id}`
-        )
-        console.log(mypackage);
+    const getPackage = async () => {
+      const mypackage = await axios.get(
+        `${import.meta.env.VITE_PACKAGES}/${id}`
+      );
+      console.log(mypackage);
 
-        const formObj = {
+      const formObj = {
         title: mypackage.data.message.title,
         price: mypackage.data.message.price,
         category: mypackage.data.message.category,
@@ -160,56 +150,51 @@ const PackageFormUpdate = () => {
         taxi: mypackage.data.message.taxi,
         time: mypackage.data.message.time,
         thumbnail: mypackage.data.message.thumbnail,
-        }
-        setDescription(mypackage.data.message.description)
-        setFormData(formObj)
-
-    }
-    getPackage()
-
+      };
+      setDescription(mypackage.data.message.description);
+      setFormData(formObj);
+    };
+    getPackage();
   }, []);
 
+  return (
+    <>
+      {showAlert && <Alert alert={alert} />}
 
-  if (loading) {
-    return <Spinner />;
-  } else {
-    return (
-      <>
-        {showAlert && <Alert alert={alert} />}
+      <h1 className="flex text-2xl font-semibold mb-2 mt-8 justify-center items-center">
+        Update Package:
+      </h1>
 
-        <h1 className="flex text-2xl font-semibold mb-2 mt-8 justify-center items-center">
-         Update Package:
-        </h1>
-
-        <div className="max-w-lg mx-auto mt-8">
-            {formData.thumbnail && <img
-              className="object-cover w-full rounded-md mb-4"
-              src={`${import.meta.env.VITE_LOCALHOST}/` + formData.thumbnail}
-              alt="Selected Profile Image"
-            />}
-            {/* {formData.thumbnail && (
+      <div className="max-w-lg mx-auto mt-8">
+        {formData.thumbnail && (
+          <img
+            className="object-cover w-full rounded-md mb-4"
+            src={`${import.meta.env.VITE_LOCALHOST}/` + formData.thumbnail}
+            alt="Selected Profile Image"
+          />
+        )}
+        {/* {formData.thumbnail && (
                 <img
                 className="object-cover w-full rounded-md mb-4"
                 src={URL.createObjectURL(formData.thumbnail)}
                 alt="Selected Profile Image"
                 />             
             )} */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-
-            <div>
-              <label htmlFor="title" className="block">
-                Title
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                required
-                value={formData.title}
-                onChange={handleChange}
-                className="w-full border rounded-md py-2 px-3"
-              />
-            </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="title" className="block">
+              Title
+            </label>
+            <input
+              type="text"
+              id="title"
+              name="title"
+              required
+              value={formData.title}
+              onChange={handleChange}
+              className="w-full border rounded-md py-2 px-3"
+            />
+          </div>
 
           {/* <div>
               <label htmlFor="thumbnail" className="block">
@@ -225,146 +210,147 @@ const PackageFormUpdate = () => {
               />
             </div> */}
 
-            <div>
-              <label htmlFor="price" className="block">
-                Price
-              </label>
-              <input
-                type="number"
-                id="price"
-                name="price"
-                required
-                value={formData.price}
-                onChange={handleChange}
-                className="w-full border rounded-md py-2 px-3"
-              />
-            </div>
-            <div>
-              <label htmlFor="category" className="block">
-                Category
-              </label>
-              <input
-                type="text"
-                id="category"
-                name="category"
-                required
-                value={formData.category}
-                onChange={handleChange}
-                className="w-full border rounded-md py-2 px-3"
-              />
-            </div>
+          <div>
+            <label htmlFor="price" className="block">
+              Price
+            </label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              required
+              value={formData.price}
+              onChange={handleChange}
+              className="w-full border rounded-md py-2 px-3"
+            />
+          </div>
+          <div>
+            <label htmlFor="category" className="block">
+              Category
+            </label>
+            <input
+              type="text"
+              id="category"
+              name="category"
+              required
+              value={formData.category}
+              onChange={handleChange}
+              className="w-full border rounded-md py-2 px-3"
+            />
+          </div>
 
-            <div>
-              <label htmlFor="passengers" className="block">
-                Passengers
-              </label>
-              <input
-                type="number"
-                id="passengers"
-                name="passengers"
-                value={formData.passengers}
-                onChange={handleChange}
-                className="w-full border rounded-md py-2 px-3"
-              />
-            </div>
+          <div>
+            <label htmlFor="passengers" className="block">
+              Passengers
+            </label>
+            <input
+              type="number"
+              id="passengers"
+              name="passengers"
+              value={formData.passengers}
+              onChange={handleChange}
+              className="w-full border rounded-md py-2 px-3"
+            />
+          </div>
 
-            <div>
-              <label htmlFor="description" className="block">
-                Description
-              </label>
-              <ReactQuill
-                id="description"
-                name="description"
-                theme="snow"
-                required
-                value={mydescription}
-                onChange={setDescription}
-                className="w-full border rounded-md py-2 px-3 bg-white"
-              />
-            </div>
+          <div>
+            <label htmlFor="description" className="block">
+              Description
+            </label>
+            <ReactQuill
+              id="description"
+              name="description"
+              theme="snow"
+              required
+              value={mydescription}
+              onChange={setDescription}
+              className="w-full border rounded-md py-2 px-3 bg-white"
+            />
+          </div>
 
-            <div>
-              <label htmlFor="destinations" className="block">
-                Destinations
-              </label>
-              <select
-                id="destinations"
-                required
-                name="destinations"
-                value={formData.destinations}
-                multiple
-                onChange={handleChange}
-                className="w-full border rounded-md py-2 px-3"
-              >
-                {destinations.map((item) => {
-                  return (
-                    <option key={item._id} value={item._id}>
-                      {item.title}
-                    </option>
-                  );
-                })}
-              </select>
-              <div className="mt-2">
-                <label className="block">Selected Destinations:</label>
-                <ul className="flex flex-wrap *:mr-2">
-                  {formData.destinations.map((destination, index) => (
-                    <li key={index}>{destination}</li>
-                  ))}
-                </ul>
-              </div>
+          <div>
+            <label htmlFor="destinations" className="block">
+              Destinations
+            </label>
+            <select
+              id="destinations"
+              required
+              name="destinations"
+              value={formData.destinations}
+              multiple
+              onChange={handleChange}
+              className="w-full border rounded-md py-2 px-3"
+            >
+              {destinations.map((item) => {
+                return (
+                  <option key={item._id} value={item._id}>
+                    {item.title}
+                  </option>
+                );
+              })}
+            </select>
+            <div className="mt-2">
+              <label className="block">Selected Destinations:</label>
+              <ul className="flex flex-wrap *:mr-2">
+                {formData.destinations.map((destination, index) => (
+                  <li key={index}>{destination}</li>
+                ))}
+              </ul>
             </div>
+          </div>
 
-            <div>
-              <label htmlFor="taxi" className="block">
-                Taxi
-              </label>
-              <select
-                id="taxi"
-                required
-                name="taxi"
-                value={formData.taxi}
-                onChange={handleChange}
-                className="w-full border rounded-md py-2 px-3"
-              >
-                <option value="">Select Taxi</option>
-                {taxi.map((item) => {
-                  return (
-                    <option key={item._id} value={item.name +" - "+ item.type}>
-                      {item.name}-{item.type}
-                    </option>
-                  );
-                })}
-              </select>
-            </div>
+          <div>
+            <label htmlFor="taxi" className="block">
+              Taxi
+            </label>
+            <select
+              id="taxi"
+              required
+              name="taxi"
+              value={formData.taxi}
+              onChange={handleChange}
+              className="w-full border rounded-md py-2 px-3"
+            >
+              <option value="">Select Taxi</option>
+              {taxi.map((item) => {
+                return (
+                  <option key={item._id} value={item.name + " - " + item.type}>
+                    {item.name}-{item.type}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
 
-            <div>
-              <label htmlFor="time" className="block">
-                Time
-              </label>
-              <input
-                type="text"
-                id="time"
-                name="time"
-                required
-                value={formData.time}
-                onChange={handleChange}
-                className="w-full border rounded-md py-2 px-3"
-              />
-            </div>
+          <div>
+            <label htmlFor="time" className="block">
+              Time
+            </label>
+            <input
+              type="text"
+              id="time"
+              name="time"
+              required
+              value={formData.time}
+              onChange={handleChange}
+              className="w-full border rounded-md py-2 px-3"
+            />
+          </div>
 
-            <div>
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
-      </>
-    );
-  }
+          <div>
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md"
+              disabled={loading}
+            >
+              {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
+  );
 };
 
-export {PackageFormUpdate};
+export { PackageFormUpdate };

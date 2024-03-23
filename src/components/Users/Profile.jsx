@@ -3,14 +3,12 @@ import { useAuth } from "../../contexts/Auth";
 import { useEffect, useState } from "react";
 import { Alert } from "../../utils/Alert";
 import { Spinner } from "../../utils/Spinner";
-import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const {token, isAuthenticated, updateProfile, profileImg, setProfileImg, handleReload } = useAuth();
 
   const [userDetails, setUserDetails] = useState({});
   const [profileImage, setProfileImage] = useState(null);
-  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -97,12 +95,10 @@ const Profile = () => {
           return
         }
 
-        console.log(userDetails);
-
         const response = await updateProfile(userDetails);
 
         if(response.data.profile == "" || response.data.profile == undefined){
-          localStorage.setItem("profile", "/src/assets/default-avatar-icon.jpg")
+          localStorage.setItem("profile", "/default-avatar-icon.jpg")
         } else{
           localStorage.setItem("profile", `${import.meta.env.VITE_LOCALHOST}/` + response.data.profile)
         }
@@ -258,8 +254,7 @@ const Profile = () => {
       );
     }
   } else {
-    navigate("/");
-    window.scrollTo({ top: 0 });
+    window.location.replace("/");
   }
 };
 

@@ -1,12 +1,10 @@
 import { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
-import { Spinner } from "../utils/Spinner";
 
 function Login() {
   const { login, isAuthenticated, handleReload } = useAuth();
-  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -65,13 +63,9 @@ function Login() {
 
   if (isAuthenticated()) {
     {
-      navigate("/");
-      window.scrollTo({ top: 0 });
+      window.location.replace("/")
     }
   } else {
-    if (loading) {
-      return <Spinner />;
-    } else {
       return (
         <>
           {showAlert && <Alert alert={alert} />}
@@ -147,7 +141,9 @@ function Login() {
                   <button
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-slate-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    disabled={loading}
                   >
+                    {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}
                     Log in
                   </button>
                 </div>
@@ -168,6 +164,5 @@ function Login() {
       );
     }
   }
-}
 
 export { Login };

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../contexts/Auth";
 import { Alert } from "../../utils/Alert";
-import { Spinner } from "../../utils/Spinner";
 
 const AdminPickups = () => {
   const [items, setItems] = useState([]);
@@ -38,9 +37,8 @@ const AdminPickups = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
-      setLoading(true);
       const url = `${import.meta.env.VITE_PICKUPS}`;
       const mytoken = "Bearer " + token;
       
@@ -74,37 +72,41 @@ const AdminPickups = () => {
 
 
   const deletePickup = async (id) =>{
+    setLoading(true)
     try{
-        const url = `${import.meta.env.VITE_PICKUPS}/${id}`
-        const mytoken = "Bearer " + token;
-
-        const value = confirm("You sure want to delete Pickup Location.")
-
-        if (value) {
-            const response = await axios.delete(url,{
-                headers: {
-                    Authorization: mytoken,
-                }
-            });
-            if (response.data.status == "Successful") {
-                displayMessage("success", response.data.message);
-                setTimeout(() => {
-                    handleReload()
-                }, 1500);
-                return;
-            }
-            displayMessage("danger", "Internal Error Occured")
-            
-        }else{
-            displayMessage("success", "Not confirmed from User.")
-            return
+      const url = `${import.meta.env.VITE_PICKUPS}/${id}`
+      const mytoken = "Bearer " + token;
+      
+      const value = confirm("You sure want to delete Pickup Location.")
+      
+      if (value) {
+        const response = await axios.delete(url,{
+          headers: {
+            Authorization: mytoken,
+          }
+        });
+        if (response.data.status == "Successful") {
+          displayMessage("success", response.data.message);
+          setTimeout(() => {
+            handleReload()
+          }, 1500);
+          return;
         }
-
+        displayMessage("danger", "Internal Error Occured")
+        
+      }else{
+        displayMessage("success", "Not confirmed from User.")
+        return
+      }
+      
     } catch(error){
-        displayMessage("danger", "Error Occured")
+      displayMessage("danger", "Error Occured")
+    } finally {
+      setLoading(false)
+
     }
   }
-
+  
   useEffect(() => {
     const getPickups = async () => {
       const pickup = await axios.get(
@@ -116,9 +118,6 @@ const AdminPickups = () => {
   }, []);
 
 
-  if (loading) {
-    return <Spinner />;
-  } else {
     return (
       <>
         {showAlert && <Alert alert={alert} />}
@@ -156,7 +155,9 @@ const AdminPickups = () => {
               <button
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md mt-4"
+                disabled={loading}
               >
+                {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}
                 Submit
               </button>
             </div>
@@ -164,7 +165,6 @@ const AdminPickups = () => {
         </div>
       </>
     );
-  }
 };
 
 export { AdminPickups };

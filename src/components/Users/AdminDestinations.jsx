@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useAuth } from "../../contexts/Auth";
 import axios from "axios";
 import { Alert } from "../../utils/Alert";
-import { Spinner } from "../../utils/Spinner";
 import { DestinationGrid } from "../Destinations/DestinationGrid";
 
 const AddDestination = () => {
@@ -34,12 +33,11 @@ const AddDestination = () => {
     const { id, value } = e.target;
 
     if (id === "tags") {
-      const valueArray = value.split(','); // Split the string into an array
+      const valueArray = value.split(","); // Split the string into an array
       setFormData((prevState) => ({
         ...prevState,
         [id]: valueArray,
       }));
-      
     } else {
       setFormData((prevState) => ({
         ...prevState,
@@ -72,9 +70,7 @@ const AddDestination = () => {
         },
       });
 
-      if (
-        response.data.status == "Successful"
-      ) {
+      if (response.data.status == "Successful") {
         displayMessage("success", response.data.message);
         setFormData({
           title: "",
@@ -86,8 +82,6 @@ const AddDestination = () => {
         displayMessage("danger", response.data.message);
         return;
       }
-      
-
     } catch (error) {
       displayMessage("danger", "Internal Error Occured2.");
     } finally {
@@ -95,107 +89,106 @@ const AddDestination = () => {
     }
   };
 
-  if (loading) {
-    return <Spinner />;
+  return (
+    <>
+      {showAlert && <Alert alert={alert} />}
+      <DestinationGrid />
 
-  } else {
-    return (
-      <>
-        {showAlert && <Alert alert={alert} />}
-        <DestinationGrid />
+      <h1 className="flex text-2xl font-semibold mb-2 justify-center items-center">
+        Add New Destination:
+      </h1>
 
-        <h1 className="flex text-2xl font-semibold mb-2 justify-center items-center">
-          Add New Destination:
-        </h1>
-
-        <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
-          <div className="mb-4">
-            <label
-              htmlFor="title"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Title
-            </label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={formData.title}
-              onChange={handleDataChange}
-              className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleDataChange}
-              className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            ></textarea>
-          </div>
-          <div className="mb-4">
-            <div className="grid gap-2 lg:grid-cols-3 md:grid-cols-2">
-              {formData.images.map((image, index) => (
-                <img
-                  key={index}
-                  className="object-cover rounded-md"
-                  src={URL.createObjectURL(image)}
-                  alt="Selected Image"
-                />
-              ))}
-            </div>
-            <label
-              htmlFor="images"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Images <span className="text-xs text-red-700">(less than 1mb)</span>
-            </label>
-            <input
-              type="file"
-              id="images"
-              name="images[]"
-              onChange={handleImageChange}
-              multiple
-              accept="image/jpeg, image/jpg, image/png, image/webp"
-              className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="tags"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Tags (comma-separated)
-            </label>
-            <input
-              type="text"
-              id="tags"
-              name="tags"
-              value={formData.tags}
-              onChange={handleDataChange}
-              className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
-          <button
-            type="submit"
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
+        <div className="mb-4">
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-gray-700"
           >
-            Add Item
-          </button>
-        </form>
-      </>
-    );
-  }
+            Title
+          </label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value={formData.title}
+            onChange={handleDataChange}
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Description
+          </label>
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleDataChange}
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            required
+          ></textarea>
+        </div>
+        <div className="mb-4">
+          <div className="grid gap-2 lg:grid-cols-3 md:grid-cols-2">
+            {formData.images.map((image, index) => (
+              <img
+                key={index}
+                className="object-cover rounded-md"
+                src={URL.createObjectURL(image)}
+                alt="Selected Image"
+              />
+            ))}
+          </div>
+          <label
+            htmlFor="images"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Images <span className="text-xs text-red-700">(less than 1mb)</span>
+          </label>
+          <input
+            type="file"
+            id="images"
+            name="images[]"
+            onChange={handleImageChange}
+            multiple
+            accept="image/jpeg, image/jpg, image/png, image/webp"
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            required
+          />
+        </div>
+        <div className="mb-4">
+          <label
+            htmlFor="tags"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Tags (comma-separated)
+          </label>
+          <input
+            type="text"
+            id="tags"
+            name="tags"
+            value={formData.tags}
+            onChange={handleDataChange}
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+          />
+        </div>
+        <button
+          type="submit"
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          disabled={loading}
+        >
+          {loading ? (
+            <img className="animate-spin mr-2 invert" src="/rotate_right.svg" />
+          ) : null}
+          Add Item
+        </button>
+      </form>
+    </>
+  );
 };
 
 export { AddDestination };

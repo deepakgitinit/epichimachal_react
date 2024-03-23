@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useAuth } from "../../contexts/Auth";
 import { SetPassword } from '../../utils/SetPassword';
-import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
   const [activeTabSettings, setActiveTabSettings] = useState('tab1');
   const { isAuthenticated } = useAuth();
-  const navigate = useNavigate()
 
   const handleTabClick = (tab) => {
     setActiveTabSettings(tab);
@@ -56,8 +54,7 @@ const Settings = () => {
     </div>
   );
 }else{
-  navigate("/login")
-  window.scrollTo({ top: 0 });
+  window.location.replace("/");
 }
 };
 

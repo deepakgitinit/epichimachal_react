@@ -1,8 +1,8 @@
+import axios from "axios";
 import { useState, useRef } from "react";
 import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
 import { Spinner } from "../utils/Spinner";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 
@@ -82,7 +82,7 @@ function ForgotPassVerification() {
     return (
       <>
         {showAlert && <Alert alert={alert} />}
-
+        
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <Link to={"/"}><img
@@ -123,7 +123,9 @@ function ForgotPassVerification() {
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-slate-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  disabled={loading}
                 >
+                  {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}
                   Submit
                 </button>
               </div>

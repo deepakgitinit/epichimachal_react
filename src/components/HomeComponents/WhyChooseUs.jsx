@@ -11,7 +11,7 @@ const WhyChooseUs = () => {
           {/* Best Car Services */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold mb-4">Best Car Services</h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 md:text-base text-sm">
               Our fleet of modern, comfortable vehicles ensures a smooth and
               safe journey to your destination.
             </p>
@@ -20,7 +20,7 @@ const WhyChooseUs = () => {
           {/* Best Travel Packages */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold mb-4">Best Travel Packages</h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 md:text-base text-sm">
               Explore our curated travel packages that offer unique experiences
               and value for your money.
             </p>
@@ -29,7 +29,7 @@ const WhyChooseUs = () => {
           {/* Best Stays */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold mb-4">Best Stays</h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 md:text-base text-sm">
               From cozy boutique hotels to luxurious resorts, we offer
               accommodations that suit every traveler's preferences.
             </p>
@@ -38,7 +38,7 @@ const WhyChooseUs = () => {
           {/* Best Food */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-xl font-semibold mb-4">Best Food</h3>
-            <p className="text-gray-600">
+            <p className="text-gray-600 md:text-base text-sm">
               Indulge in local and international cuisines at our partner
               restaurants and enjoy memorable dining experiences.
             </p>

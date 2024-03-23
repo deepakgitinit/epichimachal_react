@@ -1,12 +1,10 @@
 import { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Auth";
 import { Alert } from "../utils/Alert";
-import { Spinner } from "../utils/Spinner";
 
 function Signup() {
   const { signup, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -16,7 +14,9 @@ function Signup() {
     message: "",
   });
 
+  const name = useRef();
   const email = useRef();
+  const phone = useRef();
   const password = useRef();
   const confirmPassword = useRef();
   const checkbox = useRef();
@@ -43,7 +43,9 @@ function Signup() {
     try {
       setLoading(true);
 
+      const myname = name.current.value;
       const myemail = email.current.value;
+      const myphone = phone.current.value;
       const mypassword = password.current.value;
       const myconfirmPassword = confirmPassword.current.value;
       const mychecked = checkbox.current.checked;
@@ -57,16 +59,17 @@ function Signup() {
           "Password shouldn't be less than 5 character."
         );
       } else {
-        const myresponse = await signup(myemail, mypassword, mychecked);
+        const myresponse = await signup(myname, myemail, myphone, mypassword, mychecked);
 
         if (
           myresponse.data.status == "Successful"
         ) {
           displayMessage("success", myresponse.data.message);
+
           setTimeout(() => {
-            navigate("/login");
-            window.scrollTo({ top: 0 });
+            window.location.replace("/login");
           }, 1500);
+          
         } else {
           displayMessage("danger", myresponse.data.message);
         }
@@ -83,13 +86,9 @@ function Signup() {
 
   if (isAuthenticated()) {
     {
-      navigate("/");
-      window.scrollTo({ top: 0 });
+      window.location.replace("/");
     }
   } else {
-    if (loading) {
-      return <Spinner />;
-    } else {
       return (
         <>
           {showAlert && <Alert alert={alert} />}
@@ -109,13 +108,34 @@ function Signup() {
 
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
               <form className="space-y-6" onSubmit={handleSignup}>
-                
+
+              <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Full Name
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      autoComplete="name"
+                      ref={name}
+                      value={formData.name || ""}
+                      onChange={handleChange}
+                      className="block w-full rounded-md border-0 p-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <label
                     htmlFor="email"
                     className="block text-sm font-medium leading-6 text-gray-900"
                   >
-                    Email address
+                    Email address*
                   </label>
                   <div className="mt-2">
                     <input
@@ -133,12 +153,34 @@ function Signup() {
                 </div>
 
                 <div>
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    Phone Number*
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      autoComplete="tel"
+                      ref={phone}
+                      value={formData.phone || ""}
+                      onChange={handleChange}
+                      required
+                      className="block w-full rounded-md border-0 p-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    />
+                  </div>
+                </div>
+
+                <div>
                   <div className="flex items-center justify-between">
                     <label
                       htmlFor="password"
                       className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      Password
+                      Password*
                     </label>
                   </div>
                   <div className="mt-2">
@@ -161,7 +203,7 @@ function Signup() {
                       htmlFor="confirmPassword"
                       className="block text-sm font-medium leading-6 text-gray-900"
                     >
-                      Confirm Password
+                      Confirm Password*
                     </label>
                   </div>
                   <div className="mt-2">
@@ -204,7 +246,9 @@ function Signup() {
                   <button
                     type="submit"
                     className="flex w-full justify-center rounded-md bg-slate-800 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    disabled={loading}
                   >
+                    {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}
                     Sign up!
                   </button>
                 </div>
@@ -225,6 +269,5 @@ function Signup() {
       );
     }
   }
-}
 
 export { Signup };

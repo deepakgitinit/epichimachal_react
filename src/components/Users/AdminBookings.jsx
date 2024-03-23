@@ -38,7 +38,6 @@ const AdminBookingList = () => {
       });
       const bookingRevers = response.data.message.reverse();
       setBookings(bookingRevers);
-
     } catch (error) {
       console.log(error);
     } finally {
@@ -68,20 +67,16 @@ const AdminBookingList = () => {
         }
       );
 
-      if (
-        response.data.status == "Successful"
-      ) {
+      if (response.data.status == "Successful") {
         displayMessage("success", response.data.message);
         setTimeout(() => {
-            handleReload()
+          handleReload();
         }, 1500);
       } else {
         displayMessage("danger", response.data.message);
       }
-
     } catch (error) {
       console.log(error);
-      
     } finally {
       setLoading(false);
     }
@@ -91,32 +86,39 @@ const AdminBookingList = () => {
     getBookings();
   }, []);
 
-  if (loading) {
-    return <Spinner />;
-  } else {
-    return (
-      <>
-        {showAlert && <Alert alert={alert} />}
-        <div className="container mx-auto py-8">
-          <h1 className="text-3xl font-bold mb-4">Travel Booking List</h1>
-          {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-4"> */}
+  return (
+    <>
+      {showAlert && <Alert alert={alert} />}
+      <div className="container mx-auto py-8">
+        <h1 className="text-3xl font-bold mb-4">Travel Booking List</h1>
+        {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-4"> */}
 
-          <div className="flex flex-wrap">
-            {bookings && bookings.map((booking) => (
+        <div className="flex flex-wrap">
+          {bookings &&
+            bookings.map((booking) => (
               <div
                 key={booking._id}
                 className="bg-white rounded-md shadow-md p-4 w-full my-2"
               >
-                <h2 className="text-xl font-semibold mb-2">User Details:</h2>
+                <h2 className="text-xl font-semibold mb-2">
+                  User Details:{" "}
+                  <span className="text-xs text-red-700">
+                    {!booking.userid ? "(anonymus)" : ""}
+                  </span>
+                </h2>
 
                 <div className="text-sm">
-                  {booking.name && <p className="text-gray-600 mb-2">
-                    Name: <i> {booking.name}</i>
-                  </p>}
+                  {booking.name && (
+                    <p className="text-gray-600 mb-2">
+                      Name: <i> {booking.name}</i>
+                    </p>
+                  )}
+                  {booking.email && (
+                    <p className="text-gray-600 mb-2">
+                      Email: <i> {booking.email}</i>
+                    </p>
+                  )}
                   <p className="text-gray-600 mb-2">
-                    Email: <i> {booking.email}</i>
-                  </p>
-                 <p className="text-gray-600 mb-2">
                     Phone Number: <i> {booking.phone}</i>
                   </p>
                 </div>
@@ -126,16 +128,32 @@ const AdminBookingList = () => {
                 </h2>
 
                 <div className="text-sm">
-                  {booking.package?<p className="text-gray-600 mb-2">
+                  {booking.package ? (
+                    <p className="text-gray-600 mb-2">
                       Package: <i>{booking.package}</i>
-                    </p>:<p className="text-gray-600 mb-2">
-                    Destination: <i> {booking.destination}</i>
-                  </p>}
+                    </p>
+                  ) : (
+                    <p className="text-gray-600 mb-2">
+                      Destinations:{" "}
+                      <i>
+                        [{[booking.destinations.map((item) => item).join(", ")]}
+                        ]
+                      </i>
+                    </p>
+                  )}
                   <p className="text-gray-600 mb-2">
                     Pickup Location: <i> {booking.pickup}</i>
                   </p>
-                  {booking.fromdate && <p className="text-gray-600 mb-2">From Date: <i> {booking.fromdate.slice(0, 10)}</i></p>}
-                  {booking.todate && <p className="text-gray-600 mb-2">To Date: <i> {booking.todate.slice(0, 10)}</i></p>}
+                  {booking.fromdate && (
+                    <p className="text-gray-600 mb-2">
+                      From Date: <i> {booking.fromdate.slice(0, 10)}</i>
+                    </p>
+                  )}
+                  {booking.todate && (
+                    <p className="text-gray-600 mb-2">
+                      To Date: <i> {booking.todate.slice(0, 10)}</i>
+                    </p>
+                  )}
                   <p className="text-gray-600 mb-2">
                     Passengers: {booking.passengers}
                   </p>
@@ -165,17 +183,25 @@ const AdminBookingList = () => {
                     <option value="Confirmed">Confirm</option>
                     <option value="Rejected">Reject</option>
                   </select>
-                  <button className="bg-slate-800 rounded-md text-slate-100 px-2 py-1">
+                  <button
+                    className="bg-slate-800 rounded-md text-slate-100 px-2 py-1"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <img
+                        className="animate-spin mr-2 invert"
+                        src="/rotate_right.svg"
+                      />
+                    ) : null}
                     Submit
                   </button>
                 </form>
               </div>
             ))}
-          </div>
         </div>
-      </>
-    );
-  }
+      </div>
+    </>
+  );
 };
 
 export default AdminBookingList;

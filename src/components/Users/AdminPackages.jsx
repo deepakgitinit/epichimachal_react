@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
 import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { Alert } from "../../utils/Alert";
-import { Spinner } from "../../utils/Spinner";
 import { PackagesGrid } from "../Packages/PackagesGrid";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -142,9 +141,6 @@ const PackageForm = () => {
   }, []);
 
 
-  if (loading) {
-    return <Spinner />;
-  } else {
     return (
       <>
         {showAlert && <Alert alert={alert} />}
@@ -324,7 +320,9 @@ const PackageForm = () => {
               <button
                 type="submit"
                 className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md"
+                disabled={loading}
               >
+                {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}
                 Submit
               </button>
             </div>
@@ -332,7 +330,6 @@ const PackageForm = () => {
         </div>
       </>
     );
-  }
 };
 
 export default PackageForm;
