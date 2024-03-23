@@ -190,18 +190,18 @@ const HomeForm = () => {
     return (
       <>
         {showAlert && <Alert alert={alert} />}
-        <div className="mb-64 lg:mx-16 md:mx-8 mx-4 lg:text-base text-sm ">
+        <div className="mb-64 lg:mx-16 md:mx-8 mx-4 lg:text-base text-sm text">
           <div
             className="flex justify-center relative bg-slate-800 rounded-2xl bg-fixed bg-cover bg-center shadow-2xl"
             style={{
               backgroundImage:
-                'url("https://images.pexels.com/photos/5324304/pexels-photo-5324304.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2")',
+                'url("/Hero-Image.jpg")',
               height: "480px"
             }}
           >
-            <div className="hidden bg-gradient-to-b from-slate-900 bg-opacity-60 w-screen h-96 rounded-2xl text-center pt-2 text-slate-200 lg:text-7xl md:text-6xl text-5xl">
+            <div className="bg-gradient-to-b from-slate-900 to-50% bg-opacity-60 w-screen h-96 rounded-2xl text-center text-slate-200 lg:text-6xl md:text-5xl text-4xl p-2 md:pt-4 lg:pt-8">
               <h1 className="font-extrabold">Travel More Himachal  </h1>
-              <p className="text-base">Welcome to EpicHimachal. Explore Incredible Himachal with us.</p>
+              <p className="md:text-base text-sm">Welcome to EpicHimachal. Explore Incredible Himachal with us.</p>
             </div>
 
             <div className="flex flex-col justify-center items-center absolute -bottom-1/4 px-8 py-4 w-11/12 h-auto rounded-2xl backdrop-blur-xl bg-slate-200 bg-opacity-40 shadow-2xl">

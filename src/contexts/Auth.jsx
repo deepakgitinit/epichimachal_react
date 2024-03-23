@@ -87,6 +87,7 @@ export const Auth = ({ children }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("profile")
     setToken(null);
+    window.location.replace("/");
   };
 
   const isAuthenticated = () => {
