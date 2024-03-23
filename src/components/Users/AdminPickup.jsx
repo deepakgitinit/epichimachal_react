@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
 import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { Alert } from "../../utils/Alert";
 
@@ -154,7 +154,7 @@ const AdminPickups = () => {
               />
               <button
                 type="submit"
-                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md mt-4"
+                className="bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2 px-4 rounded-md mt-4"
                 disabled={loading}
               >
                 {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/Auth";
 import { Alert } from "../../utils/Alert";
+import { Spinner } from "../../utils/Spinner";
 
 const BookingList = () => {
   const [bookings, setBookings] = useState([]);
@@ -82,6 +83,9 @@ const BookingList = () => {
     getBookings();
   }, []);
 
+  if (loading) {
+    return <Spinner/>
+  } else{ 
   return (
     <>
       {showAlert && <Alert alert={alert} />}
@@ -142,12 +146,6 @@ const BookingList = () => {
                       }}
                       disabled={loading}
                     >
-                      {loading ? (
-                        <img
-                          className="animate-spin mr-2 invert"
-                          src="/rotate_right.svg"
-                        />
-                      ) : null}
                       Delete Booking
                     </button>
                   )}
@@ -159,5 +157,6 @@ const BookingList = () => {
     </>
   );
 };
+}
 
 export default BookingList;

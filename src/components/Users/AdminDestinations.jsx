@@ -1,6 +1,6 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useAuth } from "../../contexts/Auth";
-import axios from "axios";
 import { Alert } from "../../utils/Alert";
 import { DestinationGrid } from "../Destinations/DestinationGrid";
 
@@ -112,7 +112,7 @@ const AddDestination = () => {
             name="title"
             value={formData.title}
             onChange={handleDataChange}
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-slate-500 focus:border-slate-500"
             required
           />
         </div>
@@ -128,7 +128,7 @@ const AddDestination = () => {
             name="description"
             value={formData.description}
             onChange={handleDataChange}
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-slate-500 focus:border-slate-500"
             required
           ></textarea>
         </div>
@@ -156,7 +156,7 @@ const AddDestination = () => {
             onChange={handleImageChange}
             multiple
             accept="image/jpeg, image/jpg, image/png, image/webp"
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-slate-500 focus:border-slate-500"
             required
           />
         </div>
@@ -173,12 +173,12 @@ const AddDestination = () => {
             name="tags"
             value={formData.tags}
             onChange={handleDataChange}
-            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            className="mt-1 p-2 block w-full border-gray-300 rounded-md focus:ring-slate-500 focus:border-slate-500"
           />
         </div>
         <button
           type="submit"
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-slate-900 hover:bg-slateslate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
           disabled={loading}
         >
           {loading ? (

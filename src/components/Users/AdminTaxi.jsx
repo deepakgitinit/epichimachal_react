@@ -121,6 +121,7 @@ const AdminTaxi = () => {
     getTaxi();
   }, []);
 
+
   return (
     <>
       {showAlert && <Alert alert={alert} />}
@@ -223,15 +224,10 @@ const AdminTaxi = () => {
           <div>
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md"
+              className="flex bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2 px-4 rounded-md"
               disabled={loading}
             >
-              {loading ? (
-                <img
-                  className="animate-spin mr-2 invert"
-                  src="/rotate_right.svg"
-                />
-              ) : null}
+              {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}
               Submit
             </button>
           </div>

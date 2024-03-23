@@ -6,8 +6,9 @@ import { Spinner } from "../../utils/Spinner";
 
 const AdminBookingList = () => {
   const [bookings, setBookings] = useState([]);
-  const { token, handleReload } = useAuth();
+  const [filterStatus, setFilterStatus] = useState("Pending");
 
+  const { token, handleReload } = useAuth();
   const bookingStatusRefs = useRef([]);
 
   const [loading, setLoading] = useState(false);
@@ -86,16 +87,28 @@ const AdminBookingList = () => {
     getBookings();
   }, []);
 
+const filteredBookings = bookings.filter(booking => booking.status === filterStatus);
+  
+if (loading) {
+  return <Spinner/>
+} else {
   return (
     <>
       {showAlert && <Alert alert={alert} />}
       <div className="container mx-auto py-8">
         <h1 className="text-3xl font-bold mb-4">Travel Booking List</h1>
-        {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-4"> */}
+
+        <div className="flex *:mr-3 items-center text-sm mb-2">
+        <p>Filter:</p>
+        <button className=" bg-slate-900 rounded-md text-slate-100 px-2 py-1 hover:bg-slate-800" onClick={() => setFilterStatus("Pending")}>Pending</button>
+        <button className=" bg-slate-900 rounded-md text-slate-100 px-2 py-1 hover:bg-slate-800" onClick={() => setFilterStatus("Confirmed")}>Confirmed</button>
+        <button className=" bg-slate-900 rounded-md text-slate-100 px-2 py-1 hover:bg-slate-800" onClick={() => setFilterStatus("Rejected")}>Rejected</button>
+        </div>
 
         <div className="flex flex-wrap">
-          {bookings &&
-            bookings.map((booking) => (
+
+          {filteredBookings &&
+            filteredBookings.map((booking) => (
               <div
                 key={booking._id}
                 className="bg-white rounded-md shadow-md p-4 w-full my-2"
@@ -168,7 +181,7 @@ const AdminBookingList = () => {
                   </p>
                 </div>
 
-                <form
+                {booking.status == "Pending" && <form
                   className="text-xs mt-4 *:mr-2 bg-slate-100 p-2 rounded-md"
                   onSubmit={(event) => {
                     updateBookings(event, booking._id);
@@ -183,19 +196,14 @@ const AdminBookingList = () => {
                     <option value="Confirmed">Confirm</option>
                     <option value="Rejected">Reject</option>
                   </select>
+
                   <button
                     className="bg-slate-800 rounded-md text-slate-100 px-2 py-1"
                     disabled={loading}
                   >
-                    {loading ? (
-                      <img
-                        className="animate-spin mr-2 invert"
-                        src="/rotate_right.svg"
-                      />
-                    ) : null}
                     Submit
                   </button>
-                </form>
+                </form>}
               </div>
             ))}
         </div>
@@ -203,5 +211,6 @@ const AdminBookingList = () => {
     </>
   );
 };
+}
 
 export default AdminBookingList;

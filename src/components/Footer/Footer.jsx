@@ -46,7 +46,7 @@ const Footer = () =>{
                 </div>
             </div>
             <div className="flex bg-black text-white justify-around text-xs py-2 px-2">
-                <p>Epic Himachal @2020</p>
+                <p>Travel More Himachal @2024</p>
                 <div className="*:mx-2">
                     <Link to={"/"}>Home</Link>
                     <Link to={"/about"}>About</Link>

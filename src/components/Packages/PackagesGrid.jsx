@@ -145,6 +145,7 @@ const PackagesGrid = () => {
                     onClick={(e) => {
                       deletePackage(e, item._id);
                     }}
+                    disabled={loading}
                   >
                     Delete
                   </button>
