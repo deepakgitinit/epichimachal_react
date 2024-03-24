@@ -14,7 +14,7 @@ const Package = () => {
 
   const scrollSlider = (direction) => {
     const slider = sliderRef.current;
-    const scrollAmount = 300;
+    const scrollAmount = 330;
     slider.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
   };
 
