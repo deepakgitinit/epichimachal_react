@@ -585,7 +585,7 @@ const HomeForm = () => {
                           disabled={loading}
                         >
                           {loading?<img className="animate-spin mr-2 invert" src="/rotate_right.svg"/>:null}
-                          Book &#10095;
+                          Book Now &#10095;
                         </button>
                       </div>
                     </div>

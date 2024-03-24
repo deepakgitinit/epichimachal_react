@@ -210,7 +210,7 @@ const AdminTaxi = () => {
 
           <div>
             <label htmlFor="image" className="block">
-              Image
+              Image <span className="text-xs text-red-700">(less than 1mb)</span>
             </label>
             <input
               type="file"

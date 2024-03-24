@@ -44,7 +44,8 @@ const DestinationsPage = () => {
                   <img
                     className="object-cover rounded-md"
                     src={`${import.meta.env.VITE_LOCALHOST}/` + item.images[0]}
-                    alt=""
+                    alt="destination_cover"
+                    loading="lazy"
                   />
                   <div className="absolute bottom-0 rounded-b-md text-slate-100 bg-gradient-to-t from-slate-900 bg-opacity-60 p-4 w-full">
                     <h1 className="text-lg">

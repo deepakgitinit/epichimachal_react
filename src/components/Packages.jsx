@@ -24,7 +24,7 @@ const PackagesPage = () => {
 
   return (
     <>
-      <div className="flex flex-col mx-2 text-center justify-center items-center mt-16 w-full">
+      <div className="flex flex-col mx-2 text-center justify-center items-center mt-16">
         <h1 className="text-3xl my-2">
           <b>Packages</b>
         </h1>
@@ -47,7 +47,8 @@ const PackagesPage = () => {
                 <img
                   className="rounded-t-md"
                   src={`${import.meta.env.VITE_LOCALHOST}/` + item.thumbnail}
-                  alt=""
+                  alt="package_cover"
+                  loading="lazy"
                 />
                 <div className="discription py-2 px-4">
                   <h1 className="text-base">

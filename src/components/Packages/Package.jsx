@@ -14,7 +14,7 @@ const Package = () => {
 
   const scrollSlider = (direction) => {
     const slider = sliderRef.current;
-    const scrollAmount = 270;
+    const scrollAmount = 300;
     slider.scrollBy({ left: direction * scrollAmount, behavior: "smooth" });
   };
 
@@ -76,6 +76,7 @@ const Package = () => {
               className="w-full lg:h-96 md:h-80 h-64 rounded-t-md z-0 object-cover"
               src={`${import.meta.env.VITE_LOCALHOST}/` + mypackage.thumbnail}
               alt={mypackage.title}
+              loading="lazy"
             />
             <div className="absolute bottom-0 text-center rounded-b-md cursor-pointer text-slate-100 bg-gradient-to-t from-slate-900 bg-opacity-60 p-4 w-full">
               <h1 className="lg:text-7xl md:text-5xl text-2xl font-sans font-extrabold">
@@ -144,7 +145,8 @@ const Package = () => {
                         <img
                           className="object-cover rounded-md"
                           src={`${import.meta.env.VITE_LOCALHOST}/` + item.images[0]}
-                          alt=""
+                          alt="destination"
+                          loading="lazy"
                         />
                         <div className="absolute bottom-0 rounded-b-md  text-slate-100 bg-gradient-to-t from-slate-900 bg-opacity-60 p-4 w-full">
                           <h1 className="text-lg">

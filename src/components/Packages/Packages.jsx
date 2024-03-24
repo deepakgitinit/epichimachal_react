@@ -53,7 +53,8 @@ const Packages = () => {
                 <img
                   className="rounded-t-md"
                   src={`${import.meta.env.VITE_LOCALHOST}/` + item.thumbnail}
-                  alt=""
+                  alt="package_thumbnail"
+                  loading="lazy"
                 />
                 <div className="discription py-2 px-4">
                   <h1 className="text-base">
