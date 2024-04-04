@@ -194,7 +194,7 @@ const PackageForm = () => {
                 Price
               </label>
               <input
-                type="number"
+                type="text"
                 id="price"
                 name="price"
                 required

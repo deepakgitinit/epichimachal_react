@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Spinner } from "../../utils/Spinner";
+import { Alert } from "../../utils/Alert";
 
 const Package = () => {
   const { id } = useParams();
@@ -9,8 +10,23 @@ const Package = () => {
   const [mypackage, setMyPackage] = useState({});
   const [mydestinations, setDestinations] = useState([]);
   const sliderRef = useRef(null);
+  const sendMailRef = useRef(null);
 
   const navigate = useNavigate();
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alert, setAlert] = useState({
+    type: "",
+    message: "",
+  });
+
+  const displayMessage = (type, message) => {
+    setShowAlert(true);
+    setAlert({ type: type, message: message });
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 1500);
+  };
 
   const scrollSlider = (direction) => {
     const slider = sliderRef.current;
@@ -57,6 +73,53 @@ const Package = () => {
     window.scrollTo({ top: 0 });
   };
 
+  const sendMail = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const url = `${import.meta.env.VITE_ITINERARY}`;
+      const { title, price, passengers, taxi, description } = mypackage;
+
+      const mails = sendMailRef.current.value;
+      const subject = title;
+
+      const htmlContent = `
+      <html>
+      <head>
+        <title>${title}</title>
+      </head>
+      <body>
+        <img src="https://www.epichimachal.com/Logo-black.png" />
+        <h3><b>Destinations:</b></h3><p> ${mydestinations.map((item) => {
+          return " " + item.title;
+        })}</p>
+        <h3><b>Price:</b></h3><p> ${price}</p>
+        <h3><b>Passengers:</b></h3> <p>${passengers}</p>
+        <h3><b>Taxi:</b></h3> <p>${taxi}</p>
+        <h3><b>Itinerary:</b></h3> <p>${description}</p>
+      </body>
+      </html>
+    `;
+
+      const response = await axios.post(url, {
+        mails: mails,
+        subject: subject,
+        htmlContent: htmlContent
+        });
+
+        console.log(response);
+      if (response.data.status == "Successful") {
+        displayMessage("success", response.data.message);
+      } else {
+        displayMessage("danger", response.data.message);
+      }
+    } catch (error) {
+      displayMessage("danger", "Error Occured");
+    } finally{
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchPackage();
   }, [id]);
@@ -66,6 +129,7 @@ const Package = () => {
   }
   return (
     <>
+    {showAlert && <Alert alert={alert} />}
       <div className="flex flex-col justify-center items-center">
         <div
           className="lg:mx-4 mx-2 rounded overflow-hidden shadow-lg"
@@ -125,63 +189,90 @@ const Package = () => {
               <b>Destinations:</b>
             </p>
 
-            <div className={`flex lg:w-auto`} style={window.innerWidth <= 1280 ? { width: "80vw" } : {}}>
             <div
-              className="flex overflow-y-auto transition-transform"
-              ref={sliderRef}
-              style={{ scrollbarWidth: "none" }}
+              className={`flex lg:w-auto`}
+              style={window.innerWidth <= 1280 ? { width: "80vw" } : {}}
+            >
+              <div
+                className="flex overflow-y-auto transition-transform"
+                ref={sliderRef}
+                style={{ scrollbarWidth: "none" }}
               >
-              {mydestinations.length > 0 &&
-                mydestinations.map((item, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className="cursor-pointer"
-                      onClick={() => {
-                        gotoDestination(item._id);
-                      }}
-                    >
-                      <div className="flex relative justify-center w-80 mr-4 ">
-                        <img
-                          className="object-cover rounded-md"
-                          src={`${import.meta.env.VITE_LOCALHOST}/` + item.images[0]}
-                          alt="destination"
-                          loading="lazy"
-                        />
-                        <div className="absolute bottom-0 rounded-b-md  text-slate-100 bg-gradient-to-t from-slate-900 bg-opacity-60 p-4 w-full">
-                          <h1 className="text-lg">
-                            <b>{item.title}</b>
-                          </h1>
-                          <p className="text-xs line-clamp-2">
-                            {item.description}
-                          </p>
+                {mydestinations.length > 0 &&
+                  mydestinations.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="cursor-pointer"
+                        onClick={() => {
+                          gotoDestination(item._id);
+                        }}
+                      >
+                        <div className="flex relative justify-center w-80 mr-4 ">
+                          <img
+                            className="w-auto h-48 object-cover rounded-md"
+                            src={
+                              `${import.meta.env.VITE_LOCALHOST}/` +
+                              item.images[0]
+                            }
+                            alt="destination"
+                            loading="lazy"
+                          />
+                          <div className="absolute bottom-0 rounded-b-md  text-slate-100 bg-gradient-to-t from-slate-900 bg-opacity-60 p-4 w-full">
+                            <h1 className="text-lg">
+                              <b>{item.title}</b>
+                            </h1>
+                            <p className="text-xs line-clamp-2">
+                              {item.description}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })}
-            </div>
-        </div>
-            <div className="flex text-slate-100 *:bg-opacity-40 *:bg-slate-900 hover:*:bg-slate-800 *:rounded-full *:px-4 *:py-2 *:mx-2 my-4">
-          <button className="prev" onClick={() => scrollSlider(-1)}>
-            &#10094;
-          </button>
-          <button className="next" onClick={() => scrollSlider(1)}>
-            &#10095;
-          </button>
+                    );
+                  })}
               </div>
+            </div>
+            <div className="flex text-slate-100 *:bg-opacity-40 *:bg-slate-900 hover:*:bg-slate-800 *:rounded-full *:px-4 *:py-2 *:mx-2 my-4">
+              <button className="prev" onClick={() => scrollSlider(-1)}>
+                &#10094;
+              </button>
+              <button className="next" onClick={() => scrollSlider(1)}>
+                &#10095;
+              </button>
+            </div>
 
             <div className="text-gray-700 text-base mb-2">
               <div className="text-lg mb-3">
                 <b>Description:</b>
               </div>
-              <div
-                 dangerouslySetInnerHTML={{ __html: mypackage.description }}
-              >
+              <div dangerouslySetInnerHTML={{ __html: mypackage.description }}>
                 {/* {mypackage.description} */}
               </div>
             </div>
 
+            <div className="flex lg:flex-row flex-col *:mr-2 *:mb-2 items-center object-center mt-8">
+              <p className="flex items-center text-gray-700 text-base">
+                <img
+                  className="w-4 h-4 mr-2"
+                  src="https://cdn3.iconfinder.com/data/icons/virtual-notebook/16/button_share-512.png"
+                  alt="Share"
+                />
+                <b>Share:</b>
+              </p>
+              <input
+                className="border border-slate-900 rounded-lg mr-2 px-2"
+                type="text"
+                ref={sendMailRef}
+                placeholder="Enter mails "
+              ></input>
+              <button
+                className="bg-slate-900 hover:bg-slate-800 text-slate-200 text-sm px-2 py-1 rounded-md"
+                onClick={(e)=>{sendMail(e)}}
+                disabled={loading}
+              >
+                Send Mail
+              </button>
+            </div>
           </div>
         </div>
       </div>
