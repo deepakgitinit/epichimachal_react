@@ -125,7 +125,7 @@ const Package = () => {
               <b>Destinations:</b>
             </p>
 
-          <div className={`flex`} style={{width: "80vw"}}>
+            <div className={`flex lg:w-auto`} style={window.innerWidth <= 1280 ? { width: "80vw" } : {}}>
             <div
               className="flex overflow-y-auto transition-transform"
               ref={sliderRef}
