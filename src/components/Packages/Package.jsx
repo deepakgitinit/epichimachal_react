@@ -78,34 +78,69 @@ const Package = () => {
     setLoading(true);
     try {
       const url = `${import.meta.env.VITE_ITINERARY}`;
-      const { title, price, passengers, taxi, time, description } = mypackage;
+      const {_id, title, price, passengers, taxi, time, description } = mypackage;
 
       const mails = sendMailRef.current.value;
       const subject = title;
 
       const htmlContent = `
-      <html>
-      <head>
-        <title>${title}</title>
-      </head>
-      <body>
-        <h1><b>TravelMoreHimachal</b> - Itinerary of ${title}<h1>
-        <h2><b>Destinations:</b></h2>
-        <p> <i>${mydestinations.map((item) => {
-          return " " + item.title;
-        })}</i></p>
-        <h2><b>Price:</b></h2><p> 
-        <i>${price}</i></p>
-        <h2><b>Passengers:</b></h2> 
-        <p><i>${passengers}</i></p>
-        <h2><b>Time:</b></h2> 
-        <p><i>${time}</i></p>
-        <h2><b>Taxi:</b></h2> 
-        <p><i>${taxi}</i></p>
-        <h2><b>Itinerary:</b></h2> 
-        ${description}
-      </body>
-      </html>
+      <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Tour Package Details</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #f4f4f4;
+                }
+                .container {
+                    max-width: 600px;
+                    margin: 20px auto;
+                    padding: 20px;
+                    background-color: #fff;
+                    border-radius: 5px;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                }
+                h1 {
+                    color: #333;
+                }
+                .package-details {
+                    margin-top: 20px;
+                    padding: 15px;
+                    background-color: #f9f9f9;
+                    border-radius: 5px;
+                }
+                .package-details h2 {
+                    color: #333;
+                    margin-bottom: 10px;
+                }
+                .package-details p {
+                    color: #666;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>TravelMoreHimachal</h1>
+                <a href="https://epichimachal.com/packages/${_id}" target="_blank">Click here to view on Website.</a>
+                <div class="package-details">
+                    <h2>Itinerary Name: ${title}</h2>
+                    <p><strong>Destination:</strong> ${mydestinations.map((item) => {
+                      return " " + item.title;
+                    })}</p>
+                    <p><strong>Price:</strong> ${price}</p>
+                    <p><strong>Price:</strong> ${passengers}</p>
+                    <p><strong>Duration:</strong> ${time}</p>
+                    <p><strong>Price:</strong> ${taxi}</p>
+                    <p><strong>Itinerary:</strong> ${description}</p>
+                </div>
+            </div>
+        </body>
+        </html>
     `;
 
       const response = await axios.post(url, {
@@ -137,7 +172,7 @@ const Package = () => {
     <>
     {showAlert && <Alert alert={alert} />}
       <div className="flex flex-col justify-center items-center">
-        <div
+        {mypackage && <div
           className="lg:mx-4 mx-2 rounded overflow-hidden shadow-lg"
           style={{ maxWidth: "1080px" }}
         >
@@ -196,8 +231,8 @@ const Package = () => {
             </p>
 
             <div
-              className={`flex lg:w-auto`}
-              style={window.innerWidth <= 1280 ? { width: "80vw" } : {}}
+              className={`flex`}
+              style={window.innerWidth <= 1280 ? { width: "80vw" } : { width: "65vw"}}
             >
               <div
                 className="flex overflow-y-auto transition-transform"
@@ -280,7 +315,7 @@ const Package = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div>}
       </div>
     </>
   );
