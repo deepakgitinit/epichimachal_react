@@ -78,7 +78,7 @@ const Package = () => {
     setLoading(true);
     try {
       const url = `${import.meta.env.VITE_ITINERARY}`;
-      const { title, price, passengers, taxi, description } = mypackage;
+      const { title, price, passengers, taxi, time, description } = mypackage;
 
       const mails = sendMailRef.current.value;
       const subject = title;
@@ -89,14 +89,21 @@ const Package = () => {
         <title>${title}</title>
       </head>
       <body>
-        <img src="https://www.epichimachal.com/Logo-black.png" />
-        <h3><b>Destinations:</b></h3><p> ${mydestinations.map((item) => {
+        <h1><b>TravelMoreHimachal</b> - Itinerary of ${title}<h1>
+        <h2><b>Destinations:</b></h2>
+        <p> <i>${mydestinations.map((item) => {
           return " " + item.title;
-        })}</p>
-        <h3><b>Price:</b></h3><p> ${price}</p>
-        <h3><b>Passengers:</b></h3> <p>${passengers}</p>
-        <h3><b>Taxi:</b></h3> <p>${taxi}</p>
-        <h3><b>Itinerary:</b></h3> <p>${description}</p>
+        })}</i></p>
+        <h2><b>Price:</b></h2><p> 
+        <i>${price}</i></p>
+        <h2><b>Passengers:</b></h2> 
+        <p><i>${passengers}</i></p>
+        <h2><b>Time:</b></h2> 
+        <p><i>${time}</i></p>
+        <h2><b>Taxi:</b></h2> 
+        <p><i>${taxi}</i></p>
+        <h2><b>Itinerary:</b></h2> 
+        ${description}
       </body>
       </html>
     `;
@@ -107,7 +114,6 @@ const Package = () => {
         htmlContent: htmlContent
         });
 
-        console.log(response);
       if (response.data.status == "Successful") {
         displayMessage("success", response.data.message);
       } else {
