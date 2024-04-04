@@ -129,13 +129,13 @@ const Package = () => {
                 <a href="https://epichimachal.com/packages/${_id}" target="_blank">Click here to view on Website.</a>
                 <div class="package-details">
                     <h2>Itinerary Name: ${title}</h2>
-                    <p><strong>Destination:</strong> ${mydestinations.map((item) => {
+                    <p><strong>Destinations:</strong> ${mydestinations.map((item) => {
                       return " " + item.title;
                     })}</p>
                     <p><strong>Price:</strong> ${price}</p>
-                    <p><strong>Price:</strong> ${passengers}</p>
-                    <p><strong>Duration:</strong> ${time}</p>
-                    <p><strong>Price:</strong> ${taxi}</p>
+                    <p><strong>Passengers:</strong> ${passengers}</p>
+                    <p><strong>Time:</strong> ${time}</p>
+                    <p><strong>Taxi:</strong> ${taxi}</p>
                     <p><strong>Itinerary:</strong> ${description}</p>
                 </div>
             </div>
