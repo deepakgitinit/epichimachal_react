@@ -113,6 +113,10 @@ const AdminTaxi = () => {
     }
   };
 
+  const handleError = (e) =>{
+    e.target.src = "\\public\\Loading_Image.png";
+  };
+
   useEffect(() => {
     const getTaxi = async () => {
       const taxi = await axios.get(`${import.meta.env.VITE_TAXI}`);
@@ -146,6 +150,7 @@ const AdminTaxi = () => {
                 src={`${import.meta.env.VITE_LOCALHOST}/` + car.image}
                 alt={car.name}
                 className={`w-full h-auto`}
+                onError={handleError}
               />
               <p className="lg:text-sm text-xs shadow-2xl">{car.name}</p>
             </div>

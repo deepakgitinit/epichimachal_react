@@ -22,7 +22,7 @@ const PackageForm = () => {
     thumbnail: null,
   });
 
-  const { token } = useAuth();
+  const { token, handleReload } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -102,6 +102,9 @@ const PackageForm = () => {
           description: ""
         });
         setDescription("")
+        setTimeout(() => {
+          handleReload();
+        }, 1500);
       } else {
         displayMessage("danger", response.data.message);
       }

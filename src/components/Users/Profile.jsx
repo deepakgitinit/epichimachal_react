@@ -40,8 +40,8 @@ const Profile = () => {
       const profile = response.data.message.profile;
 
       if(profile == "" || profile == undefined){
-        localStorage.setItem("profile", "/src/assets/default-avatar-icon.jpg")
-        setProfileImg("/src/assets/default-avatar-icon.jpg")
+        localStorage.setItem("profile", "/public/default-avatar-icon.jpg")
+        setProfileImg("/public/default-avatar-icon.jpg")
       } else{
         localStorage.setItem("profile", `${import.meta.env.VITE_LOCALHOST}/` + profile)
         setProfileImg(`${import.meta.env.VITE_LOCALHOST}/` + profile)

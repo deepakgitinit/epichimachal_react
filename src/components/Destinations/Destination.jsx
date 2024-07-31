@@ -36,6 +36,10 @@ const Destination = () => {
     );
   };
 
+  const handleError = (e) =>{
+    e.target.src = "\\public\\Loading_Image.png";
+  };
+
   useEffect(() => {
     getDestination();
   }, [id]);
@@ -51,7 +55,7 @@ const Destination = () => {
     return (
       <div className="max-w-6xl mx-auto bg-white shadow-md rounded-md p-6" style={{maxWidth: "720px"}}>
         <h2 className="text-2xl font-bold mb-4">{mydestination.title}</h2>
-        <div className="flex relative overflow-hidden">
+        <div className="flex relative overflow-hidden rounded-md">
           <button
             className="absolute inset-y-0 left-0 top-1/2 z-10 flex items-center justify-center w-12 h-12 text-white bg-slate-100 rounded-full bg-opacity-50 hover:bg-opacity-75"
             onClick={prevSlide}
@@ -71,7 +75,8 @@ const Destination = () => {
                   key={index}
                   src={`${import.meta.env.VITE_LOCALHOST}/${image}`}
                   alt={`Slide ${index}`}
-                  className="top-0 left-0 w-full h-full rounded-md object-cover"
+                  onError={handleError}
+                  className="top-0 left-0 w-full h-full object-cover"
                 />
               ))}
           </div>

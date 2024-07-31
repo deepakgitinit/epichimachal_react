@@ -12,7 +12,7 @@ const AddDestination = () => {
     tags: [],
   });
 
-  const { token } = useAuth();
+  const { token, handleReload } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -33,7 +33,7 @@ const AddDestination = () => {
     const { id, value } = e.target;
 
     if (id === "tags") {
-      const valueArray = value.split(","); // Split the string into an array
+      const valueArray = value.split(","); 
       setFormData((prevState) => ({
         ...prevState,
         [id]: valueArray,
@@ -78,6 +78,9 @@ const AddDestination = () => {
           images: [],
           tags: [],
         });
+        setTimeout(() => {
+          handleReload();
+        }, 1500);
       } else {
         displayMessage("danger", response.data.message);
         return;

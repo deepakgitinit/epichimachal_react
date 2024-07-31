@@ -23,6 +23,10 @@ const Packages = () => {
     getPackages();
   }, []);
 
+  const handleError = (e) =>{
+    e.target.src = "\\public\\Loading_Image.png";
+  };
+
   const openPackage = (packageID) => {
     navigate(`/packages/${packageID}`);
     window.scrollTo({ top: 0 });
@@ -55,6 +59,7 @@ const Packages = () => {
                   src={`${import.meta.env.VITE_LOCALHOST}/` + item.thumbnail}
                   alt="package_thumbnail"
                   loading="lazy"
+                  onError={handleError}
                 />
                 <div className="discription py-2 px-4">
                   <h1 className="text-base">

@@ -68,6 +68,10 @@ const Package = () => {
     }
   };
 
+  const handleError = (e) =>{
+    e.target.src = "\\public\\Loading_Image.png";
+  };
+
   const gotoDestination = (id) => {
     navigate(`/destinations/${id}`);
     window.scrollTo({ top: 0 });
@@ -182,6 +186,7 @@ const Package = () => {
               src={`${import.meta.env.VITE_LOCALHOST}/` + mypackage.thumbnail}
               alt={mypackage.title}
               loading="lazy"
+              onError={handleError}
             />
             <div className="absolute bottom-0 text-center rounded-b-md cursor-pointer text-slate-100 bg-gradient-to-t from-slate-900 bg-opacity-60 p-4 w-full">
               <h1 className="lg:text-7xl md:text-5xl text-2xl font-sans font-extrabold">

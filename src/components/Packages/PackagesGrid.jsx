@@ -79,6 +79,10 @@ const PackagesGrid = () => {
     window.scrollTo({ top: 0 });
   }
 
+  const handleError = (e) =>{
+    e.target.src = "\\public\\Loading_Image.png";
+  };
+
 
   if (loading) {
     return <Spinner />;
@@ -108,6 +112,7 @@ const PackagesGrid = () => {
                   src={`${import.meta.env.VITE_LOCALHOST}/` + item.thumbnail}
                   alt="package_thumbnail"
                   loading="lazy"
+                  onError={handleError}
                 />
                 <div className="discription py-2 px-4" >
                   <h1 className="text-base">

@@ -11,6 +11,10 @@ const DestinationsPage = () => {
     window.scrollTo({ top: 0 });
   }
 
+  const handleError = (e) =>{
+    e.target.src = "\\public\\Loading_Image.png";
+  };
+
   useEffect(() => {
     const getDestinations = async () => {
       const url = `${import.meta.env.VITE_DESTINATIONS}`;
@@ -46,6 +50,7 @@ const DestinationsPage = () => {
                     src={`${import.meta.env.VITE_LOCALHOST}/` + item.images[0]}
                     alt="destination_cover"
                     loading="lazy"
+                    onError={handleError}
                   />
                   <div className="absolute bottom-0 rounded-b-md text-slate-100 bg-gradient-to-t from-slate-900 bg-opacity-60 p-4 w-full">
                     <h1 className="text-lg">
