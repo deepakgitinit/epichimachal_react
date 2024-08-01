@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo, useState } from "react";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
@@ -90,6 +91,23 @@ export const Auth = ({ children }) => {
     window.location.replace("/");
   };
 
+  const validateToken = () =>{
+    if (!token) {
+      return false;
+    }
+  
+    try {
+      const decodedToken = jwtDecode(token);
+      const currentTime = Date.now() / 1000;
+  
+      return decodedToken.exp > currentTime;
+
+    } catch (error) {
+      console.error('Invalid token', error);
+      return false;
+    }
+  }
+
   const isAuthenticated = () => {
     if(token!=null && token!=undefined){
       return true;
@@ -110,6 +128,7 @@ export const Auth = ({ children }) => {
     signup,
     updateProfile,
     logout,
+    validateToken,
     isAuthenticated,
     handleReload
   }),[token]);

@@ -9,7 +9,7 @@ const PackagesGrid = () => {
   const [items, setItems] = useState([]);
   const navigate = useNavigate();
 
-  const { token, handleReload } = useAuth();
+  const { token, handleReload, logout, validateToken } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -28,6 +28,9 @@ const PackagesGrid = () => {
 
   useEffect(() => {
     const getPackages = async () => {
+      if(!validateToken()){
+        logout();
+      }
       const packages = await axios.get(`${import.meta.env.VITE_PACKAGES}`);
       const reversePackages = packages.data.allPackages.reverse();
       setItems(reversePackages);

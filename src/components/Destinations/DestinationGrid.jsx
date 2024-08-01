@@ -10,7 +10,7 @@ const DestinationGrid = () => {
   const sliderRef = useRef(null);
   const navigate = useNavigate();
 
-  const { token, handleReload } = useAuth();
+  const { token, handleReload, logout, validateToken } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -35,6 +35,9 @@ const DestinationGrid = () => {
 
   useEffect(() => {
     const getDestinations = async () => {
+      if(!validateToken()){
+        logout();
+      }
       const destinations = await axios.get(
         `${import.meta.env.VITE_DESTINATIONS}`
       );

@@ -9,7 +9,7 @@ const AdminPickups = () => {
     name: ""
   });
 
-  const { token, handleReload} = useAuth();
+  const { token, handleReload, logout, validateToken} = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -109,6 +109,9 @@ const AdminPickups = () => {
   
   useEffect(() => {
     const getPickups = async () => {
+      if(!validateToken()){
+        logout();
+      }
       const pickup = await axios.get(
         `${import.meta.env.VITE_PICKUPS}`
       );

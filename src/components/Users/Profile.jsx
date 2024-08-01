@@ -5,7 +5,7 @@ import { Alert } from "../../utils/Alert";
 import { Spinner } from "../../utils/Spinner";
 
 const Profile = () => {
-  const {token, isAuthenticated, updateProfile, profileImg, setProfileImg, handleReload } = useAuth();
+  const {token, isAuthenticated, updateProfile, profileImg, setProfileImg, handleReload, logout, validateToken } = useAuth();
 
   const [userDetails, setUserDetails] = useState({});
   const [profileImage, setProfileImage] = useState(null);
@@ -26,6 +26,9 @@ const Profile = () => {
   };
 
   const getProfile = async () => {
+    if(!validateToken()){
+      logout();
+    }
     try {
       setLoading(true);
       const userUrl = `${import.meta.env.VITE_USER_PROFILE}`;

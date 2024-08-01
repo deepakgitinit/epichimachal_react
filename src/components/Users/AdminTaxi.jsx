@@ -12,7 +12,7 @@ const AdminTaxi = () => {
     image: null,
   });
 
-  const { token, handleReload } = useAuth();
+  const { token, handleReload, logout, validateToken } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -119,6 +119,9 @@ const AdminTaxi = () => {
 
   useEffect(() => {
     const getTaxi = async () => {
+      if(!validateToken()){
+        logout();
+      }
       const taxi = await axios.get(`${import.meta.env.VITE_TAXI}`);
       setItems(taxi.data.message);
     };

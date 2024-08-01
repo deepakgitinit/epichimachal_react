@@ -8,7 +8,7 @@ const AdminBookingList = () => {
   const [bookings, setBookings] = useState([]);
   const [filterStatus, setFilterStatus] = useState("Pending");
 
-  const { token, handleReload } = useAuth();
+  const { token, handleReload, logout, validateToken } = useAuth();
   const bookingStatusRefs = useRef([]);
 
   const [loading, setLoading] = useState(false);
@@ -27,6 +27,9 @@ const AdminBookingList = () => {
   };
 
   const getBookings = async () => {
+    if(!validateToken()){
+      logout();
+    }
     setLoading(true);
     try {
       const url = `${import.meta.env.VITE_BOOKINGS}/all`;
@@ -40,7 +43,10 @@ const AdminBookingList = () => {
       const bookingRevers = response.data.message.reverse();
       setBookings(bookingRevers);
     } catch (error) {
-      console.log(error);
+      // if(error.response.data.message.name == "TokenExpiredError"){
+      //   logout();
+      // };
+      console.log(error)
     } finally {
       setLoading(false);
     }

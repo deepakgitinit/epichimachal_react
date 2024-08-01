@@ -6,7 +6,7 @@ import { Spinner } from "../../utils/Spinner";
 
 const BookingList = () => {
   const [bookings, setBookings] = useState([]);
-  const { token, handleReload } = useAuth();
+  const { token, handleReload, logout, validateToken } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -24,6 +24,9 @@ const BookingList = () => {
   };
 
   const getBookings = async () => {
+    if(!validateToken()){
+      logout();
+    }
     try {
       const url = `${import.meta.env.VITE_BOOKINGS}`;
       const token = "Bearer " + localStorage.getItem("token");
@@ -34,11 +37,12 @@ const BookingList = () => {
         },
       });
 
-      console.log(response);
-
       const bookingRevers = response.data.message.reverse();
       setBookings(bookingRevers);
     } catch (error) {
+      // if(error.response.data.message.name == "TokenExpiredError"){
+      //   logout();
+      // };
       console.log(error);
     }
   };
